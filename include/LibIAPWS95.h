@@ -415,6 +415,11 @@ class LibIAPWS95 {
      * parametrization for single-phase state */
     double get_param_pressure(double mdensity_in,
                               double temperature_in);
+    /* derivative of pressure with respect to mass density
+     * in m^2 / sec^2
+     * parametrization for single-phase state */
+    double get_param_dpress_drho(double mdensity_in,
+                                 double temperature_in);
     /* specific internal energy in J / kg
      * parametrization for single-phase state */
     double get_param_erg_int(double mdensity_in,
@@ -435,7 +440,7 @@ class LibIAPWS95 {
      * parametrization for single-phase state */
     double get_param_heat_c_p(double mdensity_in,
                               double temperature_in);
-    /* speed of sound in m / 2
+    /* speed of sound in m / sec
      * parametrization for single-phase state */
     double get_param_speed_sound(double mdensity_in,
                                  double temperature_in);

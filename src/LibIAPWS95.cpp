@@ -546,6 +546,21 @@ double LibIAPWS95::get_param_pressure(double mdensity_in,
     return press;
 }
 
+double LibIAPWS95::get_param_dpress_drho(double mdensity_in,
+                                         double temperature_in) {
+    double delta = mdensity_in / mdensity_crit_;
+    //double tau = temperature_crit_ / temperature_in;
+
+    double dpress_drho =
+        const_R_spec_ * temperature_in *
+        (1. + 2. * delta * get_param_dphi_res_ddelta(mdensity_in,
+                                                     temperature_in) +
+         delta * delta * get_param_d2phi_res_ddelta_ddelta(mdensity_in,
+                                                           temperature_in));
+
+    return dpress_drho;
+}
+
 double LibIAPWS95::get_param_erg_int(double mdensity_in,
                                      double temperature_in) {
     //double delta = mdensity_in / mdensity_crit_;
