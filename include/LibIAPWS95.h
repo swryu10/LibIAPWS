@@ -42,6 +42,19 @@ class LibIAPWS95 {
     int n_iter_max_;
     double eps_precision_;
 
+    bool have_tab_coex_;
+    int nbin_coex_;
+    double temperature_coex_min_;
+    double temperature_coex_max_;
+    double *tab_coex_temperature_;
+    double *tab_coex_pressure_;
+    double *tab_coex_mden_vap_;
+    double *tab_coex_mden_liq_;
+    double *tab_coex_enthalpy_vap_;
+    double *tab_coex_enthalpy_liq_;
+    double *tab_coex_entropy_vap_;
+    double *tab_coex_entropy_liq_;
+
   public :
 
     LibIAPWS95() {
@@ -50,8 +63,6 @@ class LibIAPWS95 {
         const_R_spec_ = 461.51805;
 
         coeff_ide_n_ = new double[9];
-        coeff_ide_gamma_ = new double[9];
-
         coeff_ide_n_[0] = 0.;
         // coefficient ide n_i
         coeff_ide_n_[1] = -8.3204464837497;
@@ -63,6 +74,7 @@ class LibIAPWS95 {
         coeff_ide_n_[7] = 0.96956;
         coeff_ide_n_[8] = 0.24873;
 
+        coeff_ide_gamma_ = new double[9];
         coeff_ide_gamma_[0] = 0.;
         // coefficient ide gamma_i
         coeff_ide_gamma_[1] = 0.;
@@ -361,10 +373,14 @@ class LibIAPWS95 {
         n_iter_max_ = 1000000;
         eps_precision_ = 1.0e-7;
 
+        have_tab_coex_ = false;
+
         return;
     }
 
     ~LibIAPWS95() {
+        reset_tab_coex();
+
         delete [] coeff_ide_n_;
         delete [] coeff_ide_gamma_;
 
@@ -383,6 +399,27 @@ class LibIAPWS95 {
         delete [] coeff_res_C_;
         delete [] coeff_res_D_;
         delete [] coeff_res_A_;
+
+        return;
+    }
+
+    void reset_tab_coex() {
+        if (!have_tab_coex_) {
+            return;
+        }
+
+        nbin_coex_ = 0;
+
+        delete [] tab_coex_temperature_;
+        delete [] tab_coex_pressure_;
+        delete [] tab_coex_mden_vap_;
+        delete [] tab_coex_mden_liq_;
+        delete [] tab_coex_enthalpy_vap_;
+        delete [] tab_coex_enthalpy_liq_;
+        delete [] tab_coex_entropy_vap_;
+        delete [] tab_coex_entropy_liq_;
+
+        have_tab_coex_ = false;
 
         return;
     }
@@ -457,6 +494,19 @@ class LibIAPWS95 {
     bool find_root_mdensity(double temperature_in,
                             double pressure_in,
                             double &mdensity_out);
+
+    bool find_state_coex(double temperature_in,
+                         double &pressure_out,
+                         double &mden_vap_out,
+                         double &mden_liq_out);
+
+    void make_tab_coex(int nbin_in,
+                       double temperature_min,
+                       double temperature_max);
+
+    void export_tab_coex(char *filename);
+
+    void import_tab_coex(char *filename);
 };
 
 #endif
