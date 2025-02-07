@@ -7,6 +7,11 @@
 int main(int argc, char *argv[]) {
     LibIAPWS95 iapws95eos;
 
+    fprintf(stdout, "\n");
+    fprintf(stdout, "IAPWS95-2018\n");
+    fprintf(stdout, "Thermodynamic Properties of Ordinary Water Substance ");
+    fprintf(stdout, "for General and Scientific Use\n");
+
     double temp0_in = 500.;
     double mden0_in = 838.025;
     fprintf(stdout, "\n");
