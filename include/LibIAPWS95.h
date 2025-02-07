@@ -533,6 +533,52 @@ class Lib95 {
      * for thermodynamic quantities
      * at coexisting phases */
     void set_cspline_coex();
+
+    /* pressure at coexisting phase
+     * in Pa (N / m^2) */
+    double get_coex_pressure(double temperature_in) {
+        return csp_coex_pressure_.get_func(temperature_in);
+    }
+    /* mass density of water vapor at coexisting phase
+     * in kg / m^3 */
+    double get_coex_mden_vap(double temperature_in) {
+        return csp_coex_mden_vap_.get_func(temperature_in);
+    }
+    /* mass density of water liquid at coexisting phase
+     * in kg / m^3 */
+    double get_coex_mden_liq(double temperature_in) {
+        return csp_coex_mden_liq_.get_func(temperature_in);
+    }
+    /* specific enthalpy of water vapor at coexisting phase
+     * in J / kg */
+    double get_coex_enthalpy_vap(double temperature_in) {
+        return csp_coex_enthalpy_vap_.get_func(temperature_in);
+    }
+    /* specific enthalpy of water liquid at coexisting phase
+     * in J / kg */
+    double get_coex_enthalpy_liq(double temperature_in) {
+        return csp_coex_enthalpy_liq_.get_func(temperature_in);
+    }
+    /* specific entropy of water vapor at coexisting phase
+     * in J / kg / degK */
+    double get_coex_entropy_vap(double temperature_in) {
+        return csp_coex_entropy_vap_.get_func(temperature_in);
+    }
+    /* specific entropy of water liquid at coexisting phase
+     * in J / kg / degK */
+    double get_coex_entropy_liq(double temperature_in) {
+        return csp_coex_entropy_liq_.get_func(temperature_in);
+    }
+    /* specific latent heat
+     * in J / kg */
+    double get_coex_heat_latent(double temperature_in) {
+        double h_latent =
+            temperature_in *
+            (csp_coex_entropy_vap_.get_func(temperature_in) -
+             csp_coex_entropy_liq_.get_func(temperature_in));
+
+        return h_latent;
+    }
 };
 
 } // end namespace IAPWS

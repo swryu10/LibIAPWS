@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
     iapws95eos.make_tab_coex(nbin_coex,
                              temp_coex_min,
                              temp_coex_max);
+    fprintf(stdout, "\n");
     iapws95eos.export_tab_coex(filename_coex);
     iapws95eos.import_tab_coex(filename_coex);
 
