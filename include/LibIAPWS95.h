@@ -39,6 +39,9 @@ class LibIAPWS95 {
     double *coeff_res_D_;
     double *coeff_res_A_;
 
+    int n_iter_max_;
+    double eps_precision_;
+
   public :
 
     LibIAPWS95() {
@@ -355,6 +358,9 @@ class LibIAPWS95 {
         coeff_res_A_[0] = 0.32;
         coeff_res_A_[1] = 0.32;
 
+        n_iter_max_ = 1000000;
+        eps_precision_ = 1.0e-7;
+
         return;
     }
 
@@ -444,6 +450,13 @@ class LibIAPWS95 {
      * parametrization for single-phase state */
     double get_param_speed_sound(double mdensity_in,
                                  double temperature_in);
+
+    /* find mass density which yields certain pressure
+     * with given temperature,
+     * using Newton's method for root finding */
+    bool find_root_mdensity(double temperature_in,
+                            double pressure_in,
+                            double &mdensity_out);
 };
 
 #endif

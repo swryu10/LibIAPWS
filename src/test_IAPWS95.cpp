@@ -122,5 +122,92 @@ int main(int argc, char *argv[]) {
     }
     delete [] mden4_in;
 
+    double temp5_in = 275.;
+    fprintf(stdout, "\n");
+    fprintf(stdout, "temperature = %f degK\n", temp5_in);
+
+    double press5_sat = 0.698451167 * 1.0e-3 * 1.0e+6;
+    fprintf(stdout, "  pressure_sat = %f Pa\n", press5_sat);
+    double mden5_vap = 0.005;
+    bool found_mden5_vap =
+        iapws95eos.find_root_mdensity(temp5_in, press5_sat, mden5_vap);
+    if (found_mden5_vap) {
+        fprintf(stdout, "    ");
+        fprintf(stdout, "mdensity_vap = %.8e kg / m^3, ", mden5_vap);
+        fprintf(stdout, "enthalpy = %.8e J / kg, ",
+                iapws95eos.get_param_enthalpy(mden5_vap, temp5_in));
+        fprintf(stdout, "entropy = %.8e J / kg / degK\n",
+                iapws95eos.get_param_entropy(mden5_vap, temp5_in));
+    }
+    double mden5_liq = 1100.;
+    bool found_mden5_liq =
+        iapws95eos.find_root_mdensity(temp5_in, press5_sat, mden5_liq);
+    if (found_mden5_liq) {
+        fprintf(stdout, "    ");
+        fprintf(stdout, "mdensity_liq = %.8e kg / m^3, ", mden5_liq);
+        fprintf(stdout, "enthalpy = %.8e J / kg, ",
+                iapws95eos.get_param_enthalpy(mden5_liq, temp5_in));
+        fprintf(stdout, "entropy = %.8e J / kg / degK\n",
+                iapws95eos.get_param_entropy(mden5_liq, temp5_in));
+    }
+
+    double temp6_in = 450.;
+    fprintf(stdout, "\n");
+    fprintf(stdout, "temperature = %f degK\n", temp6_in);
+
+    double press6_sat = 0.932203564 * 1.0e+6;
+    fprintf(stdout, "  pressure_sat = %f Pa\n", press6_sat);
+    double mden6_vap = 0.005;
+    bool found_mden6_vap =
+        iapws95eos.find_root_mdensity(temp6_in, press6_sat, mden6_vap);
+    if (found_mden6_vap) {
+        fprintf(stdout, "    ");
+        fprintf(stdout, "mdensity_vap = %.8e kg / m^3, ", mden6_vap);
+        fprintf(stdout, "enthalpy = %.8e J / kg, ",
+                iapws95eos.get_param_enthalpy(mden6_vap, temp6_in));
+        fprintf(stdout, "entropy = %.8e J / kg / degK\n",
+                iapws95eos.get_param_entropy(mden6_vap, temp6_in));
+    }
+    double mden6_liq = 1100.;
+    bool found_mden6_liq =
+        iapws95eos.find_root_mdensity(temp6_in, press6_sat, mden6_liq);
+    if (found_mden6_liq) {
+        fprintf(stdout, "    ");
+        fprintf(stdout, "mdensity_liq = %.8e kg / m^3, ", mden6_liq);
+        fprintf(stdout, "enthalpy = %.8e J / kg, ",
+                iapws95eos.get_param_enthalpy(mden6_liq, temp6_in));
+        fprintf(stdout, "entropy = %.8e J / kg / degK\n",
+                iapws95eos.get_param_entropy(mden6_liq, temp6_in));
+    }
+
+    double temp7_in = 625.;
+    fprintf(stdout, "\n");
+    fprintf(stdout, "temperature = %f degK\n", temp7_in);
+
+    double press7_sat = 0.169082693 * 1.0e+2 * 1.0e+6;
+    fprintf(stdout, "  pressure_sat = %f Pa\n", press7_sat);
+    double mden7_vap = 0.005;
+    bool found_mden7_vap =
+        iapws95eos.find_root_mdensity(temp7_in, press7_sat, mden7_vap);
+    if (found_mden7_vap) {
+        fprintf(stdout, "    ");
+        fprintf(stdout, "mdensity_vap = %.8e kg / m^3, ", mden7_vap);
+        fprintf(stdout, "enthalpy = %.8e J / kg, ",
+                iapws95eos.get_param_enthalpy(mden7_vap, temp7_in));
+        fprintf(stdout, "entropy = %.8e J / kg / degK\n",
+                iapws95eos.get_param_entropy(mden7_vap, temp7_in));
+    }
+    double mden7_liq = 1100.;
+    bool found_mden7_liq =
+        iapws95eos.find_root_mdensity(temp7_in, press7_sat, mden7_liq);
+    if (found_mden7_liq) {
+        fprintf(stdout, "    ");
+        fprintf(stdout, "mdensity_liq = %.8e kg / m^3, ", mden7_liq);
+        fprintf(stdout, "enthalpy = %.8e J / kg, ",
+                iapws95eos.get_param_enthalpy(mden7_liq, temp7_in));
+        fprintf(stdout, "entropy = %.8e J / kg / degK\n",
+                iapws95eos.get_param_entropy(mden7_liq, temp7_in));
+    }
+
     return 0;
 }

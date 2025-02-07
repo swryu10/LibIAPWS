@@ -674,3 +674,43 @@ double LibIAPWS95::get_param_speed_sound(double mdensity_in,
 
     return sqrt(v2_s);
 }
+
+bool LibIAPWS95::find_root_mdensity(double temperature_in,
+                                    double pressure_in,
+                                    double &mdensity_out) {
+    double mden_now = mdensity_out;
+    double press_now =
+        get_param_pressure(mden_now, temperature_in);
+
+    int i_iter = 0;
+    bool found_root = false;
+    while (!found_root) {
+        i_iter += 1;
+
+        double mden_prev = mden_now;
+        double press_prev = press_now;
+
+        double dpress_drho_prev =
+            get_param_dpress_drho(mden_prev, temperature_in);
+
+        mden_now = mden_prev +
+            (pressure_in - press_prev) / dpress_drho_prev;
+        press_now =
+            get_param_pressure(mden_now, temperature_in);
+
+        if (fabs(press_now - pressure_in) <
+            0.5 * eps_precision_ * fabs(press_now + pressure_in)) {
+            mdensity_out = mden_now;
+
+            found_root = true;
+        }
+
+        if (i_iter > n_iter_max_) {
+            break;
+        }
+
+        //fprintf(stderr, "  mden_now = %e\n", mden_now);
+    }
+
+    return found_root;
+}
