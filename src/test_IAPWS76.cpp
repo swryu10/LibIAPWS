@@ -4,6 +4,7 @@
 #include"LibIAPWS76.h"
 
 int main(int argc, char *argv[]) {
+    IAPWS::flag_verbose_ = true;
     IAPWS::Lib76 iapws76sig;
     iapws76sig.print_header();
 

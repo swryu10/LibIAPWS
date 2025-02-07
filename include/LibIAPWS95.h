@@ -2,6 +2,7 @@
 #define _LIBIAPWS95_H_
 
 #include<stdio.h>
+#include"BaseIAPWS.h"
 #include"InterCSpline.h"
 
 namespace IAPWS {
@@ -41,9 +42,6 @@ class Lib95 {
     double *coeff_res_C_;
     double *coeff_res_D_;
     double *coeff_res_A_;
-
-    int n_iter_max_;
-    double eps_precision_;
 
     bool have_tab_coex_;
     int nbin_coex_;
@@ -380,9 +378,6 @@ class Lib95 {
         // coefficient res A_{i + 55}
         coeff_res_A_[0] = 0.32;
         coeff_res_A_[1] = 0.32;
-
-        n_iter_max_ = 1000000;
-        eps_precision_ = 1.0e-7;
 
         have_tab_coex_ = false;
 

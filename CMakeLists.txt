@@ -2,12 +2,14 @@ cmake_minimum_required(VERSION 3.31)
 
 project(IAPWS76)
 add_library(IAPWS76 STATIC)
-target_sources(IAPWS76 PUBLIC ${PROJECT_SOURCE_DIR}/src/LibIAPWS76.cpp)
+target_sources(IAPWS76 PUBLIC ${PROJECT_SOURCE_DIR}/src/BaseIAPWS.cpp
+                              ${PROJECT_SOURCE_DIR}/src/LibIAPWS76.cpp)
 target_include_directories(IAPWS76 PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 project(IAPWS95)
 add_library(IAPWS95 STATIC)
-target_sources(IAPWS95 PUBLIC ${PROJECT_SOURCE_DIR}/src/LibIAPWS95.cpp
+target_sources(IAPWS95 PUBLIC ${PROJECT_SOURCE_DIR}/src/BaseIAPWS.cpp
+                              ${PROJECT_SOURCE_DIR}/src/LibIAPWS95.cpp
                               ${PROJECT_SOURCE_DIR}/src/InterCSpline.cpp)
 target_include_directories(IAPWS95 PUBLIC "${PROJECT_SOURCE_DIR}/include")
 

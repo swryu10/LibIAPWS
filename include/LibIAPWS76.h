@@ -2,6 +2,7 @@
 #define _LIBIAPWS76_H_
 
 #include<stdio.h>
+#include"BaseIAPWS.h"
 
 namespace IAPWS {
 

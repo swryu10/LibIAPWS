@@ -827,10 +827,12 @@ void Lib95::make_tab_coex(int nbin_in,
     tab_coex_entropy_liq_ = new double[nbin_coex_ + 1];
 
     bool made_tab = true;
-    fprintf(stderr, "    temperature (degK), ");
-    fprintf(stderr, "    pressure (Pa), ");
-    fprintf(stderr, "    mden_vap (kg / m^3), ");
-    fprintf(stderr, "    mden_liq (kg / m^3)\n");
+    if (flag_verbose_) {
+        fprintf(stderr, "    temperature (degK), ");
+        fprintf(stderr, "    pressure (Pa), ");
+        fprintf(stderr, "    mden_vap (kg / m^3), ");
+        fprintf(stderr, "    mden_liq (kg / m^3)\n");
+    }
     for (int it = 0; it <= nbin_coex_; it++) {
         tab_coex_temperature_[it] =
             temperature_coex_min_ +
@@ -871,14 +873,16 @@ void Lib95::make_tab_coex(int nbin_in,
             get_param_entropy(tab_coex_mden_liq_[it],
                               tab_coex_temperature_[it]);
 
-        fprintf(stderr, "      %.8e",
-                tab_coex_temperature_[it]);
-        fprintf(stderr, "      %.8e",
-                tab_coex_pressure_[it]);
-        fprintf(stderr, "      %.8e",
-                tab_coex_mden_vap_[it]);
-        fprintf(stderr, "      %.8e\n",
-                tab_coex_mden_liq_[it]);
+        if (flag_verbose_) {
+            fprintf(stderr, "      %.8e",
+                    tab_coex_temperature_[it]);
+            fprintf(stderr, "      %.8e",
+                    tab_coex_pressure_[it]);
+            fprintf(stderr, "      %.8e",
+                    tab_coex_mden_vap_[it]);
+            fprintf(stderr, "      %.8e\n",
+                    tab_coex_mden_liq_[it]);
+        }
     }
 
     if (!made_tab) {
@@ -954,7 +958,9 @@ void Lib95::import_tab_coex(char *filename) {
     char line_current[1000];
 
     if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
-        fprintf(stderr, "%s", line_current);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s", line_current);
+        }
     } else {
         return;
     }
@@ -962,7 +968,9 @@ void Lib95::import_tab_coex(char *filename) {
     if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
         char buffer[100];
         sscanf(line_current, "%s %d", buffer, &nbin_coex_);
-        fprintf(stderr, "%s    %d\n", buffer, nbin_coex_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %d\n", buffer, nbin_coex_);
+        }
     } else {
         return;
     }
@@ -970,7 +978,9 @@ void Lib95::import_tab_coex(char *filename) {
     if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
         char buffer[100];
         sscanf(line_current, "%s %lf", buffer, &temperature_coex_min_);
-        fprintf(stderr, "%s    %f\n", buffer, temperature_coex_min_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %f\n", buffer, temperature_coex_min_);
+        }
     } else {
         return;
     }
@@ -978,13 +988,17 @@ void Lib95::import_tab_coex(char *filename) {
     if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
         char buffer[100];
         sscanf(line_current, "%s %lf", buffer, &temperature_coex_max_);
-        fprintf(stderr, "%s    %f\n", buffer, temperature_coex_max_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %f\n", buffer, temperature_coex_max_);
+        }
     } else {
         return;
     }
 
     if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
-        fprintf(stderr, "%s", line_current);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s", line_current);
+        }
     } else {
         return;
     }
@@ -1016,22 +1030,24 @@ void Lib95::import_tab_coex(char *filename) {
                &tab_coex_entropy_vap_[it],
                &tab_coex_entropy_liq_[it]);
 
-        fprintf(stderr, "    %.8e",
-                tab_coex_temperature_[it]);
-        fprintf(stderr, "    %.8e",
-                tab_coex_pressure_[it]);
-        fprintf(stderr, "    %.8e",
-                tab_coex_mden_vap_[it]);
-        fprintf(stderr, "    %.8e",
-                tab_coex_mden_liq_[it]);
-        fprintf(stderr, "    %.8e",
-                tab_coex_enthalpy_vap_[it]);
-        fprintf(stderr, "    %.8e",
-                tab_coex_enthalpy_liq_[it]);
-        fprintf(stderr, "    %.8e",
-                tab_coex_entropy_vap_[it]);
-        fprintf(stderr, "    %.8e\n",
-                tab_coex_entropy_liq_[it]);
+        if (flag_verbose_) {
+            fprintf(stderr, "    %.8e",
+                    tab_coex_temperature_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_pressure_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_mden_vap_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_mden_liq_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_enthalpy_vap_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_enthalpy_liq_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_entropy_vap_[it]);
+            fprintf(stderr, "    %.8e\n",
+                    tab_coex_entropy_liq_[it]);
+        }
     }
 
     fclose(ptr_fin);

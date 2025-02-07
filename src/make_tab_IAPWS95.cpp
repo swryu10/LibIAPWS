@@ -4,6 +4,7 @@
 #include"LibIAPWS95.h"
 
 int main(int argc, char *argv[]) {
+    IAPWS::flag_verbose_ = true;
     IAPWS::Lib95 iapws95eos;
     iapws95eos.print_header();
 
