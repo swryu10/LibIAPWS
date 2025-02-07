@@ -1,6 +1,8 @@
 #ifndef _LIBIAPWS76_H_
 #define _LIBIAPWS76_H_
 
+#include<stdio.h>
+
 namespace IAPWS {
 
 /* implementation of IAPWS76-2014
@@ -31,6 +33,8 @@ class Lib76 {
     }
 
     ~Lib76() {}
+
+    void print_header(FILE *ptr_fout = stdout);
 
     /* returns surface tension
      * between (ordinary) liquid water and vapor

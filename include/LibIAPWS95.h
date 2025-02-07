@@ -1,6 +1,7 @@
 #ifndef _LIBIAPWS95_H_
 #define _LIBIAPWS95_H_
 
+#include<stdio.h>
 #include"InterCSpline.h"
 
 namespace IAPWS {
@@ -433,6 +434,8 @@ class Lib95 {
 
         return;
     }
+
+    void print_header(FILE *ptr_fout = stdout);
 
     /* the ideal-gas part of the free energy
      * and its derivatives */

@@ -5,6 +5,7 @@
 
 int main(int argc, char *argv[]) {
     IAPWS::Lib95 iapws95eos;
+    iapws95eos.print_header();
 
     int nbin_coex = 700;
     double temp_coex_min = 275.;

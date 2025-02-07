@@ -5,11 +5,7 @@
 
 int main(int argc, char *argv[]) {
     IAPWS::Lib76 iapws76sig;
-
-    fprintf(stdout, "\n");
-    fprintf(stdout, "IAPWS76-2014\n");
-    fprintf(stdout, "Surface Tension of Ordinary Water Substance\n");
-    fprintf(stdout, "\n");
+    iapws76sig.print_header();
 
     fprintf(stdout, "  temperatue (degC)    surface tension (J / m^2)\n");
 

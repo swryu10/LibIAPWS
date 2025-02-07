@@ -4,6 +4,16 @@
 
 namespace IAPWS {
 
+void Lib95::print_header(FILE *ptr_fout) {
+    fprintf(ptr_fout, "\n");
+    fprintf(ptr_fout, "IAPWS95-2018\n");
+    fprintf(ptr_fout, "Thermodynamic Properties of Ordinary Water Substance ");
+    fprintf(ptr_fout, "for General and Scientific Use\n");
+    fprintf(ptr_fout, "\n");
+
+    return;
+}
+
 double Lib95::get_param_phi_ide(double mdensity_in,
                                 double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;

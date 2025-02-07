@@ -6,15 +6,10 @@
 
 int main(int argc, char *argv[]) {
     IAPWS::Lib95 iapws95eos;
-
-    fprintf(stdout, "\n");
-    fprintf(stdout, "IAPWS95-2018\n");
-    fprintf(stdout, "Thermodynamic Properties of Ordinary Water Substance ");
-    fprintf(stdout, "for General and Scientific Use\n");
+    iapws95eos.print_header();
 
     double temp0_in = 500.;
     double mden0_in = 838.025;
-    fprintf(stdout, "\n");
     fprintf(stdout, "temperature = %f degK\n", temp0_in);
     fprintf(stdout, "mdensity = %f kg / m^3\n", mden0_in);
 
@@ -44,8 +39,9 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "    d2phi_res_ddelta_dtau = %.8e\n",
         iapws95eos.get_param_d2phi_res_ddelta_dtau(mden0_in, temp0_in));
 
-    double temp1_in = 300.;
     fprintf(stdout, "\n");
+
+    double temp1_in = 300.;
     fprintf(stdout, "temperature = %f degK\n", temp1_in);
 
     double *mden1_in = new double[3];
@@ -65,8 +61,9 @@ int main(int argc, char *argv[]) {
     }
     delete [] mden1_in;
 
-    double temp2_in = 500.;
     fprintf(stdout, "\n");
+
+    double temp2_in = 500.;
     fprintf(stdout, "temperature = %f degK\n", temp2_in);
 
     double *mden2_in = new double[4];
@@ -87,8 +84,9 @@ int main(int argc, char *argv[]) {
     }
     delete [] mden2_in;
 
-    double temp3_in = 647.;
     fprintf(stdout, "\n");
+
+    double temp3_in = 647.;
     fprintf(stdout, "temperature = %f degK\n", temp3_in);
 
     double *mden3_in = new double[1];
@@ -106,8 +104,9 @@ int main(int argc, char *argv[]) {
     }
     delete [] mden3_in;
 
-    double temp4_in = 900.;
     fprintf(stdout, "\n");
+
+    double temp4_in = 900.;
     fprintf(stdout, "temperature = %f degK\n", temp4_in);
 
     double *mden4_in = new double[3];
@@ -127,8 +126,9 @@ int main(int argc, char *argv[]) {
     }
     delete [] mden4_in;
 
-    double temp5_in = 275.;
     fprintf(stdout, "\n");
+
+    double temp5_in = 275.;
     fprintf(stdout, "temperature = %f degK\n", temp5_in);
 
     double press5_sat = 0.698451167 * 1.0e-3 * 1.0e+6;
@@ -156,8 +156,9 @@ int main(int argc, char *argv[]) {
                 iapws95eos.get_param_entropy(mden5_liq, temp5_in));
     }
 
-    double temp6_in = 450.;
     fprintf(stdout, "\n");
+
+    double temp6_in = 450.;
     fprintf(stdout, "temperature = %f degK\n", temp6_in);
 
     double press6_sat = 0.932203564 * 1.0e+6;
@@ -185,8 +186,9 @@ int main(int argc, char *argv[]) {
                 iapws95eos.get_param_entropy(mden6_liq, temp6_in));
     }
 
-    double temp7_in = 625.;
     fprintf(stdout, "\n");
+
+    double temp7_in = 625.;
     fprintf(stdout, "temperature = %f degK\n", temp7_in);
 
     double press7_sat = 0.169082693 * 1.0e+2 * 1.0e+6;
