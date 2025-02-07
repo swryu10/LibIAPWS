@@ -495,17 +495,25 @@ class LibIAPWS95 {
                             double pressure_in,
                             double &mdensity_out);
 
+    /* find a coexisting phase
+     * based on Maxwell criterion */
     bool find_state_coex(double temperature_in,
                          double &pressure_out,
                          double &mden_vap_out,
                          double &mden_liq_out);
 
+    /* populate table
+     * for coexisting phases */
     void make_tab_coex(int nbin_in,
                        double temperature_min,
                        double temperature_max);
 
+    /* print out the table
+     * for coexisting phases */
     void export_tab_coex(char *filename);
 
+    /* import table for coexisting phases
+     * from an external data file */
     void import_tab_coex(char *filename);
 };
 
