@@ -57,6 +57,14 @@ class Lib95 {
     double *tab_coex_entropy_vap_;
     double *tab_coex_entropy_liq_;
 
+    InterCSpline csp_coex_pressure_;
+    InterCSpline csp_coex_mden_vap_;
+    InterCSpline csp_coex_mden_liq_;
+    InterCSpline csp_coex_enthalpy_vap_;
+    InterCSpline csp_coex_enthalpy_liq_;
+    InterCSpline csp_coex_entropy_vap_;
+    InterCSpline csp_coex_entropy_liq_;
+
   public :
 
     Lib95() {
@@ -517,6 +525,11 @@ class Lib95 {
     /* import table for coexisting phases
      * from an external data file */
     void import_tab_coex(char *filename);
+
+    /* initialize cubic spline interpolation
+     * for thermodynamic quantities
+     * at coexisting phases */
+    void set_cspline_coex();
 };
 
 } // end namespace IAPWS

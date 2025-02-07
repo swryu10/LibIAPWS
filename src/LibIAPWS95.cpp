@@ -875,6 +875,8 @@ void Lib95::make_tab_coex(int nbin_in,
         reset_tab_coex();
     }
 
+    set_cspline_coex();
+
     return;
 }
 
@@ -1027,6 +1029,38 @@ void Lib95::import_tab_coex(char *filename) {
     if (!made_tab) {
         reset_tab_coex();
     }
+
+    set_cspline_coex();
+
+    return;
+}
+
+void Lib95::set_cspline_coex() {
+    if (!have_tab_coex_) {
+        return;
+    }
+
+    csp_coex_pressure_.init(nbin_coex_,
+                            tab_coex_temperature_,
+                            tab_coex_pressure_);
+    csp_coex_mden_vap_.init(nbin_coex_,
+                            tab_coex_temperature_,
+                            tab_coex_mden_vap_);
+    csp_coex_mden_liq_.init(nbin_coex_,
+                            tab_coex_temperature_,
+                            tab_coex_mden_liq_);
+    csp_coex_enthalpy_vap_.init(nbin_coex_,
+                                tab_coex_temperature_,
+                                tab_coex_enthalpy_vap_);
+    csp_coex_enthalpy_liq_.init(nbin_coex_,
+                                tab_coex_temperature_,
+                                tab_coex_enthalpy_liq_);
+    csp_coex_entropy_vap_.init(nbin_coex_,
+                               tab_coex_temperature_,
+                               tab_coex_entropy_vap_);
+    csp_coex_entropy_liq_.init(nbin_coex_,
+                               tab_coex_temperature_,
+                               tab_coex_entropy_liq_);
 
     return;
 }
