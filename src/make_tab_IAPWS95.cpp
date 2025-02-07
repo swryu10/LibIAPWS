@@ -4,7 +4,7 @@
 #include"LibIAPWS95.h"
 
 int main(int argc, char *argv[]) {
-    LibIAPWS95 iapws95eos;
+    IAPWS::Lib95 iapws95eos;
 
     int nbin_coex = 700;
     double temp_coex_min = 275.;

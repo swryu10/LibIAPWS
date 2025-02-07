@@ -3,11 +3,13 @@
 
 #include"InterCSpline.h"
 
+namespace IAPWS {
+
 /* implementation of IAPWS95-2018
  * Revised Release on the IAPWS Formulation 1995
  * for the Thermodynamic Properties of Ordinary Water Substance
  * for General and Scientific Use */
-class LibIAPWS95 {
+class Lib95 {
   private :
 
     /* critical temperature
@@ -57,7 +59,7 @@ class LibIAPWS95 {
 
   public :
 
-    LibIAPWS95() {
+    Lib95() {
         temperature_crit_ = 647.096;
         mdensity_crit_ = 322.;
         const_R_spec_ = 461.51805;
@@ -378,7 +380,7 @@ class LibIAPWS95 {
         return;
     }
 
-    ~LibIAPWS95() {
+    ~Lib95() {
         reset_tab_coex();
 
         delete [] coeff_ide_n_;
@@ -516,5 +518,7 @@ class LibIAPWS95 {
      * from an external data file */
     void import_tab_coex(char *filename);
 };
+
+} // end namespace IAPWS
 
 #endif

@@ -2,8 +2,10 @@
 #include<math.h>
 #include"LibIAPWS95.h"
 
-double LibIAPWS95::get_param_phi_ide(double mdensity_in,
-                                     double temperature_in) {
+namespace IAPWS {
+
+double Lib95::get_param_phi_ide(double mdensity_in,
+                                double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -21,8 +23,8 @@ double LibIAPWS95::get_param_phi_ide(double mdensity_in,
     return phi;
 }
 
-double LibIAPWS95::get_param_dphi_ide_ddelta(double mdensity_in,
-                                             double temperature_in) {
+double Lib95::get_param_dphi_ide_ddelta(double mdensity_in,
+                                        double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -31,8 +33,8 @@ double LibIAPWS95::get_param_dphi_ide_ddelta(double mdensity_in,
     return dphi_ddelta;
 }
 
-double LibIAPWS95::get_param_dphi_ide_dtau(double mdensity_in,
-                                           double temperature_in) {
+double Lib95::get_param_dphi_ide_dtau(double mdensity_in,
+                                      double temperature_in) {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -50,8 +52,8 @@ double LibIAPWS95::get_param_dphi_ide_dtau(double mdensity_in,
     return dphi_dtau;
 }
 
-double LibIAPWS95::get_param_d2phi_ide_ddelta_ddelta(double mdensity_in,
-                                                     double temperature_in) {
+double Lib95::get_param_d2phi_ide_ddelta_ddelta(double mdensity_in,
+                                                double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -60,8 +62,8 @@ double LibIAPWS95::get_param_d2phi_ide_ddelta_ddelta(double mdensity_in,
     return d2phi_ddelta_ddelta;
 }
 
-double LibIAPWS95::get_param_d2phi_ide_ddelta_dtau(double mdensity_in,
-                                                   double temperature_in) {
+double Lib95::get_param_d2phi_ide_ddelta_dtau(double mdensity_in,
+                                              double temperature_in) {
     //double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -70,8 +72,8 @@ double LibIAPWS95::get_param_d2phi_ide_ddelta_dtau(double mdensity_in,
     return d2phi_ddelta_dtau;
 }
 
-double LibIAPWS95::get_param_d2phi_ide_dtau_dtau(double mdensity_in,
-                                                 double temperature_in) {
+double Lib95::get_param_d2phi_ide_dtau_dtau(double mdensity_in,
+                                            double temperature_in) {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -89,8 +91,8 @@ double LibIAPWS95::get_param_d2phi_ide_dtau_dtau(double mdensity_in,
     return d2phi_dtau_dtau;
 }
 
-double LibIAPWS95::get_param_phi_res(double mdensity_in,
-                                     double temperature_in) {
+double Lib95::get_param_phi_res(double mdensity_in,
+                                double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -139,8 +141,8 @@ double LibIAPWS95::get_param_phi_res(double mdensity_in,
     return phi;
 }
 
-double LibIAPWS95::get_param_dphi_res_ddelta(double mdensity_in,
-                                             double temperature_in) {
+double Lib95::get_param_dphi_res_ddelta(double mdensity_in,
+                                        double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -206,8 +208,8 @@ double LibIAPWS95::get_param_dphi_res_ddelta(double mdensity_in,
     return dphi_ddelta;
 }
 
-double LibIAPWS95::get_param_dphi_res_dtau(double mdensity_in,
-                                           double temperature_in) {
+double Lib95::get_param_dphi_res_dtau(double mdensity_in,
+                                      double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -267,8 +269,8 @@ double LibIAPWS95::get_param_dphi_res_dtau(double mdensity_in,
     return dphi_dtau;
 }
 
-double LibIAPWS95::get_param_d2phi_res_ddelta_ddelta(double mdensity_in,
-                                                     double temperature_in) {
+double Lib95::get_param_d2phi_res_ddelta_ddelta(double mdensity_in,
+                                                double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -367,8 +369,8 @@ double LibIAPWS95::get_param_d2phi_res_ddelta_ddelta(double mdensity_in,
     return d2phi_ddelta_ddelta;
 }
 
-double LibIAPWS95::get_param_d2phi_res_ddelta_dtau(double mdensity_in,
-                                                   double temperature_in) {
+double Lib95::get_param_d2phi_res_ddelta_dtau(double mdensity_in,
+                                              double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -456,8 +458,8 @@ double LibIAPWS95::get_param_d2phi_res_ddelta_dtau(double mdensity_in,
     return d2phi_ddelta_dtau;
 }
 
-double LibIAPWS95::get_param_d2phi_res_dtau_dtau(double mdensity_in,
-                                                 double temperature_in) {
+double Lib95::get_param_d2phi_res_dtau_dtau(double mdensity_in,
+                                            double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -533,8 +535,8 @@ double LibIAPWS95::get_param_d2phi_res_dtau_dtau(double mdensity_in,
     return d2phi_dtau_dtau;
 }
 
-double LibIAPWS95::get_param_pressure(double mdensity_in,
-                                      double temperature_in) {
+double Lib95::get_param_pressure(double mdensity_in,
+                                 double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -546,8 +548,8 @@ double LibIAPWS95::get_param_pressure(double mdensity_in,
     return press;
 }
 
-double LibIAPWS95::get_param_dpress_drho(double mdensity_in,
-                                         double temperature_in) {
+double Lib95::get_param_dpress_drho(double mdensity_in,
+                                    double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -561,8 +563,8 @@ double LibIAPWS95::get_param_dpress_drho(double mdensity_in,
     return dpress_drho;
 }
 
-double LibIAPWS95::get_param_erg_int(double mdensity_in,
-                                     double temperature_in) {
+double Lib95::get_param_erg_int(double mdensity_in,
+                                double temperature_in) {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -574,8 +576,8 @@ double LibIAPWS95::get_param_erg_int(double mdensity_in,
     return erg_int;
 }
 
-double LibIAPWS95::get_param_entropy(double mdensity_in,
-                                     double temperature_in) {
+double Lib95::get_param_entropy(double mdensity_in,
+                                double temperature_in) {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -591,8 +593,8 @@ double LibIAPWS95::get_param_entropy(double mdensity_in,
     return entropy;
 }
 
-double LibIAPWS95::get_param_enthalpy(double mdensity_in,
-                                      double temperature_in) {
+double Lib95::get_param_enthalpy(double mdensity_in,
+                                 double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -606,8 +608,8 @@ double LibIAPWS95::get_param_enthalpy(double mdensity_in,
     return enthalpy;
 }
 
-double LibIAPWS95::get_param_heat_c_v(double mdensity_in,
-                                      double temperature_in) {
+double Lib95::get_param_heat_c_v(double mdensity_in,
+                                 double temperature_in) {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -619,8 +621,8 @@ double LibIAPWS95::get_param_heat_c_v(double mdensity_in,
     return c_v;
 }
 
-double LibIAPWS95::get_param_heat_c_p(double mdensity_in,
-                                      double temperature_in) {
+double Lib95::get_param_heat_c_p(double mdensity_in,
+                                 double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -647,8 +649,8 @@ double LibIAPWS95::get_param_heat_c_p(double mdensity_in,
     return c_p;
 }
 
-double LibIAPWS95::get_param_speed_sound(double mdensity_in,
-                                         double temperature_in) {
+double Lib95::get_param_speed_sound(double mdensity_in,
+                                    double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -675,9 +677,9 @@ double LibIAPWS95::get_param_speed_sound(double mdensity_in,
     return sqrt(v2_s);
 }
 
-bool LibIAPWS95::find_root_mdensity(double temperature_in,
-                                    double pressure_in,
-                                    double &mdensity_out) {
+bool Lib95::find_root_mdensity(double temperature_in,
+                               double pressure_in,
+                               double &mdensity_out) {
     double mden_now = mdensity_out;
     double press_now =
         get_param_pressure(mden_now, temperature_in);
@@ -719,10 +721,10 @@ bool LibIAPWS95::find_root_mdensity(double temperature_in,
     return found_root;
 }
 
-bool LibIAPWS95::find_state_coex(double temperature_in,
-                                 double &pressure_out,
-                                 double &mden_vap_out,
-                                 double &mden_liq_out) {
+bool Lib95::find_state_coex(double temperature_in,
+                            double &pressure_out,
+                            double &mden_vap_out,
+                            double &mden_liq_out) {
     double press_now = pressure_out;
     double mden_vap = mden_vap_out;
     double mden_liq = mden_liq_out;
@@ -786,9 +788,9 @@ bool LibIAPWS95::find_state_coex(double temperature_in,
     return found_state;
 }
 
-void LibIAPWS95::make_tab_coex(int nbin_in,
-                               double temperature_min,
-                               double temperature_max) {
+void Lib95::make_tab_coex(int nbin_in,
+                          double temperature_min,
+                          double temperature_max) {
     reset_tab_coex();
 
     nbin_coex_ = nbin_in;
@@ -876,7 +878,7 @@ void LibIAPWS95::make_tab_coex(int nbin_in,
     return;
 }
 
-void LibIAPWS95::export_tab_coex(char *filename) {
+void Lib95::export_tab_coex(char *filename) {
     if (!have_tab_coex_) {
         return;
     }
@@ -928,7 +930,7 @@ void LibIAPWS95::export_tab_coex(char *filename) {
     return;
 }
 
-void LibIAPWS95::import_tab_coex(char *filename) {
+void Lib95::import_tab_coex(char *filename) {
     reset_tab_coex();
 
     FILE *ptr_fin;
@@ -1028,3 +1030,5 @@ void LibIAPWS95::import_tab_coex(char *filename) {
 
     return;
 }
+
+} // end namespace IAPWS

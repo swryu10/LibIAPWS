@@ -5,7 +5,7 @@
 #include"LibIAPWS95.h"
 
 int main(int argc, char *argv[]) {
-    LibIAPWS95 iapws95eos;
+    IAPWS::Lib95 iapws95eos;
 
     fprintf(stdout, "\n");
     fprintf(stdout, "IAPWS95-2018\n");

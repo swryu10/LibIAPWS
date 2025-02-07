@@ -1,7 +1,9 @@
 #include<math.h>
 #include"LibIAPWS76.h"
 
-double LibIAPWS76::get_tension_surf(double temperature_in) {
+namespace IAPWS {
+
+double Lib76::get_tension_surf(double temperature_in) {
     double tau = 1. - temperature_in / temperature_crit_;
 
     double sigma =
@@ -9,3 +11,5 @@ double LibIAPWS76::get_tension_surf(double temperature_in) {
 
     return sigma;
 }
+
+} // end namespace IAPWS

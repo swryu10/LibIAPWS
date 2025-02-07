@@ -4,7 +4,7 @@
 #include"LibIAPWS76.h"
 
 int main(int argc, char *argv[]) {
-    LibIAPWS76 iapws76sig;
+    IAPWS::Lib76 iapws76sig;
 
     fprintf(stdout, "\n");
     fprintf(stdout, "IAPWS76-2014\n");

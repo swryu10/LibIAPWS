@@ -1,10 +1,12 @@
 #ifndef _LIBIAPWS76_H_
 #define _LIBIAPWS76_H_
 
+namespace IAPWS {
+
 /* implementation of IAPWS76-2014
  * Revised Release on Surface Tension
  * of Ordinary Water Substance */
-class LibIAPWS76 {
+class Lib76 {
   private :
 
     /* critical temperature
@@ -17,7 +19,7 @@ class LibIAPWS76 {
 
   public :
 
-    LibIAPWS76() {
+    Lib76() {
 
         temperature_crit_ = 647.096;
 
@@ -28,12 +30,14 @@ class LibIAPWS76 {
         return;
     }
 
-    ~LibIAPWS76() {}
+    ~Lib76() {}
 
     /* returns surface tension
      * between (ordinary) liquid water and vapor
      * in J / m^2 */
     double get_tension_surf(double temperature_in);
 };
+
+} // end namespace IAPWS
 
 #endif
