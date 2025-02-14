@@ -6,7 +6,7 @@
 
 namespace IAPWS {
 
-/* implementation of IAPWS76-2014
+/* implementation of IAPWS R1-76 (2014)
  * Revised Release on Surface Tension
  * of Ordinary Water Substance */
 class Lib76 {

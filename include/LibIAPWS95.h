@@ -7,7 +7,7 @@
 
 namespace IAPWS {
 
-/* implementation of IAPWS95-2018
+/* implementation of IAPWS R6-95 (2018)
  * Revised Release on the IAPWS Formulation 1995
  * for the Thermodynamic Properties of Ordinary Water Substance
  * for General and Scientific Use */
