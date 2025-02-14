@@ -5,12 +5,14 @@
 
 int main(int argc, char *argv[]) {
     IAPWS::flag_verbose_ = true;
+    IAPWS::n_iter_max_ = 1000000;
+    IAPWS::eps_precision_ = 5. * 1.0e-8;
     IAPWS::Lib95 iapws95eos;
     iapws95eos.print_header();
 
-    int nbin_coex = 700;
-    double temp_coex_min = 275.;
-    double temp_coex_max = 625.;
+    int nbin_coex = 724;
+    double temp_coex_min = 273.16;
+    double temp_coex_max = 635.16;
 
     char filename_coex[100];
     strcpy(filename_coex, "./tab_coex_IAPWS95.txt");
