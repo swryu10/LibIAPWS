@@ -10,6 +10,8 @@ The following releases are currently implemented. \
 &ensp;&ensp;Revised Release on the IAPWS Formulation 1995 \
 &ensp;&ensp;for the Thermodynamic Properties of Ordinary Water Substance \
 &ensp;&ensp;for General and Scientific Use \
+&ensp;IAPWS R10-06 (2009) - IAPWS::Lib06 class \
+&ensp;&ensp;Revised Release on the Equation of State 2006 for H2O Ice Ih \
 \
 This library can be built with cmake. \
 One can build at a subdirectory with the following commands. \
