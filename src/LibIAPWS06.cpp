@@ -487,4 +487,114 @@ double Lib06::get_param_d2g_dp_dp(double temperature,
     return d2g_dp_dp;
 }
 
+double Lib06::get_param_mdensity(double temperature_in,
+                                 double pressure_in) {
+    double mden =
+        1. / get_param_dg_dp(temperature_in,
+                             pressure_in);
+
+    return mden;
+}
+
+double Lib06::get_param_entropy(double temperature_in,
+                                double pressure_in) {
+    double entropy =
+        -get_param_dg_dT(temperature_in,
+                         pressure_in);
+
+    return entropy;
+}
+
+double Lib06::get_param_heat_c_p(double temperature_in,
+                                 double pressure_in) {
+    double c_p =
+        -temperature_in *
+         get_param_d2g_dT_dT(temperature_in,
+                             pressure_in);
+
+    return c_p;
+}
+
+double Lib06::get_param_enthalpy(double temperature_in,
+                                 double pressure_in) {
+    double enthalpy =
+        get_param_g(temperature_in, pressure_in) -
+        temperature_in * get_param_dg_dT(temperature_in,
+                                         pressure_in);
+
+    return enthalpy;
+}
+
+double Lib06::get_param_erg_int(double temperature_in,
+                                double pressure_in) {
+    double erg_int =
+        get_param_g(temperature_in, pressure_in) -
+        temperature_in * get_param_dg_dT(temperature_in,
+                                         pressure_in) -
+        pressure_in * get_param_dg_dp(temperature_in,
+                                      pressure_in);
+
+    return erg_int;
+}
+
+double Lib06::get_param_f(double temperature_in,
+                          double pressure_in) {
+    double f =
+        get_param_g(temperature_in, pressure_in) -
+        pressure_in * get_param_dg_dp(temperature_in,
+                                      pressure_in);
+
+    return f;
+}
+
+double Lib06::get_param_coeff_alpha(double temperature_in,
+                                    double pressure_in) {
+    double alpha =
+        get_param_d2g_dT_dp(temperature_in,
+                            pressure_in) /
+        get_param_dg_dp(temperature_in,
+                        pressure_in);
+
+    return alpha;
+}
+
+double Lib06::get_param_coeff_beta(double temperature_in,
+                                   double pressure_in) {
+    double beta =
+        -get_param_d2g_dT_dp(temperature_in,
+                             pressure_in) /
+         get_param_d2g_dp_dp(temperature_in,
+                             pressure_in);;
+
+    return beta;
+}
+
+double Lib06::get_param_comp_kappa_T(double temperature_in,
+                                     double pressure_in) {
+    double kappa_T =
+        -get_param_d2g_dp_dp(temperature_in,
+                             pressure_in) /
+         get_param_dg_dp(temperature_in,
+                         pressure_in);
+
+    return kappa_T;
+}
+
+double Lib06::get_param_comp_kappa_s(double temperature_in,
+                                     double pressure_in) {
+    double g_p = get_param_dg_dp(temperature_in,
+                                 pressure_in);
+    double g_TT = get_param_d2g_dT_dT(temperature_in,
+                                      pressure_in);
+    double g_Tp = get_param_d2g_dT_dp(temperature_in,
+                                      pressure_in);
+    double g_pp = get_param_d2g_dp_dp(temperature_in,
+                                      pressure_in);
+
+    double kappa_s =
+        (g_Tp * g_Tp - g_TT * g_pp) / (g_p * g_TT);
+
+    return kappa_s;
+}
+
 } // end namespace IAPWS

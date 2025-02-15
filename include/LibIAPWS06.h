@@ -131,6 +131,8 @@ class Lib06 {
     void get_param_d2q_dT_dT(double temperature, int k,
                              double *d2q_dT_dT_out);
 
+    /* parametrized specific Gibbs free energy
+     * and its derivatives */
     double get_param_g(double temperature,
                        double pressure);
     double get_param_dg_dT(double temperature,
@@ -143,6 +145,47 @@ class Lib06 {
                                double pressure);
     double get_param_d2g_dp_dp(double temperature,
                                double pressure);
+
+    /* mass density in kg / m^3
+     * parametrization for single-phase state */
+    double get_param_mdensity(double temperature_in,
+                              double pressure_in);
+    /* specific entropy in J / kg / degK
+     * parametrization for single-phase state */
+    double get_param_entropy(double temperature_in,
+                             double pressure_in);
+    /* specific isobaric heat capacity in J / kg / degK
+     * parametrization for single-phase state */
+    double get_param_heat_c_p(double temperature_in,
+                              double pressure_in);
+    /* specific enthalpy in J / kg
+     * parametrization for single-phase state */
+    double get_param_enthalpy(double temperature_in,
+                              double pressure_in);
+    /* specific internal energy in J / kg
+     * parametrization for single-phase state */
+    double get_param_erg_int(double temperature_in,
+                             double pressure_in);
+    /* specific Helmholtz free energy in J / kg
+     * parametrization for single-phase state */
+    double get_param_f(double temperature_in,
+                       double pressure_in);
+    /* cubic expansion coefficient in 1 / degK
+     * parametrization for single-phase state */
+    double get_param_coeff_alpha(double temperature_in,
+                                 double pressure_in);
+    /* pressure coefficient in Pa / degK
+     * parametrization for single-phase state */
+    double get_param_coeff_beta(double temperature_in,
+                                double pressure_in);
+    /* isothermal compressibility in 1 / Pa
+     * parametrization for single-phase state */
+    double get_param_comp_kappa_T(double temperature_in,
+                                  double pressure_in);
+    /* isentropic compressibility in 1 / Pa
+     * parametrization for single-phase state */
+    double get_param_comp_kappa_s(double temperature_in,
+                                  double pressure_in);
 };
 
 } // end namespace IAPWS
