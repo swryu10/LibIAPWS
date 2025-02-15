@@ -6,7 +6,7 @@ namespace IAPWS {
 
 void Lib95::print_header(FILE *ptr_fout) {
     fprintf(ptr_fout, "\n");
-    fprintf(ptr_fout, "IAPWS95-2018\n");
+    fprintf(ptr_fout, "IAPWS R6-95 (2018)\n");
     fprintf(ptr_fout, "Thermodynamic Properties of Ordinary Water Substance ");
     fprintf(ptr_fout, "for General and Scientific Use\n");
     fprintf(ptr_fout, "\n");

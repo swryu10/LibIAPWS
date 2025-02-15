@@ -5,7 +5,7 @@ namespace IAPWS {
 
 void Lib76::print_header(FILE *ptr_fout) {
     fprintf(ptr_fout, "\n");
-    fprintf(ptr_fout, "IAPWS76-2014\n");
+    fprintf(ptr_fout, "IAPWS R1-76 (2014)\n");
     fprintf(ptr_fout, "Surface Tension of Ordinary Water Substance\n");
     fprintf(ptr_fout, "\n");
 
