@@ -6,7 +6,7 @@ namespace IAPWS {
 bool flag_verbose_ = false;
 
 int n_iter_max_ = 1000000;
-double eps_precision_ = 1.0e-7;
+double eps_precision_ = 5. * 1.0e-8;
 
 void get_complex_product(double *z_1in,
                          double *z_2in,

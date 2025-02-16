@@ -10,9 +10,9 @@ int main(int argc, char *argv[]) {
     IAPWS::Lib95 iapws95eos;
     iapws95eos.print_header();
 
-    int nbin_coex = 724;
+    int nbin_coex = 740;
     double temp_coex_min = 273.16;
-    double temp_coex_max = 635.16;
+    double temp_coex_max = 643.16;
 
     char filename_coex[100];
     strcpy(filename_coex, "./tab_coex_IAPWS95.txt");
