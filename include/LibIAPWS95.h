@@ -17,6 +17,9 @@ class Lib95 {
     /* critical temperature
      * in degK */
     double temperature_crit_;
+    /* temperatur of the triple point
+     * in degK */
+    double temperature_trip_;
     /* critical (mass) density
      * in kg / m^3 */
     double mdensity_crit_;
@@ -68,6 +71,7 @@ class Lib95 {
 
     Lib95() {
         temperature_crit_ = 647.096;
+        temperature_trip_ = 273.16;
         mdensity_crit_ = 322.;
         const_R_spec_ = 461.51805;
 
@@ -521,7 +525,6 @@ class Lib95 {
     /* populate table
      * for coexisting phases */
     void make_tab_coex(int nbin_in,
-                       double temperature_min,
                        double temperature_max);
 
     /* print out the table

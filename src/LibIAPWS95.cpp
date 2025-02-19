@@ -822,18 +822,16 @@ bool Lib95::find_state_coex(double temperature_in,
 }
 
 void Lib95::make_tab_coex(int nbin_in,
-                          double temperature_min,
                           double temperature_max) {
     reset_tab_coex();
 
-    nbin_coex_ = nbin_in;
-    if (temperature_min < temperature_max) {
-        temperature_coex_min_ = temperature_min;
-        temperature_coex_max_ = temperature_max;
-    } else {
-        temperature_coex_min_ = temperature_max;
-        temperature_coex_max_ = temperature_min;
+    if (temperature_max < temperature_trip_) {
+        return;
     }
+
+    nbin_coex_ = nbin_in;
+    temperature_coex_min_ = temperature_trip_;
+    temperature_coex_max_ = temperature_max;
 
     double delta_temp =
         (temperature_coex_max_ - temperature_coex_min_) /
