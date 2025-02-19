@@ -597,4 +597,361 @@ double Lib06::get_param_comp_kappa_s(double temperature_in,
     return kappa_s;
 }
 
+bool Lib06::find_state_coex(Lib95 *ptr_lib95eos,
+                            double temperature_in,
+                            double &pressure_out,
+                            double &mden_vap_out,
+                            double &mden_ice_out) {
+    double press_now = pressure_out;
+    double mden_vap = mden_vap_out;
+    double mden_ice = mden_ice_out;
+
+    int i_iter = 0;
+    bool found_state = false;
+    while (!found_state) {
+        i_iter += 1;
+
+        double press_prev = press_now;
+
+        bool found_root_vap =
+            ptr_lib95eos->find_root_mdensity(temperature_in,
+                                             press_prev,
+                                             mden_vap);
+
+        if (!found_root_vap) {
+            break;
+        }
+
+        mden_ice =
+            get_param_mdensity(temperature_in,
+                               press_prev);
+
+        double g_vap =
+            ptr_lib95eos->get_param_g(mden_vap,
+                                      temperature_in);
+        double g_ice =
+            get_param_g(temperature_in, press_prev);
+
+        if (fabs(g_vap - g_ice) <
+            0.5 * eps_precision_ * fabs(g_vap + g_ice)) {
+            pressure_out = press_prev;
+            mden_vap_out = mden_vap;
+            mden_ice_out = mden_ice;
+
+            found_state = true;
+        }
+
+        if (i_iter > n_iter_max_) {
+            break;
+        }
+
+        press_now = press_prev +
+            0.1 * (g_ice - g_vap) * mden_vap;
+    }
+
+    /*
+    fprintf(stderr, "      temperature = %.8e degK, ", temperature_in);
+    fprintf(stderr, "      pressure = %.8e Pa, ", pressure_out);
+    fprintf(stderr, "      mden_vap = %.8e kg / m^3, ", mden_vap_out);
+    fprintf(stderr, "      mden_ice = %.8e kg / m^3\n", mden_ice_out);
+    */
+
+    return found_state;
+}
+
+void Lib06::make_tab_coex(Lib95 *ptr_lib95eos,
+                          int nbin_in,
+                          double temperature_min) {
+    reset_tab_coex();
+
+    if (temperature_min > temperature_trip_) {
+        return;
+    }
+
+    nbin_coex_ = nbin_in;
+    temperature_coex_min_ = temperature_min;
+    temperature_coex_max_ = temperature_trip_;
+
+    double delta_temp =
+        (temperature_coex_max_ - temperature_coex_min_) /
+        static_cast<double>(nbin_coex_);
+
+    have_tab_coex_ = true;
+    tab_coex_temperature_ = new double[nbin_coex_ + 1];
+    tab_coex_pressure_ = new double[nbin_coex_ + 1];
+    tab_coex_mden_vap_ = new double[nbin_coex_ + 1];
+    tab_coex_mden_ice_ = new double[nbin_coex_ + 1];
+    tab_coex_enthalpy_vap_ = new double[nbin_coex_ + 1];
+    tab_coex_enthalpy_ice_ = new double[nbin_coex_ + 1];
+    tab_coex_entropy_vap_ = new double[nbin_coex_ + 1];
+    tab_coex_entropy_ice_ = new double[nbin_coex_ + 1];
+
+    bool made_tab = true;
+    if (flag_verbose_) {
+        fprintf(stderr, "    temperature (degK), ");
+        fprintf(stderr, "    pressure (Pa), ");
+        fprintf(stderr, "    mden_vap (kg / m^3), ");
+        fprintf(stderr, "    mden_ice (kg / m^3)\n");
+    }
+    for (int it = nbin_coex_; it >= 0; it--) {
+        tab_coex_temperature_[it] =
+            temperature_coex_min_ +
+            delta_temp * static_cast<double>(it);
+
+        if (it == nbin_coex_) {
+            tab_coex_pressure_[it] = pressure_trip_;
+            tab_coex_mden_vap_[it] = 4.85457548e-03;
+            tab_coex_mden_ice_[it] =
+                get_param_mdensity(tab_coex_pressure_[it],
+                                   tab_coex_pressure_[it]);
+        } else {
+            tab_coex_pressure_[it] = tab_coex_pressure_[it + 1];
+            tab_coex_mden_vap_[it] = tab_coex_mden_vap_[it + 1];
+            tab_coex_mden_ice_[it] = tab_coex_mden_ice_[it + 1];
+        }
+
+        bool found_state =
+            find_state_coex(ptr_lib95eos,
+                            tab_coex_temperature_[it],
+                            tab_coex_pressure_[it],
+                            tab_coex_mden_vap_[it],
+                            tab_coex_mden_ice_[it]);
+
+        if (!found_state) {
+            made_tab = false;
+            break;
+        }
+
+        tab_coex_enthalpy_vap_[it] =
+            ptr_lib95eos->get_param_enthalpy(tab_coex_mden_vap_[it],
+                                             tab_coex_temperature_[it]);
+        tab_coex_enthalpy_ice_[it] =
+            get_param_enthalpy(tab_coex_temperature_[it],
+                               tab_coex_pressure_[it]);
+
+        tab_coex_entropy_vap_[it] =
+            ptr_lib95eos->get_param_entropy(tab_coex_mden_vap_[it],
+                                            tab_coex_temperature_[it]);
+        tab_coex_entropy_ice_[it] =
+            get_param_entropy(tab_coex_temperature_[it],
+                              tab_coex_pressure_[it]);
+
+        if (flag_verbose_) {
+            fprintf(stderr, "      %.8e",
+                    tab_coex_temperature_[it]);
+            fprintf(stderr, "      %.8e",
+                    tab_coex_pressure_[it]);
+            fprintf(stderr, "      %.8e",
+                    tab_coex_mden_vap_[it]);
+            fprintf(stderr, "      %.8e\n",
+                    tab_coex_mden_ice_[it]);
+        }
+    }
+
+    if (!made_tab) {
+        reset_tab_coex();
+    }
+
+    set_cspline_coex();
+
+    return;
+}
+
+void Lib06::export_tab_coex(char *filename) {
+    if (!have_tab_coex_) {
+        return;
+    }
+
+    FILE *ptr_fout;
+    ptr_fout = fopen(filename, "w");
+    if (ptr_fout == NULL) {
+        return;
+    }
+
+    fprintf(ptr_fout, "# table for coexisting phases in IAPWS06\n");
+    fprintf(ptr_fout, "nbin_coex    %d\n", nbin_coex_);
+    fprintf(ptr_fout, "temperature_coex_min    %e\n",
+            temperature_coex_min_);
+    fprintf(ptr_fout, "temperature_coex_max    %e\n",
+            temperature_coex_max_);
+    fprintf(ptr_fout, "# temperature (degK)");
+    fprintf(ptr_fout, "    pressure (Pa)");
+    fprintf(ptr_fout, "    mden_vap (kg / m^3)");
+    fprintf(ptr_fout, "    mden_ice (kg / m^3)");
+    fprintf(ptr_fout, "    enthalpy_vap (J / kg)");
+    fprintf(ptr_fout, "    enthalpy_ice (J / kg)");
+    fprintf(ptr_fout, "    entropy_vap (J / kg / degK)");
+    fprintf(ptr_fout, "    entropy_ice (J / kg / degK)");
+    fprintf(ptr_fout, "\n");
+
+
+    for (int it = 0; it <= nbin_coex_; it++) {
+        fprintf(ptr_fout, "    %.8e",
+                tab_coex_temperature_[it]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_coex_pressure_[it]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_coex_mden_vap_[it]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_coex_mden_ice_[it]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_coex_enthalpy_vap_[it]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_coex_enthalpy_ice_[it]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_coex_entropy_vap_[it]);
+        fprintf(ptr_fout, "    %.8e\n",
+                tab_coex_entropy_ice_[it]);
+    }
+
+    fclose(ptr_fout);
+
+    return;
+}
+
+void Lib06::import_tab_coex(char *filename) {
+    reset_tab_coex();
+
+    FILE *ptr_fin;
+    ptr_fin = fopen(filename, "r");
+    if (ptr_fin == NULL) {
+        return;
+    }
+
+    char line_current[1000];
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        if (flag_verbose_) {
+            fprintf(stderr, "%s", line_current);
+        }
+    } else {
+        return;
+    }
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        char buffer[100];
+        sscanf(line_current, "%s %d", buffer, &nbin_coex_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %d\n", buffer, nbin_coex_);
+        }
+    } else {
+        return;
+    }
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        char buffer[100];
+        sscanf(line_current, "%s %lf", buffer, &temperature_coex_min_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %f\n", buffer, temperature_coex_min_);
+        }
+    } else {
+        return;
+    }
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        char buffer[100];
+        sscanf(line_current, "%s %lf", buffer, &temperature_coex_max_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %f\n", buffer, temperature_coex_max_);
+        }
+    } else {
+        return;
+    }
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        if (flag_verbose_) {
+            fprintf(stderr, "%s", line_current);
+        }
+    } else {
+        return;
+    }
+
+    have_tab_coex_ = true;
+    tab_coex_temperature_ = new double[nbin_coex_ + 1];
+    tab_coex_pressure_ = new double[nbin_coex_ + 1];
+    tab_coex_mden_vap_ = new double[nbin_coex_ + 1];
+    tab_coex_mden_ice_ = new double[nbin_coex_ + 1];
+    tab_coex_enthalpy_vap_ = new double[nbin_coex_ + 1];
+    tab_coex_enthalpy_ice_ = new double[nbin_coex_ + 1];
+    tab_coex_entropy_vap_ = new double[nbin_coex_ + 1];
+    tab_coex_entropy_ice_ = new double[nbin_coex_ + 1];
+
+    bool made_tab = true;
+    for (int it = 0; it <= nbin_coex_; it++) {
+        if (fgets(line_current, sizeof(line_current), ptr_fin) == NULL) {
+            made_tab = false;
+            break;
+        }
+
+        sscanf(line_current, "%lf %lf %lf %lf %lf %lf %lf %lf",
+               &tab_coex_temperature_[it],
+               &tab_coex_pressure_[it],
+               &tab_coex_mden_vap_[it],
+               &tab_coex_mden_ice_[it],
+               &tab_coex_enthalpy_vap_[it],
+               &tab_coex_enthalpy_ice_[it],
+               &tab_coex_entropy_vap_[it],
+               &tab_coex_entropy_ice_[it]);
+
+        if (flag_verbose_) {
+            fprintf(stderr, "    %.8e",
+                    tab_coex_temperature_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_pressure_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_mden_vap_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_mden_ice_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_enthalpy_vap_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_enthalpy_ice_[it]);
+            fprintf(stderr, "    %.8e",
+                    tab_coex_entropy_vap_[it]);
+            fprintf(stderr, "    %.8e\n",
+                    tab_coex_entropy_ice_[it]);
+        }
+    }
+
+    fclose(ptr_fin);
+
+    if (!made_tab) {
+        reset_tab_coex();
+    }
+
+    set_cspline_coex();
+
+    return;
+}
+
+void Lib06::set_cspline_coex() {
+    if (!have_tab_coex_) {
+        return;
+    }
+
+    csp_coex_pressure_.init(nbin_coex_,
+                            tab_coex_temperature_,
+                            tab_coex_pressure_);
+    csp_coex_mden_vap_.init(nbin_coex_,
+                            tab_coex_temperature_,
+                            tab_coex_mden_vap_);
+    csp_coex_mden_ice_.init(nbin_coex_,
+                            tab_coex_temperature_,
+                            tab_coex_mden_ice_);
+    csp_coex_enthalpy_vap_.init(nbin_coex_,
+                                tab_coex_temperature_,
+                                tab_coex_enthalpy_vap_);
+    csp_coex_enthalpy_ice_.init(nbin_coex_,
+                                tab_coex_temperature_,
+                                tab_coex_enthalpy_ice_);
+    csp_coex_entropy_vap_.init(nbin_coex_,
+                               tab_coex_temperature_,
+                               tab_coex_entropy_vap_);
+    csp_coex_entropy_ice_.init(nbin_coex_,
+                               tab_coex_temperature_,
+                               tab_coex_entropy_ice_);
+
+    return;
+}
+
 } // end namespace IAPWS

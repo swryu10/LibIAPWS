@@ -2,7 +2,8 @@
 #define _LIBIAPWS06_H_
 
 #include<stdio.h>
-#include"BaseIAPWS.h"
+#include"LibIAPWS95.h"
+#include"InterCSpline.h"
 
 namespace IAPWS {
 
@@ -31,6 +32,27 @@ class Lib06 {
     double **coeff_t_;
 
     bool flag_s_absolute_;
+
+    bool have_tab_coex_;
+    int nbin_coex_;
+    double temperature_coex_min_;
+    double temperature_coex_max_;
+    double *tab_coex_temperature_;
+    double *tab_coex_pressure_;
+    double *tab_coex_mden_vap_;
+    double *tab_coex_mden_ice_;
+    double *tab_coex_enthalpy_vap_;
+    double *tab_coex_enthalpy_ice_;
+    double *tab_coex_entropy_vap_;
+    double *tab_coex_entropy_ice_;
+
+    InterCSpline csp_coex_pressure_;
+    InterCSpline csp_coex_mden_vap_;
+    InterCSpline csp_coex_mden_ice_;
+    InterCSpline csp_coex_enthalpy_vap_;
+    InterCSpline csp_coex_enthalpy_ice_;
+    InterCSpline csp_coex_entropy_vap_;
+    InterCSpline csp_coex_entropy_ice_;
 
   public :
 
@@ -86,6 +108,8 @@ class Lib06 {
 
         flag_s_absolute_ = false;
 
+        have_tab_coex_ = false;
+
         return;
     }
 
@@ -103,6 +127,27 @@ class Lib06 {
             delete [] coeff_t_[k];
         }
         delete [] coeff_t_;
+
+        return;
+    }
+
+    void reset_tab_coex() {
+        if (!have_tab_coex_) {
+            return;
+        }
+
+        nbin_coex_ = 0;
+
+        delete [] tab_coex_temperature_;
+        delete [] tab_coex_pressure_;
+        delete [] tab_coex_mden_vap_;
+        delete [] tab_coex_mden_ice_;
+        delete [] tab_coex_enthalpy_vap_;
+        delete [] tab_coex_enthalpy_ice_;
+        delete [] tab_coex_entropy_vap_;
+        delete [] tab_coex_entropy_ice_;
+
+        have_tab_coex_ = false;
 
         return;
     }
@@ -186,6 +231,79 @@ class Lib06 {
      * parametrization for single-phase state */
     double get_param_comp_kappa_s(double temperature_in,
                                   double pressure_in);
+
+    /* find a coexisting phase
+     * based on continuity of Gibbs free energy */
+    bool find_state_coex(Lib95 *ptr_lib95eos,
+                         double temperature_in,
+                         double &pressure_out,
+                         double &mden_vap_out,
+                         double &mden_ice_out);
+
+    /* populate table
+     * for coexisting phases */
+    void make_tab_coex(Lib95 *ptr_lib95eos,
+                       int nbin_in,
+                       double temperature_min);
+
+    /* print out the table
+     * for coexisting phases */
+    void export_tab_coex(char *filename);
+
+    /* import table for coexisting phases
+     * from an external data file */
+    void import_tab_coex(char *filename);
+
+    /* initialize cubic spline interpolation
+     * for thermodynamic quantities
+     * at coexisting phases */
+    void set_cspline_coex();
+
+    /* pressure at coexisting phase
+     * in Pa (N / m^2) */
+    double get_coex_pressure(double temperature_in) {
+        return csp_coex_pressure_.get_func(temperature_in);
+    }
+    /* mass density of water vapor at coexisting phase
+     * in kg / m^3 */
+    double get_coex_mden_vap(double temperature_in) {
+        return csp_coex_mden_vap_.get_func(temperature_in);
+    }
+    /* mass density of H2O ice at coexisting phase
+     * in kg / m^3 */
+    double get_coex_mden_ice(double temperature_in) {
+        return csp_coex_mden_ice_.get_func(temperature_in);
+    }
+    /* specific enthalpy of water vapor at coexisting phase
+     * in J / kg */
+    double get_coex_enthalpy_vap(double temperature_in) {
+        return csp_coex_enthalpy_vap_.get_func(temperature_in);
+    }
+    /* specific enthalpy of H2O ice at coexisting phase
+     * in J / kg */
+    double get_coex_enthalpy_ice(double temperature_in) {
+        return csp_coex_enthalpy_ice_.get_func(temperature_in);
+    }
+    /* specific entropy of water vapor at coexisting phase
+     * in J / kg / degK */
+    double get_coex_entropy_vap(double temperature_in) {
+        return csp_coex_entropy_vap_.get_func(temperature_in);
+    }
+    /* specific entropy of H2O ice at coexisting phase
+     * in J / kg / degK */
+    double get_coex_entropy_ice(double temperature_in) {
+        return csp_coex_entropy_ice_.get_func(temperature_in);
+    }
+    /* specific latent heat
+     * in J / kg */
+    double get_coex_heat_latent(double temperature_in) {
+        double h_latent =
+            temperature_in *
+            (csp_coex_entropy_vap_.get_func(temperature_in) -
+             csp_coex_entropy_ice_.get_func(temperature_in));
+
+        return h_latent;
+    }
 };
 
 } // end namespace IAPWS

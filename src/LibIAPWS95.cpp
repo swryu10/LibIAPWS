@@ -545,6 +545,29 @@ double Lib95::get_param_d2phi_res_dtau_dtau(double mdensity_in,
     return d2phi_dtau_dtau;
 }
 
+double Lib95::get_param_f(double mdensity_in,
+                          double temperature_in) {
+    double f =
+        const_R_spec_ * temperature_in *
+        (get_param_phi_ide(mdensity_in,
+                           temperature_in) +
+         get_param_phi_res(mdensity_in,
+                           temperature_in));
+
+    return f;
+}
+
+double Lib95::get_param_g(double mdensity_in,
+                          double temperature_in) {
+    double g =
+        get_param_f(mdensity_in,
+                    temperature_in) +
+        get_param_pressure(mdensity_in,
+                           temperature_in) / mdensity_in;
+
+    return g;
+}
+
 double Lib95::get_param_pressure(double mdensity_in,
                                  double temperature_in) {
     double delta = mdensity_in / mdensity_crit_;

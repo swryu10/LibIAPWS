@@ -462,6 +462,14 @@ class Lib95 {
     double get_param_d2phi_res_dtau_dtau(double mdensity_in,
                                          double temperature_in);
 
+    /* specific Helmholtz free energy in J / kg
+     * parametrization for single-phase state */
+    double get_param_f(double mdensity_in,
+                       double temperature_in);
+    /* specific Gibbs free energy in J / kg
+     * parametrization for single-phase state */
+    double get_param_g(double mdensity_in,
+                       double temperature_in);
     /* pressure in Pa (N / m^2)
      * parametrization for single-phase state */
     double get_param_pressure(double mdensity_in,
