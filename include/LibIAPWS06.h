@@ -114,6 +114,8 @@ class Lib06 {
     }
 
     ~Lib06() {
+        reset_tab_coex();
+
         delete [] coeff_g0_;
 
         delete [] coeff_r1_;
