@@ -23,6 +23,9 @@ class Lib95 {
     /* critical (mass) density
      * in kg / m^3 */
     double mdensity_crit_;
+    /* critical pressure
+     * in Pa (N / m^2) */
+    double pressure_crit_;
     /* specific gas constant
      * in J / kg / degK */
     double const_R_spec_;
@@ -73,6 +76,7 @@ class Lib95 {
         temperature_crit_ = 647.096;
         temperature_trip_ = 273.16;
         mdensity_crit_ = 322.;
+        pressure_crit_ = 22.064 * 1.0e+6;
         const_R_spec_ = 461.51805;
 
         coeff_ide_n_ = new double[9];

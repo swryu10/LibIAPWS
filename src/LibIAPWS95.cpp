@@ -847,6 +847,8 @@ void Lib95::make_tab_coex(int nbin_in,
     tab_coex_entropy_vap_ = new double[nbin_coex_ + 1];
     tab_coex_entropy_liq_ = new double[nbin_coex_ + 1];
 
+    double *frac_temp = new double[2];
+
     bool made_tab = true;
     if (flag_verbose_) {
         fprintf(stderr, "    temperature (degK), ");
@@ -864,9 +866,32 @@ void Lib95::make_tab_coex(int nbin_in,
             tab_coex_mden_vap_[it] = 0.005;
             tab_coex_mden_liq_[it] = 1100.;
         } else {
-            tab_coex_pressure_[it] = tab_coex_pressure_[it - 1];
-            tab_coex_mden_vap_[it] = tab_coex_mden_vap_[it - 1];
-            tab_coex_mden_liq_[it] = tab_coex_mden_liq_[it - 1];
+            if (tab_coex_temperature_[it] > 640.) {
+                frac_temp[0] =
+                    (temperature_crit_ -
+                     tab_coex_temperature_[it]) /
+                    (temperature_crit_ -
+                     tab_coex_temperature_[it - 1]);
+                frac_temp[1] =
+                    (tab_coex_temperature_[it] -
+                     tab_coex_temperature_[it - 1]) /
+                    (temperature_crit_ -
+                     tab_coex_temperature_[it - 1]);
+
+                tab_coex_pressure_[it] =
+                    tab_coex_pressure_[it - 1] * frac_temp[0] +
+                    pressure_crit_ * frac_temp[1];
+                tab_coex_mden_vap_[it] =
+                    tab_coex_mden_vap_[it - 1] * frac_temp[0] +
+                    mdensity_crit_ * frac_temp[1];
+                tab_coex_mden_liq_[it] =
+                    tab_coex_mden_liq_[it - 1] * frac_temp[0] +
+                    mdensity_crit_ * frac_temp[1];
+            } else {
+                tab_coex_pressure_[it] = tab_coex_pressure_[it - 1];
+                tab_coex_mden_vap_[it] = tab_coex_mden_vap_[it - 1];
+                tab_coex_mden_liq_[it] = tab_coex_mden_liq_[it - 1];
+            }
         }
 
         bool found_state =
@@ -905,6 +930,8 @@ void Lib95::make_tab_coex(int nbin_in,
                     tab_coex_mden_liq_[it]);
         }
     }
+
+    delete [] frac_temp;
 
     if (!made_tab) {
         reset_tab_coex();
