@@ -54,6 +54,27 @@ class Lib06 {
     InterCSpline csp_coex_entropy_vap_;
     InterCSpline csp_coex_entropy_ice_;
 
+    bool have_tab_melt_;
+    int nbin_melt_;
+    double pressure_melt_min_;
+    double pressure_melt_max_;
+    double *tab_melt_pressure_;
+    double *tab_melt_temperature_;
+    double *tab_melt_mden_liq_;
+    double *tab_melt_mden_ice_;
+    double *tab_melt_enthalpy_liq_;
+    double *tab_melt_enthalpy_ice_;
+    double *tab_melt_entropy_liq_;
+    double *tab_melt_entropy_ice_;
+
+    InterCSpline csp_melt_temperature_;
+    InterCSpline csp_melt_mden_liq_;
+    InterCSpline csp_melt_mden_ice_;
+    InterCSpline csp_melt_enthalpy_liq_;
+    InterCSpline csp_melt_enthalpy_ice_;
+    InterCSpline csp_melt_entropy_liq_;
+    InterCSpline csp_melt_entropy_ice_;
+
   public :
 
     Lib06() {
@@ -109,12 +130,14 @@ class Lib06 {
         flag_s_absolute_ = false;
 
         have_tab_coex_ = false;
+        have_tab_melt_ = false;
 
         return;
     }
 
     ~Lib06() {
         reset_tab_coex();
+        reset_tab_melt();
 
         delete [] coeff_g0_;
 
@@ -150,6 +173,27 @@ class Lib06 {
         delete [] tab_coex_entropy_ice_;
 
         have_tab_coex_ = false;
+
+        return;
+    }
+
+    void reset_tab_melt() {
+        if (!have_tab_melt_) {
+            return;
+        }
+
+        nbin_melt_ = 0;
+
+        delete [] tab_melt_pressure_;
+        delete [] tab_melt_temperature_;
+        delete [] tab_melt_mden_liq_;
+        delete [] tab_melt_mden_ice_;
+        delete [] tab_melt_enthalpy_liq_;
+        delete [] tab_melt_enthalpy_ice_;
+        delete [] tab_melt_entropy_liq_;
+        delete [] tab_melt_entropy_ice_;
+
+        have_tab_melt_ = false;
 
         return;
     }
@@ -235,6 +279,7 @@ class Lib06 {
                                   double pressure_in);
 
     /* find a coexisting phase
+     * of water vapor and ice
      * based on continuity of Gibbs free energy */
     bool find_state_coex(Lib95 *ptr_lib95eos,
                          double temperature_in,
@@ -297,12 +342,88 @@ class Lib06 {
         return csp_coex_entropy_ice_.get_func(temperature_in);
     }
     /* specific latent heat
+     * between water vapor and ice
      * in J / kg */
     double get_coex_heat_latent(double temperature_in) {
         double h_latent =
             temperature_in *
             (csp_coex_entropy_vap_.get_func(temperature_in) -
              csp_coex_entropy_ice_.get_func(temperature_in));
+
+        return h_latent;
+    }
+
+    /* find a melting phase
+     * of water liquid and ice
+     * based on continuity of Gibbs free energy */
+    bool find_state_melt(Lib95 *ptr_lib95eos,
+                         double pressure_in,
+                         double &temperature_out,
+                         double &mden_liq_out,
+                         double &mden_ice_out);
+
+    /* populate table
+     * for melting phases */
+    void make_tab_melt(Lib95 *ptr_lib95eos,
+                       int nbin_in,
+                       double pressure_max);
+
+    /* print out the table
+     * for melting phases */
+    void export_tab_melt(char *filename);
+
+    /* import table for melting phases
+     * from an external data file */
+    void import_tab_melt(char *filename);
+
+    /* initialize cubic spline interpolation
+     * for thermodynamic quantities
+     * at melting phases */
+    void set_cspline_melt();
+
+    /* temperature at melting phase
+     * in degK */
+    double get_melt_temperature(double pressure_in) {
+        return csp_melt_temperature_.get_func(pressure_in);
+    }
+    /* mass density of water liquid at melting phase
+     * in kg / m^3 */
+    double get_melt_mden_liq(double pressure_in) {
+        return csp_melt_mden_liq_.get_func(pressure_in);
+    }
+    /* mass density of H2O ice at melting phase
+     * in kg / m^3 */
+    double get_melt_mden_ice(double pressure_in) {
+        return csp_melt_mden_ice_.get_func(pressure_in);
+    }
+    /* specific enthalpy of water liquid at melting phase
+     * in J / kg */
+    double get_melt_enthalpy_liq(double pressure_in) {
+        return csp_melt_enthalpy_liq_.get_func(pressure_in);
+    }
+    /* specific enthalpy of H2O ice at melting phase
+     * in J / kg */
+    double get_melt_enthalpy_ice(double pressure_in) {
+        return csp_melt_enthalpy_ice_.get_func(pressure_in);
+    }
+    /* specific entropy of water liquid at melting phase
+     * in J / kg / degK */
+    double get_melt_entropy_liq(double pressure_in) {
+        return csp_melt_entropy_liq_.get_func(pressure_in);
+    }
+    /* specific entropy of H2O ice at melting phase
+     * in J / kg / degK */
+    double get_melt_entropy_ice(double pressure_in) {
+        return csp_melt_entropy_ice_.get_func(pressure_in);
+    }
+    /* specific latent heat
+     * between water liquid and ice
+     * in J / kg */
+    double get_melt_heat_latent(double pressure_in) {
+        double h_latent =
+            get_melt_temperature(pressure_in) *
+            (csp_melt_entropy_liq_.get_func(pressure_in) -
+             csp_melt_entropy_ice_.get_func(pressure_in));
 
         return h_latent;
     }

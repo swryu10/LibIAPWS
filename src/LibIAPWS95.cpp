@@ -969,7 +969,6 @@ void Lib95::export_tab_coex(char *filename) {
     fprintf(ptr_fout, "    entropy_liq (J / kg / degK)");
     fprintf(ptr_fout, "\n");
 
-
     for (int it = 0; it <= nbin_coex_; it++) {
         fprintf(ptr_fout, "    %.8e",
                 tab_coex_temperature_[it]);

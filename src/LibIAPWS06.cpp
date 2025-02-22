@@ -699,10 +699,10 @@ void Lib06::make_tab_coex(Lib95 *ptr_lib95eos,
             delta_temp * static_cast<double>(it);
 
         if (it == nbin_coex_) {
-            tab_coex_pressure_[it] = pressure_trip_;
+            tab_coex_pressure_[it] = pressure_trip_num_;
             tab_coex_mden_vap_[it] = 4.85457548e-03;
             tab_coex_mden_ice_[it] =
-                get_param_mdensity(tab_coex_pressure_[it],
+                get_param_mdensity(tab_coex_temperature_[it],
                                    tab_coex_pressure_[it]);
         } else {
             tab_coex_pressure_[it] = tab_coex_pressure_[it + 1];
@@ -783,7 +783,6 @@ void Lib06::export_tab_coex(char *filename) {
     fprintf(ptr_fout, "    entropy_vap (J / kg / degK)");
     fprintf(ptr_fout, "    entropy_ice (J / kg / degK)");
     fprintf(ptr_fout, "\n");
-
 
     for (int it = 0; it <= nbin_coex_; it++) {
         fprintf(ptr_fout, "    %.8e",
@@ -950,6 +949,363 @@ void Lib06::set_cspline_coex() {
     csp_coex_entropy_ice_.init(nbin_coex_,
                                tab_coex_temperature_,
                                tab_coex_entropy_ice_);
+
+    return;
+}
+
+bool Lib06::find_state_melt(Lib95 *ptr_lib95eos,
+                            double pressure_in,
+                            double &temperature_out,
+                            double &mden_liq_out,
+                            double &mden_ice_out) {
+    double temp_now = temperature_out;
+    double mden_liq = mden_liq_out;
+    double mden_ice = mden_ice_out;
+
+    int i_iter = 0;
+    bool found_state = false;
+    while (!found_state) {
+        i_iter += 1;
+
+        double temp_prev = temp_now;
+
+        bool found_root_vap =
+            ptr_lib95eos->find_root_mdensity(temp_prev,
+                                             pressure_in,
+                                             mden_liq);
+
+        if (!found_root_vap) {
+            break;
+        }
+
+        mden_ice =
+            get_param_mdensity(temp_prev,
+                               pressure_in);
+
+        double g_liq =
+            ptr_lib95eos->get_param_g(mden_liq,
+                                      temp_prev);
+        double g_ice =
+            get_param_g(temp_prev, pressure_in);
+
+        if (fabs(g_liq - g_ice) <
+            0.5 * eps_precision_ * fabs(g_liq + g_ice)) {
+            temperature_out = temp_prev;
+            mden_liq_out = mden_liq;
+            mden_ice_out = mden_ice;
+
+            found_state = true;
+        }
+
+        if (i_iter > n_iter_max_) {
+            break;
+        }
+
+        temp_now = temp_prev +
+            0.1 * (g_ice - g_liq) /
+            get_param_entropy(temp_prev, pressure_in);
+    }
+
+    /*
+    fprintf(stderr, "      pressure = %.8e Pa, ", pressure_in);
+    fprintf(stderr, "      temperature = %.8e degK, ", temperature_out);
+    fprintf(stderr, "      mden_liq = %.8e kg / m^3, ", mden_liq_out);
+    fprintf(stderr, "      mden_ice = %.8e kg / m^3\n", mden_ice_out);
+    */
+
+    return found_state;
+}
+
+void Lib06::make_tab_melt(Lib95 *ptr_lib95eos,
+                          int nbin_in,
+                          double pressure_max) {
+    reset_tab_melt();
+
+    if (pressure_max < pressure_trip_num_) {
+        return;
+    }
+
+    nbin_melt_ = nbin_in;
+    pressure_melt_min_ = pressure_trip_num_;
+    pressure_melt_max_ = pressure_max;
+
+    double d_log_press =
+        log(pressure_melt_max_ / pressure_melt_min_) /
+        static_cast<double>(nbin_melt_);
+
+    have_tab_melt_ = true;
+    tab_melt_pressure_ = new double[nbin_melt_ + 1];
+    tab_melt_temperature_ = new double[nbin_melt_ + 1];
+    tab_melt_mden_liq_ = new double[nbin_melt_ + 1];
+    tab_melt_mden_ice_ = new double[nbin_melt_ + 1];
+    tab_melt_enthalpy_liq_ = new double[nbin_melt_ + 1];
+    tab_melt_enthalpy_ice_ = new double[nbin_melt_ + 1];
+    tab_melt_entropy_liq_ = new double[nbin_melt_ + 1];
+    tab_melt_entropy_ice_ = new double[nbin_melt_ + 1];
+
+    bool made_tab = true;
+    if (flag_verbose_) {
+        fprintf(stderr, "    pressure (Pa), ");
+        fprintf(stderr, "    temperature (degK), ");
+        fprintf(stderr, "    mden_vap (kg / m^3), ");
+        fprintf(stderr, "    mden_ice (kg / m^3)\n");
+    }
+    for (int ip = 0; ip <= nbin_melt_; ip++) {
+        tab_melt_pressure_[ip] =
+            pressure_melt_min_ *
+            exp(d_log_press * static_cast<double>(ip));
+
+        if (ip == 0) {
+            tab_melt_temperature_[ip] = temperature_trip_;
+            tab_melt_mden_liq_[ip] = 9.99792520e+02;
+            tab_melt_mden_ice_[ip] =
+                get_param_mdensity(tab_melt_temperature_[ip],
+                                   tab_melt_pressure_[ip]);
+        } else {
+            tab_melt_temperature_[ip] = tab_melt_temperature_[ip - 1];
+            tab_melt_mden_liq_[ip] = tab_melt_mden_liq_[ip - 1];
+            tab_melt_mden_ice_[ip] = tab_melt_mden_ice_[ip - 1];
+        }
+
+        bool found_state =
+            find_state_melt(ptr_lib95eos,
+                            tab_melt_pressure_[ip],
+                            tab_melt_temperature_[ip],
+                            tab_melt_mden_liq_[ip],
+                            tab_melt_mden_ice_[ip]);
+
+        if (!found_state) {
+            made_tab = false;
+            break;
+        }
+
+        tab_melt_enthalpy_liq_[ip] =
+            ptr_lib95eos->get_param_enthalpy(tab_melt_mden_liq_[ip],
+                                             tab_melt_temperature_[ip]);
+        tab_melt_enthalpy_ice_[ip] =
+            get_param_enthalpy(tab_melt_temperature_[ip],
+                               tab_melt_pressure_[ip]);
+
+        tab_melt_entropy_liq_[ip] =
+            ptr_lib95eos->get_param_entropy(tab_melt_mden_liq_[ip],
+                                            tab_melt_temperature_[ip]);
+        tab_melt_entropy_ice_[ip] =
+            get_param_entropy(tab_melt_temperature_[ip],
+                              tab_melt_pressure_[ip]);
+
+        if (flag_verbose_) {
+            fprintf(stderr, "      %.8e",
+                    tab_melt_pressure_[ip]);
+            fprintf(stderr, "      %.8e",
+                    tab_melt_temperature_[ip]);
+            fprintf(stderr, "      %.8e",
+                    tab_melt_mden_liq_[ip]);
+            fprintf(stderr, "      %.8e\n",
+                    tab_melt_mden_ice_[ip]);
+        }
+    }
+
+    if (!made_tab) {
+        reset_tab_melt();
+    }
+
+    set_cspline_melt();
+
+    return;
+}
+
+void Lib06::export_tab_melt(char *filename) {
+    if (!have_tab_melt_) {
+        return;
+    }
+
+    FILE *ptr_fout;
+    ptr_fout = fopen(filename, "w");
+    if (ptr_fout == NULL) {
+        return;
+    }
+
+    fprintf(ptr_fout, "# table for melting phases in IAPWS06\n");
+    fprintf(ptr_fout, "nbin_melt    %d\n", nbin_melt_);
+    fprintf(ptr_fout, "pressure_melt_min    %e\n",
+            pressure_melt_min_);
+    fprintf(ptr_fout, "pressure_melt_max    %e\n",
+            pressure_melt_max_);
+    fprintf(ptr_fout, "# pressure (Pa)");
+    fprintf(ptr_fout, "    temperature (degK)");
+    fprintf(ptr_fout, "    mden_liq (kg / m^3)");
+    fprintf(ptr_fout, "    mden_ice (kg / m^3)");
+    fprintf(ptr_fout, "    enthalpy_liq (J / kg)");
+    fprintf(ptr_fout, "    enthalpy_ice (J / kg)");
+    fprintf(ptr_fout, "    entropy_liq (J / kg / degK)");
+    fprintf(ptr_fout, "    entropy_ice (J / kg / degK)");
+    fprintf(ptr_fout, "\n");
+
+    for (int ip = 0; ip <= nbin_melt_; ip++) {
+        fprintf(ptr_fout, "    %.8e",
+                tab_melt_pressure_[ip]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_melt_temperature_[ip]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_melt_mden_liq_[ip]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_melt_mden_ice_[ip]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_melt_enthalpy_liq_[ip]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_melt_enthalpy_ice_[ip]);
+        fprintf(ptr_fout, "    %.8e",
+                tab_melt_entropy_liq_[ip]);
+        fprintf(ptr_fout, "    %.8e\n",
+                tab_melt_entropy_ice_[ip]);
+    }
+
+    fclose(ptr_fout);
+
+    return;
+}
+
+void Lib06::import_tab_melt(char *filename) {
+    reset_tab_melt();
+
+    FILE *ptr_fin;
+    ptr_fin = fopen(filename, "r");
+    if (ptr_fin == NULL) {
+        return;
+    }
+
+    char line_current[1000];
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        if (flag_verbose_) {
+            fprintf(stderr, "%s", line_current);
+        }
+    } else {
+        return;
+    }
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        char buffer[100];
+        sscanf(line_current, "%s %d", buffer, &nbin_melt_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %d\n", buffer, nbin_melt_);
+        }
+    } else {
+        return;
+    }
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        char buffer[100];
+        sscanf(line_current, "%s %lf", buffer, &pressure_melt_min_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %f\n", buffer, pressure_melt_min_);
+        }
+    } else {
+        return;
+    }
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        char buffer[100];
+        sscanf(line_current, "%s %lf", buffer, &pressure_melt_max_);
+        if (flag_verbose_) {
+            fprintf(stderr, "%s    %f\n", buffer, pressure_melt_max_);
+        }
+    } else {
+        return;
+    }
+
+    if (fgets(line_current, sizeof(line_current), ptr_fin) != NULL) {
+        if (flag_verbose_) {
+            fprintf(stderr, "%s", line_current);
+        }
+    } else {
+        return;
+    }
+
+    have_tab_melt_ = true;
+    tab_melt_pressure_ = new double[nbin_melt_ + 1];
+    tab_melt_temperature_ = new double[nbin_melt_ + 1];
+    tab_melt_mden_liq_ = new double[nbin_melt_ + 1];
+    tab_melt_mden_ice_ = new double[nbin_melt_ + 1];
+    tab_melt_enthalpy_liq_ = new double[nbin_melt_ + 1];
+    tab_melt_enthalpy_ice_ = new double[nbin_melt_ + 1];
+    tab_melt_entropy_liq_ = new double[nbin_melt_ + 1];
+    tab_melt_entropy_ice_ = new double[nbin_melt_ + 1];
+
+    bool made_tab = true;
+    for (int ip = 0; ip <= nbin_melt_; ip++) {
+        if (fgets(line_current, sizeof(line_current), ptr_fin) == NULL) {
+            made_tab = false;
+            break;
+        }
+
+        sscanf(line_current, "%lf %lf %lf %lf %lf %lf %lf %lf",
+               &tab_melt_pressure_[ip],
+               &tab_melt_temperature_[ip],
+               &tab_melt_mden_liq_[ip],
+               &tab_melt_mden_ice_[ip],
+               &tab_melt_enthalpy_liq_[ip],
+               &tab_melt_enthalpy_ice_[ip],
+               &tab_melt_entropy_liq_[ip],
+               &tab_melt_entropy_ice_[ip]);
+
+        if (flag_verbose_) {
+            fprintf(stderr, "    %.8e",
+                    tab_melt_pressure_[ip]);
+            fprintf(stderr, "    %.8e",
+                    tab_melt_temperature_[ip]);
+            fprintf(stderr, "    %.8e",
+                    tab_melt_mden_liq_[ip]);
+            fprintf(stderr, "    %.8e",
+                    tab_melt_mden_ice_[ip]);
+            fprintf(stderr, "    %.8e",
+                    tab_melt_enthalpy_liq_[ip]);
+            fprintf(stderr, "    %.8e",
+                    tab_melt_enthalpy_ice_[ip]);
+            fprintf(stderr, "    %.8e",
+                    tab_melt_entropy_liq_[ip]);
+            fprintf(stderr, "    %.8e\n",
+                    tab_melt_entropy_ice_[ip]);
+        }
+    }
+
+    fclose(ptr_fin);
+
+    if (!made_tab) {
+        reset_tab_melt();
+    }
+
+    set_cspline_melt();
+
+    return;
+}
+
+void Lib06::set_cspline_melt() {
+    if (!have_tab_melt_) {
+        return;
+    }
+
+    csp_melt_temperature_.init(nbin_melt_,
+                               tab_melt_pressure_,
+                               tab_melt_temperature_);
+    csp_melt_mden_liq_.init(nbin_melt_,
+                            tab_melt_pressure_,
+                            tab_melt_mden_liq_);
+    csp_melt_mden_ice_.init(nbin_melt_,
+                            tab_melt_pressure_,
+                            tab_melt_mden_ice_);
+    csp_melt_enthalpy_liq_.init(nbin_melt_,
+                                tab_melt_pressure_,
+                                tab_melt_enthalpy_liq_);
+    csp_melt_enthalpy_ice_.init(nbin_melt_,
+                                tab_melt_pressure_,
+                                tab_melt_enthalpy_ice_);
+    csp_melt_entropy_liq_.init(nbin_melt_,
+                               tab_melt_pressure_,
+                               tab_melt_entropy_liq_);
+    csp_melt_entropy_ice_.init(nbin_melt_,
+                               tab_melt_pressure_,
+                               tab_melt_entropy_ice_);
 
     return;
 }

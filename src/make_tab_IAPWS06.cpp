@@ -29,5 +29,18 @@ int main(int argc, char *argv[]) {
     iapws06eos.export_tab_coex(filename_coex_ice);
     iapws06eos.import_tab_coex(filename_coex_ice);
 
+    int nbin_melt = 300;
+    double press_melt_max = 2.1e+8;
+
+    char filename_melt_ice[100];
+    strcpy(filename_melt_ice, "./tab_melt_IAPWS06.txt");
+
+    iapws06eos.make_tab_melt(&iapws95eos,
+                             nbin_melt,
+                             press_melt_max);
+    fprintf(stdout, "\n");
+    iapws06eos.export_tab_melt(filename_melt_ice);
+    iapws06eos.import_tab_melt(filename_melt_ice);
+
     return 0;
 }
