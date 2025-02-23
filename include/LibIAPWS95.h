@@ -17,7 +17,7 @@ class Lib95 {
     /* critical temperature
      * in degK */
     double temperature_crit_;
-    /* temperatur of the triple point
+    /* triple-point temperature
      * in degK */
     double temperature_trip_;
     /* critical (mass) density

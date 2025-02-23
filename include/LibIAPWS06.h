@@ -13,14 +13,28 @@ namespace IAPWS {
 class Lib06 {
   private :
 
+    /* triple-point temperature
+     * in degK */
     double temperature_trip_;
+    /* melting temperature at normal pressure
+     * in degK */
     double temperature_melt_;
 
+    /* triple-point pressure (measured)
+     * in degK */
     double pressure_trip_;
+    /* triple-point pressure (numerical)
+     * in degK */
     double pressure_trip_num_;
+    /* normal pressure
+     * in degK */
     double pressure_norm_;
 
+    /* residual specific entropy (absolute)
+     * in J / kg / degK */
     double entropy_res_absol_;
+    /* residual specific entropy (IAPWS-95 reference)
+     * in J / kg / degK */
     double entropy_res_Lib95_;
 
     double *coeff_g0_;
