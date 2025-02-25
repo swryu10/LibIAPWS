@@ -4,12 +4,19 @@ Detailed documentations can be found in IAPWS webpage : https://iapws.org/
 
 # Ingredients
 The following releases are currently implemented.
-* **IAPWS R1-76 (2014)** - **IAPWS::Lib76** class \
-Revised Release on Surface Tension of Ordinary Water Substance
-* **IAPWS R6-95 (2018)** - **IAPWS::Lib95** class \
-Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use
-* **IAPWS R10-06 (2009)** - **IAPWS::Lib06** class \
-Revised Release on the Equation of State 2006 for H2O Ice Ih
+* **IAPWS R1-76 (2014)** \
+  **IAPWS::Lib76** class \
+  Revised Release on Surface Tension of Ordinary Water Substance
+* **IAPWS R6-95 (2018)** \
+  **IAPWS::Lib95** class \
+  Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use
+* **IAPWS R10-06 (2009)** \
+  **IAPWS::Lib06** class \
+  Revised Release on the Equation of State 2006 for H2O Ice Ih
+* **IAPWS R12-08 (2008)** \
+  **IAPWS::Lib08V** class \
+  Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance \
+  NOTE : The critical enhancement is not yet implemented. (work in progress)
 
 # Build
 This library can be built with cmake. \
