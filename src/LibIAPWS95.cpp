@@ -347,17 +347,20 @@ double Lib95::get_param_d2phi_res_ddelta_ddelta(double mdensity_in,
             -2. * coeff_res_C_[i - 55] * (delta - 1.) * fn_psi;
 
         double fn_d2Delta_ddelta_ddelta =
-            fn_dDelta_ddelta / (delta - 1.) +
-            (delta - 1.) * (delta - 1.) *
-            (4. * coeff_res_t_[i] * coeff_res_c_[i] *
+            coeff_res_A_[i - 55] * fn_Theta *
+                (2. / coeff_res_beta_[i - 52]) *
+                pow(fabs(delta - 1.), 1. / coeff_res_beta_[i - 52] - 2.) +
+            2. * coeff_res_t_[i] * coeff_res_c_[i] *
+                pow(fabs(delta - 1.), 2. * coeff_res_c_[i] - 2.) +
+            4. * coeff_res_t_[i] * coeff_res_c_[i] *
                 (coeff_res_c_[i] - 1.) *
-                pow(fabs(delta - 1.), 2. * coeff_res_c_[i] - 4.) +
-             2. * (coeff_res_A_[i - 55] / coeff_res_beta_[i - 52]) *
+                pow(fabs(delta - 1.), 2. * coeff_res_c_[i] - 2.) +
+            2. * (coeff_res_A_[i - 55] / coeff_res_beta_[i - 52]) *
                   (coeff_res_A_[i - 55] / coeff_res_beta_[i - 52]) *
-                pow(fabs(delta - 1.), 2. / coeff_res_beta_[i - 52] - 4.) +
-             coeff_res_A_[i - 55] * fn_Theta * (4. / coeff_res_beta_[i - 52]) *
+                pow(fabs(delta - 1.), 2. / coeff_res_beta_[i - 52] - 2.) +
+            coeff_res_A_[i - 55] * fn_Theta * (4. / coeff_res_beta_[i - 52]) *
                 (1. / (2. * coeff_res_beta_[i - 52]) - 1.) *
-                pow(fabs(delta - 1.), 1. / coeff_res_beta_[i - 52] - 4.));
+                pow(fabs(delta - 1.), 1. / coeff_res_beta_[i - 52] - 2.);
         double fn_d2Delta_powb_ddelta_ddelta =
             coeff_res_d_[i] *
             (pow(fn_Delta, coeff_res_d_[i] - 1.) * fn_d2Delta_ddelta_ddelta +

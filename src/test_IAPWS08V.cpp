@@ -69,10 +69,8 @@ int main(int argc, char *argv[]) {
                     222., 647.35);
     print_viscosity(&iapws08visc,
                     272., 647.35);
-    /*
     print_viscosity(&iapws08visc,
                     322., 647.35);
-    */
     print_viscosity(&iapws08visc,
                     372., 647.35);
     print_viscosity(&iapws08visc,
