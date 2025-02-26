@@ -2,7 +2,7 @@
 #define _LIBIAPWS08V_H_
 
 #include<stdio.h>
-#include"BaseIAPWS.h"
+#include"LibIAPWS95.h"
 
 namespace IAPWS {
 
@@ -28,6 +28,27 @@ class Lib08V {
     double *coeff0_H_;
 
     double **coeff1_H_;
+
+    double coeff2_x_mu_;
+    double coeff2_q_C_;
+    double coeff2_q_D_;
+    double coeff2_nu_;
+    double coeff2_gamma_;
+    double coeff2_xi0_;
+    double coeff2_Gamma0_;
+    double coeff2_TR_;
+
+    /* range in mass density (kg / m^3)
+     * where the critical enhancement is applied */
+    double range_visc2_mdensity_min_;
+    double range_visc2_mdensity_max_;
+
+    /* range in temperature (deg K)
+     * where the critical enhancement is applied */
+    double range_visc2_temperature_min_;
+    double range_visc2_temperature_max_;
+
+    Lib95 *ptr_lib95_;
 
   public :
 
@@ -74,6 +95,23 @@ class Lib08V {
         coeff1_H_[3][6] = -4.35673 * 1.0e-3;
         coeff1_H_[5][6] = -5.93264 * 1.0e-4;
 
+        coeff2_x_mu_ = 0.068;
+        coeff2_q_C_ = 1. / 1.9;
+        coeff2_q_D_ = 1. / 1.1;
+        coeff2_nu_ = 0.630;
+        coeff2_gamma_ = 1.239;
+        coeff2_xi0_ = 0.13;
+        coeff2_Gamma0_ = 0.06;
+        coeff2_TR_ = 1.5;
+
+        range_visc2_mdensity_min_ = 245.8;
+        range_visc2_mdensity_max_ = 405.3;
+
+        range_visc2_temperature_min_ = 645.91;
+        range_visc2_temperature_max_ = 650.77;
+
+        ptr_lib95_ = NULL;
+
         return;
     }
 
@@ -90,6 +128,46 @@ class Lib08V {
 
     void print_header(FILE *ptr_fout = stdout);
 
+    void set_ptr_lib95(Lib95 *ptr_in) {
+        ptr_lib95_ = ptr_in;
+
+        return;
+    }
+
+    void set_range_visc2_mdensity(double mdensity_min,
+                                  double mdensity_max) {
+        if (mdensity_min < mdensity_ref_) {
+            range_visc2_mdensity_min_ = mdensity_min;
+        } else {
+            range_visc2_mdensity_min_ = mdensity_ref_;
+        }
+
+        if (mdensity_max > mdensity_ref_) {
+            range_visc2_mdensity_max_ = mdensity_max;
+        } else {
+            range_visc2_mdensity_max_ = mdensity_ref_;
+        }
+
+        return;
+    }
+
+    void set_range_visc2_temperature(double temp_min,
+                                     double temp_max) {
+        if (temp_min < temperature_ref_) {
+            range_visc2_temperature_min_ = temp_min;
+        } else {
+            range_visc2_temperature_min_ = temperature_ref_;
+        }
+
+        if (temp_max > temperature_ref_) {
+            range_visc2_temperature_max_ = temp_max;
+        } else {
+            range_visc2_temperature_max_ = temperature_ref_;
+        }
+
+        return;
+    }
+
     /* returns shear viscosity
      * of (ordinary) water fluid
      * in Pa * sec */
@@ -99,6 +177,9 @@ class Lib08V {
     double get_param_visc0_dimless(double tempearture_in);
 
     double get_param_visc1_dimless(double mdensity_in,
+                                   double tempearture_in);
+
+    double get_param_visc2_dimless(double mdensity_in,
                                    double tempearture_in);
 };
 
