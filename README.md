@@ -15,8 +15,7 @@ The following releases are currently implemented.
   Revised Release on the Equation of State 2006 for H2O Ice Ih
 * **IAPWS R12-08 (2008)** \
   **IAPWS::Lib08V** class \
-  Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance \
-  NOTE : The critical enhancement is not yet implemented. (work in progress)
+  Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance
 
 # Build
 This library can be built with cmake. \
