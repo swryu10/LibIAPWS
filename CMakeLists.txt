@@ -5,6 +5,7 @@ add_library(IAPWS STATIC)
 target_sources(IAPWS PUBLIC ${PROJECT_SOURCE_DIR}/src/BaseIAPWS.cpp
                             ${PROJECT_SOURCE_DIR}/src/LibIAPWS76.cpp
                             ${PROJECT_SOURCE_DIR}/src/LibIAPWS95.cpp
+                            ${PROJECT_SOURCE_DIR}/src/LibIAPWS97.cpp
                             ${PROJECT_SOURCE_DIR}/src/LibIAPWS06.cpp
                             ${PROJECT_SOURCE_DIR}/src/LibIAPWS08V.cpp
                             ${PROJECT_SOURCE_DIR}/src/InterCSpline.cpp)
@@ -33,6 +34,12 @@ add_executable(test_IAPWS95 ${PROJECT_SOURCE_DIR}/src/test_IAPWS95.cpp)
 set_target_properties(test_IAPWS95 PROPERTIES OUTPUT_NAME "test_IAPWS95.exec")
 target_link_libraries(test_IAPWS95 PUBLIC IAPWS)
 target_include_directories(test_IAPWS95 PUBLIC "${PROJECT_SOURCE_DIR}/include")
+
+project(test_IAPWS97)
+add_executable(test_IAPWS97 ${PROJECT_SOURCE_DIR}/src/test_IAPWS97.cpp)
+set_target_properties(test_IAPWS97 PROPERTIES OUTPUT_NAME "test_IAPWS97.exec")
+target_link_libraries(test_IAPWS97 PUBLIC IAPWS)
+target_include_directories(test_IAPWS97 PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
 project(test_IAPWS06)
 add_executable(test_IAPWS06 ${PROJECT_SOURCE_DIR}/src/test_IAPWS06.cpp)
