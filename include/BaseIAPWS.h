@@ -18,6 +18,8 @@ void get_complex_inverse(double *z_in,
 void get_complex_log(double *z_in,
                      double *z_out);
 
+double get_pow_int(double x, int n);
+
 } // end namespace IAPWS
 
 #endif

@@ -46,4 +46,20 @@ void get_complex_log(double *z_in,
     return;
 }
 
+double get_pow_int(double x, int n) {
+    int n_abs = n;
+    double fac_mult = x;
+    if (n < 0) {
+        n_abs = -n_abs;
+        fac_mult = 1. / x;
+    }
+
+    double x_pow_n = 1.;
+    for (int i = 0; i < n_abs; i++) {
+        x_pow_n *= fac_mult;
+    }
+
+    return x_pow_n;
+}
+
 } // end namespace IAPWS
