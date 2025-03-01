@@ -39,11 +39,6 @@ class Lib97 {
   public :
 
     Lib97() {
-        temperature_crit_ = 647.096;
-        mdensity_crit_ = 322.;
-        pressure_crit_ = 22.064 * 1.0e+6;
-        const_R_spec_ = 461.526;
-
         coeff1_I_ = new int[35];
         coeff1_J_ = new int[35];
         coeff1_n_ = new double[35];
@@ -63,8 +58,48 @@ class Lib97 {
 
     void print_header(FILE *ptr_fout = stdout);
 
+    /* specific Gibbs free energy in J / kg
+     * parametrization for single-phase state */
+    double get_param_g(double temperature_in,
+                       double pressure_in);
+    /* specific volume in m^3 / kg
+     * parametrization for single-phase state */
+    double get_param_vol_spec(double temperature_in,
+                              double pressure_in);
+    /* mass density in kg / m^3
+     * parametrization for single-phase state */
+    double get_param_mdensity(double temperature_in,
+                              double pressure_in);
+    /* specific internal energy in J / kg
+     * parametrization for single-phase state */
+    double get_param_erg_int(double temperature_in,
+                             double pressure_in);
+    /* specific entropy in J / kg / degK
+     * parametrization for single-phase state */
+    double get_param_entropy(double temperature_in,
+                             double pressure_in);
+    /* specific enthalpy in J / kg
+     * parametrization for single-phase state */
+    double get_param_enthalpy(double temperature_in,
+                              double pressure_in);
+    /* specific isobaric heat capacity in J / kg / degK
+     * parametrization for single-phase state */
+    double get_param_heat_c_p(double temperature_in,
+                              double pressure_in);
+    /* specific isochoric heat capacity in J / kg / degK
+     * parametrization for single-phase state */
+    double get_param_heat_c_v(double temperature_in,
+                              double pressure_in);
+    /* speed of sound in m / sec
+     * parametrization for single-phase state */
+    double get_param_speed_sound(double temperature_in,
+                                 double pressure_in);
+
+    int get_region(double temperature_in,
+                   double pressure_in);
+
     /* parametrized specific Gibbs free energy
-     * and its derivatives */
+     * and its derivatives in region 1 */
     double get_param1_gamma(double temperature_in,
                             double pressure_in);
     double get_param1_dgamma_dppi(double temperature_in,
