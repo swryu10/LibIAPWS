@@ -34,6 +34,22 @@ class Lib97 {
     int *coeff1_J_;
     double *coeff1_n_;
 
+    double temperature_ref1Tph_;
+    double pressure_ref1Tph_;
+    double enthalpy_ref1Tph_;
+
+    int *coeff1Tph_I_;
+    int *coeff1Tph_J_;
+    double *coeff1Tph_n_;
+
+    double temperature_ref1Tps_;
+    double pressure_ref1Tps_;
+    double entropy_ref1Tps_;
+
+    int *coeff1Tps_I_;
+    int *coeff1Tps_J_;
+    double *coeff1Tps_n_;
+
     void set_coefficients();
 
   public :
@@ -42,6 +58,14 @@ class Lib97 {
         coeff1_I_ = new int[35];
         coeff1_J_ = new int[35];
         coeff1_n_ = new double[35];
+
+        coeff1Tph_I_ = new int[21];
+        coeff1Tph_J_ = new int[21];
+        coeff1Tph_n_ = new double[21];
+
+        coeff1Tps_I_ = new int[21];
+        coeff1Tps_J_ = new int[21];
+        coeff1Tps_n_ = new double[21];
 
         set_coefficients();
 
@@ -52,6 +76,14 @@ class Lib97 {
         delete [] coeff1_I_;
         delete [] coeff1_J_;
         delete [] coeff1_n_;
+
+        delete [] coeff1Tph_I_;
+        delete [] coeff1Tph_J_;
+        delete [] coeff1Tph_n_;
+
+        delete [] coeff1Tps_I_;
+        delete [] coeff1Tps_J_;
+        delete [] coeff1Tps_n_;
 
         return;
     }
@@ -112,6 +144,17 @@ class Lib97 {
                                         double pressure_in);
     double get_param1_d2gamma_dtau_dtau(double temperature_in,
                                         double pressure_in);
+
+    /* backward equation for temperature
+     * as function of pressure and specific enthalpy
+     * in region 1 */
+    double get_param1_temperature_ph(double pressure_in,
+                                     double enthalpy_in);
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * in region 1 */
+    double get_param1_temperature_ps(double pressure_in,
+                                     double entropy_in);
 };
 
 } // end namespace IAPWS
