@@ -50,6 +50,19 @@ class Lib97 {
     int *coeff1Tps_J_;
     double *coeff1Tps_n_;
 
+    double temperature_ref2_;
+    double pressure_ref2_;
+    double tau_ref2_res_;
+
+    int *coeff2_ide_J_;
+    double *coeff2_ide_n_;
+    double coeff2mst_ide_n1_;
+    double coeff2mst_ide_n2_;
+
+    int *coeff2_res_I_;
+    int *coeff2_res_J_;
+    double *coeff2_res_n_;
+
     void set_coefficients();
 
   public :
@@ -66,6 +79,13 @@ class Lib97 {
         coeff1Tps_I_ = new int[21];
         coeff1Tps_J_ = new int[21];
         coeff1Tps_n_ = new double[21];
+
+        coeff2_ide_J_ = new int[10];
+        coeff2_ide_n_ = new double[10];
+
+        coeff2_res_I_ = new int[44];
+        coeff2_res_J_ = new int[44];
+        coeff2_res_n_ = new double[44];
 
         set_coefficients();
 
@@ -155,6 +175,50 @@ class Lib97 {
      * in region 1 */
     double get_param1_temperature_ps(double pressure_in,
                                      double entropy_in);
+
+    /* parametrized ideal-gas part
+     * of the specific Gibbs free energy
+     * and its derivatives in region 2 */
+    double get_param2_gamma_ide(double temperature_in,
+                                double pressure_in,
+                                bool flag_metastable = false);
+    double get_param2_dgamma_ide_dppi(double temperature_in,
+                                      double pressure_in,
+                                      bool flag_metastable = false);
+    double get_param2_dgamma_ide_dtau(double temperature_in,
+                                      double pressure_in,
+                                      bool flag_metastable = false);
+    double get_param2_d2gamma_ide_dppi_dppi(double temperature_in,
+                                            double pressure_in,
+                                            bool flag_metastable = false);
+    double get_param2_d2gamma_ide_dppi_dtau(double temperature_in,
+                                            double pressure_in,
+                                            bool flag_metastable = false);
+    double get_param2_d2gamma_ide_dtau_dtau(double temperature_in,
+                                            double pressure_in,
+                                            bool flag_metastable = false);
+
+    /* parametrized residual part
+     * of the specific Gibbs free energy
+     * and its derivatives in region 2 */
+    double get_param2_gamma_res(double temperature_in,
+                                double pressure_in,
+                                bool flag_metastable = false);
+    double get_param2_dgamma_res_dppi(double temperature_in,
+                                      double pressure_in,
+                                      bool flag_metastable = false);
+    double get_param2_dgamma_res_dtau(double temperature_in,
+                                      double pressure_in,
+                                      bool flag_metastable = false);
+    double get_param2_d2gamma_res_dppi_dppi(double temperature_in,
+                                            double pressure_in,
+                                            bool flag_metastable = false);
+    double get_param2_d2gamma_res_dppi_dtau(double temperature_in,
+                                            double pressure_in,
+                                            bool flag_metastable = false);
+    double get_param2_d2gamma_res_dtau_dtau(double temperature_in,
+                                            double pressure_in,
+                                            bool flag_metastable = false);
 };
 
 } // end namespace IAPWS
