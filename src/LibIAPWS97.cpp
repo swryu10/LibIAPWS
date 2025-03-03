@@ -954,6 +954,55 @@ double Lib97::get_param2_d2gamma_res_dtau_dtau(double temperature_in,
     return d2gamma_dtau_dtau;
 }
 
+double Lib97::get_param4_sat_pressure(double temperature_in) {
+    double fn_tau = temperature_in / temperature_ref4_;
+    double fn_theta =
+        fn_tau + coeff4_n_[9] / (fn_tau - coeff4_n_[10]);
+
+    double fn_A =
+        fn_theta * fn_theta +
+        fn_theta * coeff4_n_[1] + coeff4_n_[2];
+    double fn_B =
+        fn_theta * fn_theta * coeff4_n_[3] +
+        fn_theta * coeff4_n_[4] + coeff4_n_[5];
+    double fn_C =
+        fn_theta * fn_theta * coeff4_n_[6] +
+        fn_theta * coeff4_n_[7] + coeff4_n_[8];
+
+    double fn_beta =
+        2. * fn_C / (sqrt(fn_B * fn_B - 4. * fn_A * fn_C) - fn_B);
+
+    double press_sat =
+        pressure_ref4_ * get_pow_int(fn_beta, 4);
+
+    return press_sat;
+}
+
+double Lib97::get_param4_sat_temperature(double pressure_in) {
+    double fn_beta = pow(pressure_in / pressure_ref4_, 0.25);
+
+    double fn_E =
+        fn_beta * fn_beta +
+        fn_beta * coeff4_n_[3] + coeff4_n_[6];
+    double fn_F =
+        fn_beta * fn_beta * coeff4_n_[1] +
+        fn_beta * coeff4_n_[4] + coeff4_n_[7];
+    double fn_G =
+        fn_beta * fn_beta * coeff4_n_[2] +
+        fn_beta * coeff4_n_[5] + coeff4_n_[8];
+
+    double fn_D =
+        -2. * fn_G / (sqrt(fn_F * fn_F - 4. * fn_E * fn_G) + fn_F);
+    double fn_tau =
+        (coeff4_n_[10] + fn_D -
+         sqrt((coeff4_n_[10] + fn_D) * (coeff4_n_[10] + fn_D) -
+              4. * (coeff4_n_[9] + coeff4_n_[10] * fn_D))) / 2.;
+
+    double temp_sat = temperature_ref4_ * fn_tau;
+
+    return temp_sat;
+}
+
 void Lib97::set_coefficients() {
     temperature_crit_ = 647.096;
     mdensity_crit_ = 322.;
@@ -1391,6 +1440,22 @@ void Lib97::set_coefficients() {
     coeff2_res_n_[41] = 0.73087610595061 * 1.0e-28;
     coeff2_res_n_[42] = 0.55414715350778 * 1.0e-16;
     coeff2_res_n_[43] = -0.94369707241210 * 1.0e-6;
+
+    temperature_ref4_ = 1.;
+    pressure_ref4_ = 1.0e+6;
+
+    coeff4_n_[0] = 0.;
+    // coefficient region 4 n_i
+    coeff4_n_[1] = 0.11670521452767 * 1.0e+4;
+    coeff4_n_[2] = -0.72421316703206 * 1.0e+6;
+    coeff4_n_[3] = -0.17073846940092 * 1.0e+2;
+    coeff4_n_[4] = 0.12020824702470 * 1.0e+5;
+    coeff4_n_[5] = -0.32325550322333 * 1.0e+7;
+    coeff4_n_[6] = 0.14915108613530 * 1.0e+2;
+    coeff4_n_[7] = -0.48232657361591 * 1.0e+4;
+    coeff4_n_[8] = 0.40511340542057 * 1.0e+6;
+    coeff4_n_[9] = -0.23855557567849;
+    coeff4_n_[10] = 0.65017534844798 * 1.0e+3;
 
     return;
 }

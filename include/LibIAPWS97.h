@@ -63,6 +63,11 @@ class Lib97 {
     int *coeff2_res_J_;
     double *coeff2_res_n_;
 
+    double temperature_ref4_;
+    double pressure_ref4_;
+
+    double *coeff4_n_;
+
     void set_coefficients();
 
   public :
@@ -86,6 +91,8 @@ class Lib97 {
         coeff2_res_I_ = new int[44];
         coeff2_res_J_ = new int[44];
         coeff2_res_n_ = new double[44];
+
+        coeff4_n_ = new double[11];
 
         set_coefficients();
 
@@ -111,6 +118,8 @@ class Lib97 {
         delete [] coeff2_res_I_;
         delete [] coeff2_res_J_;
         delete [] coeff2_res_n_;
+
+        delete [] coeff4_n_;
 
         return;
     }
@@ -226,6 +235,13 @@ class Lib97 {
     double get_param2_d2gamma_res_dtau_dtau(double temperature_in,
                                             double pressure_in,
                                             bool flag_metastable = false);
+
+    /* parametrized vapor-liquid saturation pressure (in Pa)
+     * as a function of saturation temperature (in degK) */
+    double get_param4_sat_pressure(double temperature_in);
+    /* parametrized vapor-liquid saturation temperature (in degK)
+     * as a function of saturation pressure (in Pa) */
+    double get_param4_sat_temperature(double pressure_in);
 };
 
 } // end namespace IAPWS
