@@ -16,8 +16,11 @@ void Lib97::print_header(FILE *ptr_fout) {
 }
 
 double Lib97::get_param_g(double temperature_in,
-                          double pressure_in) {
-    int n_reg = get_region(temperature_in, pressure_in);
+                          double pressure_in,
+                          bool flag_metastable) {
+    int n_reg = get_region(temperature_in,
+                           pressure_in,
+                           flag_metastable);
 
     double fn_gamma;
 
@@ -34,6 +37,8 @@ double Lib97::get_param_g(double temperature_in,
             get_param2_gamma_res(temperature_in,
                                  pressure_in);
         break;
+      case 20 :
+        break;
       case 3 :
         break;
       case 5 :
@@ -49,8 +54,11 @@ double Lib97::get_param_g(double temperature_in,
 }
 
 double Lib97::get_param_vol_spec(double temperature_in,
-                                 double pressure_in) {
-    int n_reg = get_region(temperature_in, pressure_in);
+                                 double pressure_in,
+                                 bool flag_metastable) {
+    int n_reg = get_region(temperature_in,
+                           pressure_in,
+                           flag_metastable);
 
     double ppi = 0.;
     double fn_dgamma_dppi;
@@ -80,6 +88,8 @@ double Lib97::get_param_vol_spec(double temperature_in,
              pressure_in) *
             ppi * fn_dgamma_dppi;
         break;
+      case 20 :
+        break;
       case 3 :
         break;
       case 5 :
@@ -92,17 +102,22 @@ double Lib97::get_param_vol_spec(double temperature_in,
 }
 
 double Lib97::get_param_mdensity(double temperature_in,
-                                 double pressure_in) {
+                                 double pressure_in,
+                                 bool flag_metastable) {
     double mdensity =
         1. / get_param_vol_spec(temperature_in,
-                                pressure_in);
+                                pressure_in,
+                                flag_metastable);
 
     return mdensity;
 }
 
 double Lib97::get_param_erg_int(double temperature_in,
-                                double pressure_in) {
-    int n_reg = get_region(temperature_in, pressure_in);
+                                double pressure_in,
+                                bool flag_metastable) {
+    int n_reg = get_region(temperature_in,
+                           pressure_in,
+                           flag_metastable);
 
     double tau = 0.;
     double ppi = 0.;
@@ -144,6 +159,8 @@ double Lib97::get_param_erg_int(double temperature_in,
             (tau * fn_dgamma_dtau -
              ppi * fn_dgamma_dppi);
         break;
+      case 20 :
+        break;
       case 3 :
         break;
       case 5 :
@@ -156,8 +173,11 @@ double Lib97::get_param_erg_int(double temperature_in,
 }
 
 double Lib97::get_param_entropy(double temperature_in,
-                                double pressure_in) {
-    int n_reg = get_region(temperature_in, pressure_in);
+                                double pressure_in,
+                                bool flag_metastable) {
+    int n_reg = get_region(temperature_in,
+                           pressure_in,
+                           flag_metastable);
 
     double tau = 0.;
     double fn_gamma;
@@ -194,6 +214,8 @@ double Lib97::get_param_entropy(double temperature_in,
             const_R_spec_ *
             (tau * fn_dgamma_dtau - fn_gamma);
         break;
+      case 20 :
+        break;
       case 3 :
         break;
       case 5 :
@@ -206,8 +228,11 @@ double Lib97::get_param_entropy(double temperature_in,
 }
 
 double Lib97::get_param_enthalpy(double temperature_in,
-                                 double pressure_in) {
-    int n_reg = get_region(temperature_in, pressure_in);
+                                 double pressure_in,
+                                 bool flag_metastable) {
+    int n_reg = get_region(temperature_in,
+                           pressure_in,
+                           flag_metastable);
 
     double tau = 0.;
     double fn_dgamma_dtau;
@@ -235,6 +260,8 @@ double Lib97::get_param_enthalpy(double temperature_in,
             const_R_spec_ * temperature_in *
             tau * fn_dgamma_dtau;
         break;
+      case 20 :
+        break;
       case 3 :
         break;
       case 5 :
@@ -247,8 +274,11 @@ double Lib97::get_param_enthalpy(double temperature_in,
 }
 
 double Lib97::get_param_heat_c_p(double temperature_in,
-                                 double pressure_in) {
-    int n_reg = get_region(temperature_in, pressure_in);
+                                 double pressure_in,
+                                 bool flag_metastable) {
+    int n_reg = get_region(temperature_in,
+                           pressure_in,
+                           flag_metastable);
 
     double tau = 0.;
     double fn_d2gamma_dtau_dtau;
@@ -274,6 +304,8 @@ double Lib97::get_param_heat_c_p(double temperature_in,
         heat_c_p =
             -const_R_spec_ * tau * tau * fn_d2gamma_dtau_dtau;
         break;
+      case 20 :
+        break;
       case 3 :
         break;
       case 5 :
@@ -286,8 +318,11 @@ double Lib97::get_param_heat_c_p(double temperature_in,
 }
 
 double Lib97::get_param_heat_c_v(double temperature_in,
-                                 double pressure_in) {
-    int n_reg = get_region(temperature_in, pressure_in);
+                                 double pressure_in,
+                                 bool flag_metastable) {
+    int n_reg = get_region(temperature_in,
+                           pressure_in,
+                           flag_metastable);
 
     double tau = 0.;
     double fn_dgamma_dppi = 0.;
@@ -348,6 +383,8 @@ double Lib97::get_param_heat_c_v(double temperature_in,
             (fn_dgamma_dppi - tau * fn_d2gamma_dppi_dtau) /
             fn_d2gamma_dppi_dppi;
         break;
+      case 20 :
+        break;
       case 3 :
         break;
       case 5 :
@@ -360,8 +397,11 @@ double Lib97::get_param_heat_c_v(double temperature_in,
 }
 
 double Lib97::get_param_speed_sound(double temperature_in,
-                                    double pressure_in) {
-    int n_reg = get_region(temperature_in, pressure_in);
+                                    double pressure_in,
+                                    bool flag_metastable) {
+    int n_reg = get_region(temperature_in,
+                           pressure_in,
+                           flag_metastable);
 
     double tau = 0.;
     double fn_dgamma_dppi = 0.;
@@ -422,6 +462,8 @@ double Lib97::get_param_speed_sound(double temperature_in,
              (tau * tau * fn_d2gamma_dtau_dtau) -
              fn_d2gamma_dppi_dppi);
         break;
+      case 20 :
+        break;
       case 3 :
         break;
       case 5 :
@@ -434,10 +476,64 @@ double Lib97::get_param_speed_sound(double temperature_in,
 }
 
 int Lib97::get_region(double temperature_in,
-                      double pressure_in) {
-    int n_reg = 1;
+                      double pressure_in,
+                      bool flag_metastable) {
+    int n_reg = 0;
+
+    if (flag_metastable) {
+        n_reg = 20;
+    } else if (temperature_in >= 273.15 &&
+               temperature_in <= 623.15) {
+        double press_sat =
+            get_param4_sat_pressure(temperature_in);
+
+        if (pressure_in <= press_sat) {
+            n_reg = 2;
+        } else if (pressure_in > press_sat &&
+                   pressure_in < 1.0e+8) {
+            n_reg = 1;
+        }
+    } else if (temperature_in > 623.15 &&
+               temperature_in <= 863.15) {
+        double press_B23 =
+            get_paramB23_pressure(temperature_in);
+
+        if (pressure_in <= press_B23) {
+            n_reg = 2;
+        } else if (pressure_in > press_B23 &&
+                   pressure_in < 1.0e+8) {
+            n_reg = 3;
+        }
+    } else if (temperature_in > 863.15 &&
+               temperature_in <= 1073.15) {
+        if (pressure_in > 0. &&
+            pressure_in < 1.0e+8) {
+            n_reg = 2;
+        }
+    }
 
     return n_reg;
+}
+
+double Lib97::get_paramB23_pressure(double temperature_in) {
+    double tau = temperature_in / temperature_refB23_;
+
+    double ppi =
+        coeffB23_n_[1] +
+        coeffB23_n_[2] * tau +
+        coeffB23_n_[3] * tau * tau;
+
+    return pressure_refB23_ * ppi;
+}
+
+double Lib97::get_paramB23_temperature(double pressure_in) {
+    double ppi = pressure_in / pressure_refB23_;
+
+    double tau =
+        coeffB23_n_[4] +
+        sqrt((ppi - coeffB23_n_[5]) / coeffB23_n_[3]);
+
+    return temperature_refB23_ * tau;
 }
 
 double Lib97::get_param1_gamma(double temperature_in,
@@ -1008,6 +1104,17 @@ void Lib97::set_coefficients() {
     mdensity_crit_ = 322.;
     pressure_crit_ = 22.064 * 1.0e+6;
     const_R_spec_ = 461.526;
+
+    temperature_refB23_ = 1.;
+    pressure_refB23_ = 1.0e+6;
+
+    coeffB23_n_[0] = 0.;
+    // coefficient boundary between regions 2 and 3 n_i
+    coeffB23_n_[1] = 0.34805185628969 * 1.0e+3;
+    coeffB23_n_[2] = -0.11671859879975 * 1.0e+1;
+    coeffB23_n_[3] = 0.10192970039326 * 1.0e-2;
+    coeffB23_n_[4] = 0.57254459862746 * 1.0e+3;
+    coeffB23_n_[5] = 0.13918839778870 * 1.0e+2;
 
     temperature_ref1_ = 1386.;
     pressure_ref1_ = 16.53 * 1.0e+6;

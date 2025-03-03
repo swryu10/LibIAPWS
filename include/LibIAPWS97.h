@@ -25,6 +25,11 @@ class Lib97 {
      * in J / kg / degK */
     double const_R_spec_;
 
+    double temperature_refB23_;
+    double pressure_refB23_;
+
+    double *coeffB23_n_;
+
     double temperature_ref1_;
     double pressure_ref1_;
     double tau_ref1_;
@@ -73,6 +78,8 @@ class Lib97 {
   public :
 
     Lib97() {
+        coeffB23_n_ = new double[6];
+
         coeff1_I_ = new int[35];
         coeff1_J_ = new int[35];
         coeff1_n_ = new double[35];
@@ -100,6 +107,8 @@ class Lib97 {
     }
 
     ~Lib97() {
+        delete [] coeffB23_n_;
+
         delete [] coeff1_I_;
         delete [] coeff1_J_;
         delete [] coeff1_n_;
@@ -129,42 +138,57 @@ class Lib97 {
     /* specific Gibbs free energy in J / kg
      * parametrization for single-phase state */
     double get_param_g(double temperature_in,
-                       double pressure_in);
+                       double pressure_in,
+                       bool flag_metastable = false);
     /* specific volume in m^3 / kg
      * parametrization for single-phase state */
     double get_param_vol_spec(double temperature_in,
-                              double pressure_in);
+                              double pressure_in,
+                              bool flag_metastable = false);
     /* mass density in kg / m^3
      * parametrization for single-phase state */
     double get_param_mdensity(double temperature_in,
-                              double pressure_in);
+                              double pressure_in,
+                              bool flag_metastable = false);
     /* specific internal energy in J / kg
      * parametrization for single-phase state */
     double get_param_erg_int(double temperature_in,
-                             double pressure_in);
+                             double pressure_in,
+                             bool flag_metastable = false);
     /* specific entropy in J / kg / degK
      * parametrization for single-phase state */
     double get_param_entropy(double temperature_in,
-                             double pressure_in);
+                             double pressure_in,
+                             bool flag_metastable = false);
     /* specific enthalpy in J / kg
      * parametrization for single-phase state */
     double get_param_enthalpy(double temperature_in,
-                              double pressure_in);
+                              double pressure_in,
+                              bool flag_metastable = false);
     /* specific isobaric heat capacity in J / kg / degK
      * parametrization for single-phase state */
     double get_param_heat_c_p(double temperature_in,
-                              double pressure_in);
+                              double pressure_in,
+                              bool flag_metastable = false);
     /* specific isochoric heat capacity in J / kg / degK
      * parametrization for single-phase state */
     double get_param_heat_c_v(double temperature_in,
-                              double pressure_in);
+                              double pressure_in,
+                              bool flag_metastable = false);
     /* speed of sound in m / sec
      * parametrization for single-phase state */
     double get_param_speed_sound(double temperature_in,
-                                 double pressure_in);
+                                 double pressure_in,
+                                 bool flag_metastable = false);
 
     int get_region(double temperature_in,
-                   double pressure_in);
+                   double pressure_in,
+                   bool flag_metastable = false);
+
+    /* auxiliary equations for the boundary
+     * between Regions 2 and 3 */
+    double get_paramB23_pressure(double temperature_in);
+    double get_paramB23_temperature(double pressure_in);
 
     /* parametrized specific Gibbs free energy
      * and its derivatives in region 1 */
