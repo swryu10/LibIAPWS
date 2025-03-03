@@ -105,6 +105,13 @@ class Lib97 {
         delete [] coeff1Tps_J_;
         delete [] coeff1Tps_n_;
 
+        delete [] coeff2_ide_J_;
+        delete [] coeff2_ide_n_;
+
+        delete [] coeff2_res_I_;
+        delete [] coeff2_res_J_;
+        delete [] coeff2_res_n_;
+
         return;
     }
 
