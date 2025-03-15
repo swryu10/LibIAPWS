@@ -68,6 +68,14 @@ class Lib97 {
     int *coeff2_res_J_;
     double *coeff2_res_n_;
 
+    double temperature_ref2mst_;
+    double pressure_ref2mst_;
+    double tau_ref2mst_res_;
+
+    int *coeff2mst_res_I_;
+    int *coeff2mst_res_J_;
+    double *coeff2mst_res_n_;
+
     double temperature_ref4_;
     double pressure_ref4_;
 
@@ -99,6 +107,10 @@ class Lib97 {
         coeff2_res_J_ = new int[44];
         coeff2_res_n_ = new double[44];
 
+        coeff2mst_res_I_ = new int[14];
+        coeff2mst_res_J_ = new int[14];
+        coeff2mst_res_n_ = new double[14];
+
         coeff4_n_ = new double[11];
 
         set_coefficients();
@@ -127,6 +139,10 @@ class Lib97 {
         delete [] coeff2_res_I_;
         delete [] coeff2_res_J_;
         delete [] coeff2_res_n_;
+
+        delete [] coeff2mst_res_I_;
+        delete [] coeff2mst_res_J_;
+        delete [] coeff2mst_res_n_;
 
         delete [] coeff4_n_;
 
