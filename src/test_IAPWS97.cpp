@@ -111,6 +111,21 @@ int main(int argc, char *argv[]) {
             iapws97eos.get_paramB23_temperature(pressure_B23));
     fprintf(stdout, "\n");
 
+    fprintf(stdout, "###  BOUNDARY 2bc  ###\n");
+    fprintf(stdout, "\n");
+
+    double pressure_B2bc = 1.0e+8;
+    double enthalpy_B2bc = 0.3516004323 * 1.0e+7;
+    fprintf(stdout, "    enthalpy = %.9e J / kg    >",
+            enthalpy_B2bc);
+    fprintf(stdout, "    pressure = %.9e Pa\n",
+            iapws97eos.get_paramB2bc_pressure(enthalpy_B2bc));
+    fprintf(stdout, "    pressure = %.9e Pa    >",
+            pressure_B2bc);
+    fprintf(stdout, "    enthalpy = %.9e J / kg\n",
+            iapws97eos.get_paramB2bc_enthalpy(pressure_B2bc));
+    fprintf(stdout, "\n");
+
     fprintf(stdout, "###  REGION 1  ###\n");
     fprintf(stdout, "\n");
 

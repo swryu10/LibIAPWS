@@ -76,6 +76,11 @@ class Lib97 {
     int *coeff2mst_res_J_;
     double *coeff2mst_res_n_;
 
+    double pressure_refB2bc_;
+    double enthalpy_refB2bc_;
+
+    double *coeffB2bc_n_;
+
     double temperature_ref4_;
     double pressure_ref4_;
 
@@ -106,6 +111,8 @@ class Lib97 {
         coeff2_res_I_ = new int[44];
         coeff2_res_J_ = new int[44];
         coeff2_res_n_ = new double[44];
+
+        coeffB2bc_n_ = new double[6];
 
         coeff2mst_res_I_ = new int[14];
         coeff2mst_res_J_ = new int[14];
@@ -143,6 +150,8 @@ class Lib97 {
         delete [] coeff2mst_res_I_;
         delete [] coeff2mst_res_J_;
         delete [] coeff2mst_res_n_;
+
+        delete [] coeffB2bc_n_;
 
         delete [] coeff4_n_;
 
@@ -275,6 +284,11 @@ class Lib97 {
     double get_param2_d2gamma_res_dtau_dtau(double temperature_in,
                                             double pressure_in,
                                             bool flag_metastable = false);
+
+    /* auxiliary equations for the boundary
+     * between Regions 2b and 2c */
+    double get_paramB2bc_pressure(double enthalpy_in);
+    double get_paramB2bc_enthalpy(double pressure_in);
 
     /* parametrized vapor-liquid saturation pressure (in Pa)
      * as a function of saturation temperature (in degK) */

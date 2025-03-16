@@ -1204,6 +1204,29 @@ double Lib97::get_param2_d2gamma_res_dtau_dtau(double temperature_in,
     return d2gamma_dtau_dtau;
 }
 
+double Lib97::get_paramB2bc_pressure(double enthalpy_in) {
+    double eta =
+        enthalpy_in / enthalpy_refB2bc_;
+
+    double ppi =
+        coeffB2bc_n_[1] +
+        coeffB2bc_n_[2] * eta +
+        coeffB2bc_n_[3] * eta * eta;
+
+    return pressure_refB2bc_ * ppi;
+}
+
+double Lib97::get_paramB2bc_enthalpy(double pressure_in) {
+    double ppi =
+        pressure_in / pressure_refB2bc_;
+
+    double eta =
+        coeffB2bc_n_[4] +
+        sqrt((ppi - coeffB2bc_n_[5]) / coeffB2bc_n_[3]);
+
+    return enthalpy_refB2bc_ * eta;
+}
+
 double Lib97::get_param4_sat_pressure(double temperature_in) {
     double fn_tau = temperature_in / temperature_ref4_;
     double fn_theta =
@@ -1753,6 +1776,17 @@ void Lib97::set_coefficients() {
     coeff2mst_res_n_[11] = -0.79238375446139 * 1.0e-2;
     coeff2mst_res_n_[12] = -0.22888160778447 * 1.0e-3;
     coeff2mst_res_n_[13] = -0.26456501482810 * 1.0e-2;
+
+    pressure_refB2bc_ = 1.0e+6;
+    enthalpy_refB2bc_ = 1.0e+3;
+
+    coeffB2bc_n_[0] = 0.;
+    // coefficient boundary between regions 2b and 2c n_i
+    coeffB2bc_n_[1] = 0.90584278514723 * 1.0e+3;
+    coeffB2bc_n_[2] = -0.67955786399241;
+    coeffB2bc_n_[3] = 0.12809002730136 * 1.0e-3;
+    coeffB2bc_n_[4] = 0.26526571908428 * 1.0e+4;
+    coeffB2bc_n_[5] = 0.45257578905948 * 1.0e+1;
 
     temperature_ref4_ = 1.;
     pressure_ref4_ = 1.0e+6;
