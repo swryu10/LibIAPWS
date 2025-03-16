@@ -1246,8 +1246,11 @@ double Lib97::get_param2_temperature_ph(double pressure_in,
         if (enthalpy_in > enthalpy_threshold) {
             temperature_out =
                 get_param2b_temperature_ph(pressure_in,
-                                               enthalpy_in);
+                                           enthalpy_in);
         } else {
+            temperature_out =
+                get_param2c_temperature_ph(pressure_in,
+                                           enthalpy_in);
         }
     }
 
@@ -1290,6 +1293,25 @@ double Lib97::get_param2b_temperature_ph(double pressure_in,
     }
 
     return temperature_ref2bTph_ * fn_theta;
+}
+
+double Lib97::get_param2c_temperature_ph(double pressure_in,
+                                         double enthalpy_in) {
+    double ppi = pressure_in / pressure_ref2cTph_;
+    double eta = enthalpy_in / enthalpy_ref2cTph_;
+
+    double fn_theta = 0.;
+    for (int i = 1; i <= 23; i++) {
+        double ppi_pow_I =
+            get_pow_int(ppi + 25., coeff2cTph_I_[i]);
+        double eta_pow_J =
+            get_pow_int(eta - 1.8, coeff2cTph_J_[i]);
+
+        fn_theta +=
+            coeff2cTph_n_[i] * ppi_pow_I * eta_pow_J;
+    }
+
+    return temperature_ref2cTph_ * fn_theta;
 }
 
 double Lib97::get_param4_sat_pressure(double temperature_in) {
@@ -2094,6 +2116,88 @@ void Lib97::set_coefficients() {
     coeff2bTph_n_[36] = -0.25180545682962 * 1.0e-10;
     coeff2bTph_n_[37] = -0.17565233969407 * 1.0e-17;
     coeff2bTph_n_[38] = 0.86934156344163 * 1.0e-14;
+
+    temperature_ref2cTph_ = 1.;
+    pressure_ref2cTph_ = 1.0e+6;
+    enthalpy_ref2cTph_ = 2. * 1.0e+6;
+
+    coeff2cTph_I_[0] = 0;
+    // backward T(p,h) coefficient region 2c I_i
+    coeff2cTph_I_[1] = -7;
+    coeff2cTph_I_[2] = -7;
+    coeff2cTph_I_[3] = -6;
+    coeff2cTph_I_[4] = -6;
+    coeff2cTph_I_[5] = -5;
+    coeff2cTph_I_[6] = -5;
+    coeff2cTph_I_[7] = -2;
+    coeff2cTph_I_[8] = -2;
+    coeff2cTph_I_[9] = -1;
+    coeff2cTph_I_[10] = -1;
+    coeff2cTph_I_[11] = 0;
+    coeff2cTph_I_[12] = 0;
+    coeff2cTph_I_[13] = 1;
+    coeff2cTph_I_[14] = 1;
+    coeff2cTph_I_[15] = 2;
+    coeff2cTph_I_[16] = 6;
+    coeff2cTph_I_[17] = 6;
+    coeff2cTph_I_[18] = 6;
+    coeff2cTph_I_[19] = 6;
+    coeff2cTph_I_[20] = 6;
+    coeff2cTph_I_[21] = 6;
+    coeff2cTph_I_[22] = 6;
+    coeff2cTph_I_[23] = 6;
+
+    coeff2cTph_J_[0] = 0;
+    // backward T(p,h) coefficient region 2c J_i
+    coeff2cTph_J_[1] = 0;
+    coeff2cTph_J_[2] = 4;
+    coeff2cTph_J_[3] = 0;
+    coeff2cTph_J_[4] = 2;
+    coeff2cTph_J_[5] = 0;
+    coeff2cTph_J_[6] = 2;
+    coeff2cTph_J_[7] = 0;
+    coeff2cTph_J_[8] = 1;
+    coeff2cTph_J_[9] = 0;
+    coeff2cTph_J_[10] = 2;
+    coeff2cTph_J_[11] = 0;
+    coeff2cTph_J_[12] = 1;
+    coeff2cTph_J_[13] = 4;
+    coeff2cTph_J_[14] = 8;
+    coeff2cTph_J_[15] = 4;
+    coeff2cTph_J_[16] = 0;
+    coeff2cTph_J_[17] = 1;
+    coeff2cTph_J_[18] = 4;
+    coeff2cTph_J_[19] = 10;
+    coeff2cTph_J_[20] = 12;
+    coeff2cTph_J_[21] = 16;
+    coeff2cTph_J_[22] = 20;
+    coeff2cTph_J_[23] = 22;
+
+    coeff2cTph_n_[0] = 0.;
+    // backward T(p,h) coefficient region 2c n_i
+    coeff2cTph_n_[1] = -0.32368398555242 * 1.0e+13;
+    coeff2cTph_n_[2] = 0.73263350902181 * 1.0e+13;
+    coeff2cTph_n_[3] = 0.35825089945447 * 1.0e+12;
+    coeff2cTph_n_[4] = -0.58340131851590 * 1.0e+12;
+    coeff2cTph_n_[5] = -0.10783068217470 * 1.0e+11;
+    coeff2cTph_n_[6] = 0.20825544563171 * 1.0e+11;
+    coeff2cTph_n_[7] = 0.61074783564516 * 1.0e+6;
+    coeff2cTph_n_[8] = 0.85977722535580 * 1.0e+6;
+    coeff2cTph_n_[9] = -0.25745723604170 * 1.0e+5;
+    coeff2cTph_n_[10] = 0.31081088422714 * 1.0e+5;
+    coeff2cTph_n_[11] = 0.12082315865936 * 1.0e+4;
+    coeff2cTph_n_[12] = 0.48219755109255 * 1.0e+3;
+    coeff2cTph_n_[13] = 0.37966001272486 * 1.0e+1;
+    coeff2cTph_n_[14] = -0.10842984880077 * 1.0e+2;
+    coeff2cTph_n_[15] = -0.45364172676660 * 1.0e-1;
+    coeff2cTph_n_[16] = 0.14559115658698 * 1.0e-12;
+    coeff2cTph_n_[17] = 0.11261597407230 * 1.0e-11;
+    coeff2cTph_n_[18] = -0.17804982240686 * 1.0e-10;
+    coeff2cTph_n_[19] = 0.12324579690832 * 1.0e-6;
+    coeff2cTph_n_[20] = -0.11606921130984 * 1.0e-5;
+    coeff2cTph_n_[21] = 0.27846367088554 * 1.0e-4;
+    coeff2cTph_n_[22] = -0.59270038474176 * 1.0e-3;
+    coeff2cTph_n_[23] = 0.12918582991878 * 1.0e-2;
 
     temperature_ref4_ = 1.;
     pressure_ref4_ = 1.0e+6;

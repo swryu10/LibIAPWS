@@ -97,6 +97,14 @@ class Lib97 {
     int *coeff2bTph_J_;
     double *coeff2bTph_n_;
 
+    double temperature_ref2cTph_;
+    double pressure_ref2cTph_;
+    double enthalpy_ref2cTph_;
+
+    int *coeff2cTph_I_;
+    int *coeff2cTph_J_;
+    double *coeff2cTph_n_;
+
     double temperature_ref4_;
     double pressure_ref4_;
 
@@ -142,6 +150,10 @@ class Lib97 {
         coeff2bTph_J_ = new int[39];
         coeff2bTph_n_ = new double[39];
 
+        coeff2cTph_I_ = new int[24];
+        coeff2cTph_J_ = new int[24];
+        coeff2cTph_n_ = new double[24];
+
         coeff4_n_ = new double[11];
 
         set_coefficients();
@@ -184,6 +196,10 @@ class Lib97 {
         delete [] coeff2bTph_I_;
         delete [] coeff2bTph_J_;
         delete [] coeff2bTph_n_;
+
+        delete [] coeff2cTph_I_;
+        delete [] coeff2cTph_J_;
+        delete [] coeff2cTph_n_;
 
         delete [] coeff4_n_;
 
@@ -336,6 +352,11 @@ class Lib97 {
      * as function of pressure and specific enthalpy
      * in region 2b */
     double get_param2b_temperature_ph(double pressure_in,
+                                      double enthalpy_in);
+    /* backward equation for temperature
+     * as function of pressure and specific enthalpy
+     * in region 2c */
+    double get_param2c_temperature_ph(double pressure_in,
                                       double enthalpy_in);
 
     /* parametrized vapor-liquid saturation pressure (in Pa)
