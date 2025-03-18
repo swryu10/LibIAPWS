@@ -1323,26 +1323,25 @@ double Lib97::get_param2_temperature_ps(double pressure_in,
             get_param2a_temperature_ps(pressure_in,
                                        entropy_in);
     } else if (pressure_in < 6.54670 * 1.0e+6) {
-        /*
         temperature_out =
             get_param2b_temperature_ps(pressure_in,
                                        entropy_in);
-        */
     } else {
         /*
         double enthalpy_threshold =
             get_paramB2bc_enthalpy(pressure_in);
-
-        if (enthalpy_in > enthalpy_threshold) {
+        */
+        if (entropy_in > 5.85 * 1.0e+3) {
             temperature_out =
                 get_param2b_temperature_ps(pressure_in,
                                            entropy_in);
         } else {
+            /*
             temperature_out =
                 get_param2c_temperature_ps(pressure_in,
                                            entropy_in);
+            */
         }
-        */
     }
 
     return temperature_out;
@@ -1365,6 +1364,25 @@ double Lib97::get_param2a_temperature_ps(double pressure_in,
     }
 
     return temperature_ref2aTps_ * fn_theta;
+}
+
+double Lib97::get_param2b_temperature_ps(double pressure_in,
+                                         double entropy_in) {
+    double ppi = pressure_in / pressure_ref2bTps_;
+    double sig = entropy_in / entropy_ref2bTps_;
+
+    double fn_theta = 0.;
+    for (int i = 1; i <= 44; i++) {
+        double ppi_pow_I =
+            get_pow_int(ppi, coeff2bTps_I_[i]);
+        double sig_pow_J =
+            get_pow_int(10. - sig, coeff2bTps_J_[i]);
+
+        fn_theta +=
+            coeff2bTps_n_[i] * ppi_pow_I * sig_pow_J;
+    }
+
+    return temperature_ref2bTps_ * fn_theta;
 }
 
 double Lib97::get_param4_sat_pressure(double temperature_in) {
@@ -2402,6 +2420,151 @@ void Lib97::set_coefficients() {
     coeff2aTps_n_[44] = 0.25681239729999 * 1.0e-3;
     coeff2aTps_n_[45] = -0.12799002933781 * 1.0e-1;
     coeff2aTps_n_[46] = -0.82198102652018 * 1.0e-5;
+
+    temperature_ref2bTps_ = 1.;
+    pressure_ref2bTps_ = 1.0e+6;
+    entropy_ref2bTps_ = 0.7853 * 1.0e+3;
+
+    coeff2bTps_I_[0] = 0;
+    // backward T(p,s) coefficient region 2b I_i
+    coeff2bTps_I_[1] = -6;
+    coeff2bTps_I_[2] = -6;
+    coeff2bTps_I_[3] = -5;
+    coeff2bTps_I_[4] = -5;
+    coeff2bTps_I_[5] = -4;
+    coeff2bTps_I_[6] = -4;
+    coeff2bTps_I_[7] = -4;
+    coeff2bTps_I_[8] = -3;
+    coeff2bTps_I_[9] = -3;
+    coeff2bTps_I_[10] = -3;
+    coeff2bTps_I_[11] = -3;
+    coeff2bTps_I_[12] = -2;
+    coeff2bTps_I_[13] = -2;
+    coeff2bTps_I_[14] = -2;
+    coeff2bTps_I_[15] = -2;
+    coeff2bTps_I_[16] = -1;
+    coeff2bTps_I_[17] = -1;
+    coeff2bTps_I_[18] = -1;
+    coeff2bTps_I_[19] = -1;
+    coeff2bTps_I_[20] = -1;
+    coeff2bTps_I_[21] = 0;
+    coeff2bTps_I_[22] = 0;
+    coeff2bTps_I_[23] = 0;
+    coeff2bTps_I_[24] = 0;
+    coeff2bTps_I_[25] = 0;
+    coeff2bTps_I_[26] = 0;
+    coeff2bTps_I_[27] = 0;
+    coeff2bTps_I_[28] = 1;
+    coeff2bTps_I_[29] = 1;
+    coeff2bTps_I_[30] = 1;
+    coeff2bTps_I_[31] = 1;
+    coeff2bTps_I_[32] = 1;
+    coeff2bTps_I_[33] = 1;
+    coeff2bTps_I_[34] = 2;
+    coeff2bTps_I_[35] = 2;
+    coeff2bTps_I_[36] = 2;
+    coeff2bTps_I_[37] = 3;
+    coeff2bTps_I_[38] = 3;
+    coeff2bTps_I_[39] = 3;
+    coeff2bTps_I_[40] = 4;
+    coeff2bTps_I_[41] = 4;
+    coeff2bTps_I_[42] = 5;
+    coeff2bTps_I_[43] = 5;
+    coeff2bTps_I_[44] = 5;
+
+    coeff2bTps_J_[0] = 0;
+    // backward T(p,s) coefficient region 2b J_i
+    coeff2bTps_J_[1] = 0;
+    coeff2bTps_J_[2] = 11;
+    coeff2bTps_J_[3] = 0;
+    coeff2bTps_J_[4] = 11;
+    coeff2bTps_J_[5] = 0;
+    coeff2bTps_J_[6] = 1;
+    coeff2bTps_J_[7] = 11;
+    coeff2bTps_J_[8] = 0;
+    coeff2bTps_J_[9] = 1;
+    coeff2bTps_J_[10] = 11;
+    coeff2bTps_J_[11] = 12;
+    coeff2bTps_J_[12] = 0;
+    coeff2bTps_J_[13] = 1;
+    coeff2bTps_J_[14] = 6;
+    coeff2bTps_J_[15] = 10;
+    coeff2bTps_J_[16] = 0;
+    coeff2bTps_J_[17] = 1;
+    coeff2bTps_J_[18] = 5;
+    coeff2bTps_J_[19] = 8;
+    coeff2bTps_J_[20] = 9;
+    coeff2bTps_J_[21] = 0;
+    coeff2bTps_J_[22] = 1;
+    coeff2bTps_J_[23] = 2;
+    coeff2bTps_J_[24] = 4;
+    coeff2bTps_J_[25] = 5;
+    coeff2bTps_J_[26] = 6;
+    coeff2bTps_J_[27] = 9;
+    coeff2bTps_J_[28] = 0;
+    coeff2bTps_J_[29] = 1;
+    coeff2bTps_J_[30] = 2;
+    coeff2bTps_J_[31] = 3;
+    coeff2bTps_J_[32] = 7;
+    coeff2bTps_J_[33] = 8;
+    coeff2bTps_J_[34] = 0;
+    coeff2bTps_J_[35] = 1;
+    coeff2bTps_J_[36] = 5;
+    coeff2bTps_J_[37] = 0;
+    coeff2bTps_J_[38] = 1;
+    coeff2bTps_J_[39] = 3;
+    coeff2bTps_J_[40] = 0;
+    coeff2bTps_J_[41] = 1;
+    coeff2bTps_J_[42] = 0;
+    coeff2bTps_J_[43] = 1;
+    coeff2bTps_J_[44] = 2;
+
+    coeff2bTps_n_[0] = 0.;
+    // backward T(p,s) coefficient region 2b n_i
+    coeff2bTps_n_[1] = 0.31687665083497 * 1.0e+6;
+    coeff2bTps_n_[2] = 0.20864175881858 * 1.0e+2;
+    coeff2bTps_n_[3] = -0.39859399803599 * 1.0e+6;
+    coeff2bTps_n_[4] = -0.21816058518877 * 1.0e+2;
+    coeff2bTps_n_[5] = 0.22369785194242 * 1.0e+6;
+    coeff2bTps_n_[6] = -0.27841703445817 * 1.0e+4;
+    coeff2bTps_n_[7] = 0.99207436071480 * 1.0e+1;
+    coeff2bTps_n_[8] = -0.75197512299157 * 1.0e+5;
+    coeff2bTps_n_[9] = 0.29708605951158 * 1.0e+4;
+    coeff2bTps_n_[10] = -0.34406878548526 * 1.0e+1;
+    coeff2bTps_n_[11] = 0.38815564249115;
+    coeff2bTps_n_[12] = 0.17511295085750 * 1.0e+5;
+    coeff2bTps_n_[13] = -0.14237112854449 * 1.0e+4;
+    coeff2bTps_n_[14] = 0.10943803364167 * 1.0e+1;
+    coeff2bTps_n_[15] = 0.89971619308495;
+    coeff2bTps_n_[16] = -0.33759740098958 * 1.0e+4;
+    coeff2bTps_n_[17] = 0.47162885818355 * 1.0e+3;
+    coeff2bTps_n_[18] = -0.19188241993679 * 1.0e+1;
+    coeff2bTps_n_[19] = 0.41078580492196;
+    coeff2bTps_n_[20] = -0.33465378172097;
+    coeff2bTps_n_[21] = 0.13870034777505 * 1.0e+4;
+    coeff2bTps_n_[22] = -0.40663326195838 * 1.0e+3;
+    coeff2bTps_n_[23] = 0.41727347159610 * 1.0e+2;
+    coeff2bTps_n_[24] = 0.21932549434532 * 1.0e+1;
+    coeff2bTps_n_[25] = -0.10320050009077 * 1.0e+1;
+    coeff2bTps_n_[26] = 0.35882943516703;
+    coeff2bTps_n_[27] = 0.52511453726066 * 1.0e-2;
+    coeff2bTps_n_[28] = 0.12838916450705 * 1.0e+2;
+    coeff2bTps_n_[29] = -0.28642437219381 * 1.0e+1;
+    coeff2bTps_n_[30] = 0.56912683664855;
+    coeff2bTps_n_[31] = -0.99962954584931 * 1.0e-1;
+    coeff2bTps_n_[32] = -0.32632037778459 * 1.0e-2;
+    coeff2bTps_n_[33] = 0.23320922576723 * 1.0e-3;
+    coeff2bTps_n_[34] = -0.15334809857450;
+    coeff2bTps_n_[35] = 0.29072288239902 * 1.0e-1;
+    coeff2bTps_n_[36] = 0.37534702741167 * 1.0e-3;
+    coeff2bTps_n_[37] = 0.17296691702411 * 1.0e-2;
+    coeff2bTps_n_[38] = -0.38556050844504 * 1.0e-3;
+    coeff2bTps_n_[39] = -0.35017712292608 * 1.0e-4;
+    coeff2bTps_n_[40] = -0.14566393631492 * 1.0e-4;
+    coeff2bTps_n_[41] = 0.56420857267269 * 1.0e-5;
+    coeff2bTps_n_[42] = 0.41286150074605 * 1.0e-7;
+    coeff2bTps_n_[43] = -0.20684671118824 * 1.0e-7;
+    coeff2bTps_n_[44] = 0.16409393674725 * 1.0e-8;
 
     temperature_ref4_ = 1.;
     pressure_ref4_ = 1.0e+6;
