@@ -105,6 +105,30 @@ class Lib97 {
     int *coeff2cTph_J_;
     double *coeff2cTph_n_;
 
+    double temperature_ref2aTps_;
+    double pressure_ref2aTps_;
+    double entropy_ref2aTps_;
+
+    double *coeff2aTps_I_;
+    int *coeff2aTps_J_;
+    double *coeff2aTps_n_;
+
+    double temperature_ref2bTps_;
+    double pressure_ref2bTps_;
+    double entropy_ref2bTps_;
+
+    int *coeff2bTps_I_;
+    int *coeff2bTps_J_;
+    double *coeff2bTps_n_;
+
+    double temperature_ref2cTps_;
+    double pressure_ref2cTps_;
+    double entropy_ref2cTps_;
+
+    int *coeff2cTps_I_;
+    int *coeff2cTps_J_;
+    double *coeff2cTps_n_;
+
     double temperature_ref4_;
     double pressure_ref4_;
 
@@ -154,6 +178,18 @@ class Lib97 {
         coeff2cTph_J_ = new int[24];
         coeff2cTph_n_ = new double[24];
 
+        coeff2aTps_I_ = new double[47];
+        coeff2aTps_J_ = new int[47];
+        coeff2aTps_n_ = new double[47];
+
+        coeff2bTps_I_ = new int[45];
+        coeff2bTps_J_ = new int[45];
+        coeff2bTps_n_ = new double[45];
+
+        coeff2cTps_I_ = new int[31];
+        coeff2cTps_J_ = new int[31];
+        coeff2cTps_n_ = new double[31];
+
         coeff4_n_ = new double[11];
 
         set_coefficients();
@@ -200,6 +236,18 @@ class Lib97 {
         delete [] coeff2cTph_I_;
         delete [] coeff2cTph_J_;
         delete [] coeff2cTph_n_;
+
+        delete [] coeff2aTps_I_;
+        delete [] coeff2aTps_J_;
+        delete [] coeff2aTps_n_;
+
+        delete [] coeff2bTps_I_;
+        delete [] coeff2bTps_J_;
+        delete [] coeff2bTps_n_;
+
+        delete [] coeff2cTps_I_;
+        delete [] coeff2cTps_J_;
+        delete [] coeff2cTps_n_;
 
         delete [] coeff4_n_;
 
@@ -358,6 +406,27 @@ class Lib97 {
      * in region 2c */
     double get_param2c_temperature_ph(double pressure_in,
                                       double enthalpy_in);
+
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * in region 2 */
+    double get_param2_temperature_ps(double pressure_in,
+                                     double entropy_in);
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * in region 2a */
+    double get_param2a_temperature_ps(double pressure_in,
+                                      double entropy_in);
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * in region 2b */
+    double get_param2b_temperature_ps(double pressure_in,
+                                      double entropy_in);
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * in region 2c */
+    double get_param2c_temperature_ps(double pressure_in,
+                                      double entropy_in);
 
     /* parametrized vapor-liquid saturation pressure (in Pa)
      * as a function of saturation temperature (in degK) */
