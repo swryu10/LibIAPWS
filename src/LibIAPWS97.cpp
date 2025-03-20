@@ -42,6 +42,11 @@ double Lib97::get_param_g(double temperature_in,
       case 3 :
         break;
       case 5 :
+        fn_gamma =
+            get_param5_gamma_ide(temperature_in,
+                                 pressure_in) +
+            get_param5_gamma_res(temperature_in,
+                                 pressure_in);
         break;
       default :
         fn_gamma = 0.;
@@ -97,6 +102,16 @@ double Lib97::get_param_vol_spec(double temperature_in,
       case 3 :
         break;
       case 5 :
+        ppi = pressure_in / pressure_ref5_;
+        fn_dgamma_dppi =
+            get_param5_dgamma_ide_dppi(temperature_in,
+                                       pressure_in) +
+            get_param5_dgamma_res_dppi(temperature_in,
+                                       pressure_in);
+        vol_spec =
+            (const_R_spec_ * temperature_in /
+             pressure_in) *
+            ppi * fn_dgamma_dppi;
         break;
       default :
         vol_spec = 0.;
@@ -175,6 +190,22 @@ double Lib97::get_param_erg_int(double temperature_in,
       case 3 :
         break;
       case 5 :
+        tau = temperature_ref5_ / temperature_in;
+        ppi = pressure_in / pressure_ref5_;
+        fn_dgamma_dtau =
+            get_param5_dgamma_ide_dtau(temperature_in,
+                                       pressure_in) +
+            get_param5_dgamma_res_dtau(temperature_in,
+                                       pressure_in);
+        fn_dgamma_dppi =
+            get_param5_dgamma_ide_dppi(temperature_in,
+                                       pressure_in) +
+            get_param5_dgamma_res_dppi(temperature_in,
+                                       pressure_in);
+        erg_int =
+            const_R_spec_ * temperature_in *
+            (tau * fn_dgamma_dtau -
+             ppi * fn_dgamma_dppi);
         break;
       default :
         erg_int = 0.;
@@ -236,6 +267,20 @@ double Lib97::get_param_entropy(double temperature_in,
       case 3 :
         break;
       case 5 :
+        tau = temperature_ref5_ / temperature_in;
+        fn_gamma =
+            get_param5_gamma_ide(temperature_in,
+                                 pressure_in) +
+            get_param5_gamma_res(temperature_in,
+                                 pressure_in);
+        fn_dgamma_dtau =
+            get_param5_dgamma_ide_dtau(temperature_in,
+                                       pressure_in) +
+            get_param5_dgamma_res_dtau(temperature_in,
+                                       pressure_in);
+        entropy =
+            const_R_spec_ *
+            (tau * fn_dgamma_dtau - fn_gamma);
         break;
       default :
         entropy = 0.;
@@ -286,6 +331,15 @@ double Lib97::get_param_enthalpy(double temperature_in,
       case 3 :
         break;
       case 5 :
+        tau = temperature_ref5_ / temperature_in;
+        fn_dgamma_dtau =
+            get_param5_dgamma_ide_dtau(temperature_in,
+                                       pressure_in) +
+            get_param5_dgamma_res_dtau(temperature_in,
+                                       pressure_in);
+        enthalpy =
+            const_R_spec_ * temperature_in *
+            tau * fn_dgamma_dtau;
         break;
       default :
         enthalpy = 0.;
@@ -334,6 +388,14 @@ double Lib97::get_param_heat_c_p(double temperature_in,
       case 3 :
         break;
       case 5 :
+        tau = temperature_ref5_ / temperature_in;
+        fn_d2gamma_dtau_dtau =
+            get_param5_d2gamma_ide_dtau_dtau(temperature_in,
+                                             pressure_in) +
+            get_param5_d2gamma_res_dtau_dtau(temperature_in,
+                                             pressure_in);
+        heat_c_p =
+            -const_R_spec_ * tau * tau * fn_d2gamma_dtau_dtau;
         break;
       default :
         heat_c_p = 0.;
@@ -423,6 +485,33 @@ double Lib97::get_param_heat_c_v(double temperature_in,
       case 3 :
         break;
       case 5 :
+        tau = temperature_ref5_ / temperature_in;
+        fn_dgamma_dppi =
+            get_param5_dgamma_ide_dppi(temperature_in,
+                                       pressure_in) +
+            get_param5_dgamma_res_dppi(temperature_in,
+                                       pressure_in);
+        fn_d2gamma_dppi_dppi =
+            get_param5_d2gamma_ide_dppi_dppi(temperature_in,
+                                             pressure_in) +
+            get_param5_d2gamma_res_dppi_dppi(temperature_in,
+                                             pressure_in);
+        fn_d2gamma_dppi_dtau =
+            get_param5_d2gamma_ide_dppi_dtau(temperature_in,
+                                             pressure_in) +
+            get_param5_d2gamma_res_dppi_dtau(temperature_in,
+                                             pressure_in);
+        fn_d2gamma_dtau_dtau =
+            get_param5_d2gamma_ide_dtau_dtau(temperature_in,
+                                             pressure_in) +
+            get_param5_d2gamma_res_dtau_dtau(temperature_in,
+                                             pressure_in);
+        heat_c_v =
+            -const_R_spec_ * tau * tau * fn_d2gamma_dtau_dtau +
+            const_R_spec_ *
+            (fn_dgamma_dppi - tau * fn_d2gamma_dppi_dtau) *
+            (fn_dgamma_dppi - tau * fn_d2gamma_dppi_dtau) /
+            fn_d2gamma_dppi_dppi;
         break;
       default :
         heat_c_v = 0.;
@@ -512,6 +601,33 @@ double Lib97::get_param_speed_sound(double temperature_in,
       case 3 :
         break;
       case 5 :
+        tau = temperature_ref5_ / temperature_in;
+        fn_dgamma_dppi =
+            get_param5_dgamma_ide_dppi(temperature_in,
+                                       pressure_in) +
+            get_param5_dgamma_res_dppi(temperature_in,
+                                       pressure_in);
+        fn_d2gamma_dppi_dppi =
+            get_param5_d2gamma_ide_dppi_dppi(temperature_in,
+                                             pressure_in) +
+            get_param5_d2gamma_res_dppi_dppi(temperature_in,
+                                             pressure_in);
+        fn_d2gamma_dppi_dtau =
+            get_param5_d2gamma_ide_dppi_dtau(temperature_in,
+                                             pressure_in) +
+            get_param5_d2gamma_res_dppi_dtau(temperature_in,
+                                             pressure_in);
+        fn_d2gamma_dtau_dtau =
+            get_param5_d2gamma_ide_dtau_dtau(temperature_in,
+                                             pressure_in) +
+            get_param5_d2gamma_res_dtau_dtau(temperature_in,
+                                             pressure_in);
+        v2_s = const_R_spec_ * temperature_in *
+            fn_dgamma_dppi * fn_dgamma_dppi /
+            ((fn_dgamma_dppi - tau * fn_d2gamma_dppi_dtau) *
+             (fn_dgamma_dppi - tau * fn_d2gamma_dppi_dtau) /
+             (tau * tau * fn_d2gamma_dtau_dtau) -
+             fn_d2gamma_dppi_dppi);
         break;
       default :
         v2_s = 0.;
@@ -554,6 +670,12 @@ int Lib97::get_region(double temperature_in,
         if (pressure_in > 0. &&
             pressure_in < 1.0e+8) {
             n_reg = 2;
+        }
+    } else if (temperature_in > 1073.15 &&
+               temperature_in <= 2273.15) {
+        if (pressure_in > 0. &&
+            pressure_in < 50. * 1.0e+6) {
+            n_reg = 5;
         }
     }
 
@@ -1445,6 +1567,239 @@ double Lib97::get_param4_sat_temperature(double pressure_in) {
     double temp_sat = temperature_ref4_ * fn_tau;
 
     return temp_sat;
+}
+
+double Lib97::get_param5_gamma_ide(double temperature_in,
+                                   double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double gamma = log(ppi);
+    for (int i = 1; i <= 6; i++) {
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_ide_J_[i]);
+        gamma +=
+            coeff5_ide_n_[i] * tau_pow_J;
+    }
+
+    return gamma;
+}
+
+double Lib97::get_param5_dgamma_ide_dppi(double temperature_in,
+                                         double pressure_in) {
+    //double tau = temperature_ref2_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double dgamma_dppi = 1. / ppi;
+
+    return dgamma_dppi;
+}
+
+double Lib97::get_param5_dgamma_ide_dtau(double temperature_in,
+                                         double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    //double ppi = pressure_in / pressure_ref5_;
+
+    double dgamma_dtau = 0.;
+    for (int i = 1; i <= 6; i++) {
+        if (coeff5_ide_J_[i] == 0) {
+            continue;
+        }
+
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_ide_J_[i] - 1);
+        dgamma_dtau +=
+            coeff5_ide_n_[i] * tau_pow_J *
+            static_cast<double>(coeff5_ide_J_[i]);
+    }
+
+    return dgamma_dtau;
+}
+
+double Lib97::get_param5_d2gamma_ide_dppi_dppi(double temperature_in,
+                                               double pressure_in) {
+    //double tau = temperature_ref5_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double d2gamma_dppi_dppi = -1. / (ppi * ppi);
+
+    return d2gamma_dppi_dppi;
+}
+
+double Lib97::get_param5_d2gamma_ide_dppi_dtau(double temperature_in,
+                                               double pressure_in) {
+    //double tau = temperature_ref5_ / temperature_in;
+    //double ppi = pressure_in / pressure_ref5_;
+
+    return 0.;
+}
+
+double Lib97::get_param5_d2gamma_ide_dtau_dtau(double temperature_in,
+                                               double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    //double ppi = pressure_in / pressure_ref5_;
+
+    double d2gamma_dtau_dtau = 0.;
+    for (int i = 1; i <= 6; i++) {
+        if (coeff5_ide_J_[i] == 0 ||
+            coeff5_ide_J_[i] == 1) {
+            continue;
+        }
+
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_ide_J_[i] - 2);
+        d2gamma_dtau_dtau +=
+            coeff5_ide_n_[i] * tau_pow_J *
+            static_cast<double>(coeff5_ide_J_[i] *
+                                (coeff5_ide_J_[i] - 1));
+    }
+
+    return d2gamma_dtau_dtau;
+}
+
+double Lib97::get_param5_gamma_res(double temperature_in,
+                                   double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double gamma = 0.;
+    for (int i = 1; i <= 6; i++) {
+        double ppi_pow_I =
+            get_pow_int(ppi, coeff5_res_I_[i]);
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_res_J_[i]);
+
+        gamma +=
+            coeff5_res_n_[i] * ppi_pow_I * tau_pow_J;
+    }
+
+    return gamma;
+}
+
+double Lib97::get_param5_dgamma_res_dppi(double temperature_in,
+                                         double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double dgamma_dppi = 0.;
+    for (int i = 1; i <= 6; i++) {
+        if (coeff5_res_I_[i] == 0) {
+            continue;
+        }
+
+        double ppi_pow_I =
+            get_pow_int(ppi, coeff5_res_I_[i] - 1);
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_res_J_[i]);
+
+        dgamma_dppi +=
+            coeff5_res_n_[i] * ppi_pow_I * tau_pow_J *
+            static_cast<double>(coeff5_res_I_[i]);
+    }
+
+    return dgamma_dppi;
+}
+
+double Lib97::get_param5_dgamma_res_dtau(double temperature_in,
+                                         double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double dgamma_dtau = 0.;
+    for (int i = 1; i <= 6; i++) {
+        if (coeff5_res_J_[i] == 0) {
+            continue;
+        }
+
+        double ppi_pow_I =
+            get_pow_int(ppi, coeff5_res_I_[i]);
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_res_J_[i] - 1);
+
+        dgamma_dtau +=
+            coeff5_res_n_[i] * ppi_pow_I * tau_pow_J *
+            static_cast<double>(coeff5_res_J_[i]);
+    }
+
+    return dgamma_dtau;
+}
+
+double Lib97::get_param5_d2gamma_res_dppi_dppi(double temperature_in,
+                                               double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double d2gamma_dppi_dppi = 0.;
+    for (int i = 1; i <= 6; i++) {
+        if (coeff5_res_I_[i] == 0 ||
+            coeff5_res_I_[i] == 1) {
+            continue;
+        }
+
+        double ppi_pow_I =
+            get_pow_int(ppi, coeff5_res_I_[i] - 2);
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_res_J_[i]);
+
+        d2gamma_dppi_dppi +=
+            coeff5_res_n_[i] * ppi_pow_I * tau_pow_J *
+            static_cast<double>(coeff5_res_I_[i] *
+                                (coeff5_res_I_[i] - 1));
+    }
+
+    return d2gamma_dppi_dppi;
+}
+
+double Lib97::get_param5_d2gamma_res_dppi_dtau(double temperature_in,
+                                               double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double d2gamma_dppi_dtau = 0.;
+    for (int i = 1; i <= 6; i++) {
+        if (coeff5_res_I_[i] == 0 ||
+            coeff5_res_J_[i] == 0) {
+            continue;
+        }
+
+        double ppi_pow_I =
+            get_pow_int(ppi, coeff5_res_I_[i] - 1);
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_res_J_[i] - 1);
+
+        d2gamma_dppi_dtau +=
+            coeff5_res_n_[i] * ppi_pow_I * tau_pow_J *
+            static_cast<double>(coeff5_res_I_[i] *
+                                coeff5_res_J_[i]);
+    }
+
+    return d2gamma_dppi_dtau;
+}
+
+double Lib97::get_param5_d2gamma_res_dtau_dtau(double temperature_in,
+                                               double pressure_in) {
+    double tau = temperature_ref5_ / temperature_in;
+    double ppi = pressure_in / pressure_ref5_;
+
+    double d2gamma_dtau_dtau = 0.;
+    for (int i = 1; i <= 6; i++) {
+        if (coeff5_res_J_[i] == 0 ||
+            coeff5_res_J_[i] == 1) {
+            continue;
+        }
+
+        double ppi_pow_I =
+            get_pow_int(ppi, coeff5_res_I_[i]);
+        double tau_pow_J =
+            get_pow_int(tau, coeff5_res_J_[i] - 2);
+
+        d2gamma_dtau_dtau +=
+            coeff5_res_n_[i] * ppi_pow_I * tau_pow_J *
+            static_cast<double>(coeff5_res_J_[i] *
+                                (coeff5_res_J_[i] - 1));
+    }
+
+    return d2gamma_dtau_dtau;
 }
 
 void Lib97::set_coefficients() {
@@ -2697,6 +3052,54 @@ void Lib97::set_coefficients() {
     coeff4_n_[8] = 0.40511340542057 * 1.0e+6;
     coeff4_n_[9] = -0.23855557567849;
     coeff4_n_[10] = 0.65017534844798 * 1.0e+3;
+
+    temperature_ref5_ = 1000.;
+    pressure_ref5_ = 1.0e+6;
+
+    coeff5_ide_J_[0] = 0;
+    // coefficient region 5 ideal J_i
+    coeff5_ide_J_[1] = 0;
+    coeff5_ide_J_[2] = 1;
+    coeff5_ide_J_[3] = -3;
+    coeff5_ide_J_[4] = -2;
+    coeff5_ide_J_[5] = -1;
+    coeff5_ide_J_[6] = 2;
+
+    coeff5_ide_n_[0] = 0.;
+    // coefficient region 5 ideal n_i
+    coeff5_ide_n_[1] = -0.13179983674201 * 1.0e+2;
+    coeff5_ide_n_[2] = 0.68540841634434 * 1.0e+1;
+    coeff5_ide_n_[3] = -0.24805148933466 * 1.0e-1;
+    coeff5_ide_n_[4] = 0.36901534980333;
+    coeff5_ide_n_[5] = -0.31161318213925 * 1.0e+1;
+    coeff5_ide_n_[6] = -0.32961626538917;
+
+    coeff5_res_I_[0] = 0;
+    // coefficient region 5 residual I_i
+    coeff5_res_I_[1] = 1;
+    coeff5_res_I_[2] = 1;
+    coeff5_res_I_[3] = 1;
+    coeff5_res_I_[4] = 2;
+    coeff5_res_I_[5] = 2;
+    coeff5_res_I_[6] = 3;
+
+    coeff5_res_J_[0] = 0;
+    // coefficient region 5 residual J_i
+    coeff5_res_J_[1] = 1;
+    coeff5_res_J_[2] = 2;
+    coeff5_res_J_[3] = 3;
+    coeff5_res_J_[4] = 3;
+    coeff5_res_J_[5] = 9;
+    coeff5_res_J_[6] = 7;
+
+    coeff5_res_n_[0] = 0.;
+    // coefficient region 5 residual n_i
+    coeff5_res_n_[1] = 0.15736404855259 * 1.0e-2;
+    coeff5_res_n_[2] = 0.90153761673944 * 1.0e-3;
+    coeff5_res_n_[3] = -0.50270077677648 * 1.0e-2;
+    coeff5_res_n_[4] = 0.22440037409485 * 1.0e-5;
+    coeff5_res_n_[5] = -0.41163275453471 * 1.0e-5;
+    coeff5_res_n_[6] = 0.37919454822955 * 1.0e-7;
 
     return;
 }

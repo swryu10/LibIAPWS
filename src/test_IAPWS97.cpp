@@ -13,7 +13,7 @@ void print_functions(IAPWS::Lib97 *ptr_eos,
     fprintf(stdout, "  temperature = %f degK\n", temperature_in);
     fprintf(stdout, "  pressure = %f Pa\n", pressure_in);
 
-    fprintf(stdout, "    v = %.9e m^3 / kg\n",
+    fprintf(stdout, "    spec_vol = %.9e m^3 / kg\n",
         ptr_eos->get_param_vol_spec(temperature_in,
                                     pressure_in,
                                     flag_metastable));
@@ -280,6 +280,18 @@ int main(int argc, char *argv[]) {
     print4_sat_temperature(&iapws97eos, 0.1 * 1.0e+6);
     print4_sat_temperature(&iapws97eos, 1. * 1.0e+6);
     print4_sat_temperature(&iapws97eos, 10. * 1.0e+6);
+    fprintf(stdout, "\n");
+
+    fprintf(stdout, "###  REGION 5  ###\n");
+    fprintf(stdout, "\n");
+
+    print_functions(&iapws97eos, 1500., 0.5 * 1.0e+6);
+    fprintf(stdout, "\n");
+
+    print_functions(&iapws97eos, 1500., 30. * 1.0e+6);
+    fprintf(stdout, "\n");
+
+    print_functions(&iapws97eos, 2000., 30. * 1.0e+6);
     fprintf(stdout, "\n");
 
     return 0;
