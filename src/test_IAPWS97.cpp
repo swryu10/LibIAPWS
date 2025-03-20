@@ -259,6 +259,16 @@ int main(int argc, char *argv[]) {
                           90. * 1.0e+6, 6. * 1.0e+3);
     fprintf(stdout, "\n");
 
+    print2_temperature_ps(&iapws97eos,
+                          20. * 1.0e+6, 5.75 * 1.0e+3);
+    fprintf(stdout, "\n");
+    print2_temperature_ps(&iapws97eos,
+                          80. * 1.0e+6, 5.25 * 1.0e+3);
+    fprintf(stdout, "\n");
+    print2_temperature_ps(&iapws97eos,
+                          80. * 1.0e+6, 5.75 * 1.0e+3);
+    fprintf(stdout, "\n");
+
     fprintf(stdout, "###  REGION 4  ###\n");
     fprintf(stdout, "\n");
 
