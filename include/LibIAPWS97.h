@@ -467,6 +467,48 @@ class Lib97 {
     double get_param2c_temperature_ps(double pressure_in,
                                       double entropy_in);
 
+    /* specific Helmholtz free energy in J / kg
+     * parametrization for region 3 */
+    double get_param3_f(double mdensity_in,
+                        double temperature_in);
+    /* specific Gibbs free energy in J / kg
+     * parametrization for region 3 */
+    double get_param3_g(double mdensity_in,
+                        double temperature_in);
+    /* pressure in Pa (N / m^2)
+     * parametrization for region 3 */
+    double get_param3_pressure(double mdensity_in,
+                               double temperature_in);
+    /* derivative of pressure with respect to mass density
+     * in m^2 / sec^2
+     * parametrization for region 3 */
+    double get_param3_dpress_drho(double mdensity_in,
+                                  double temperature_in);
+    /* specific internal energy in J / kg
+     * parametrization for region 3 */
+    double get_param3_erg_int(double mdensity_in,
+                              double temperature_in);
+    /* specific entropy in J / kg / degK
+     * parametrization for region 3 */
+    double get_param3_entropy(double mdensity_in,
+                              double temperature_in);
+    /* specific enthalpy in J / kg
+     * parametrization for region 3 */
+    double get_param3_enthalpy(double mdensity_in,
+                               double temperature_in);
+    /* specific isochoric heat capacity in J / kg / degK
+     * parametrization for region 3 */
+    double get_param3_heat_c_v(double mdensity_in,
+                               double temperature_in);
+    /* specific isobaric heat capacity in J / kg / degK
+     * parametrization for region 3 */
+    double get_param3_heat_c_p(double mdensity_in,
+                               double temperature_in);
+    /* speed of sound in m / sec
+     * parametrization for region 3 */
+    double get_param3_speed_sound(double mdensity_in,
+                                  double temperature_in);
+
     /* parametrized specific Helmholtz free energy
      * and its derivatives in region 3 */
     double get_param3_phi(double mdensity_in,

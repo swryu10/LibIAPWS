@@ -97,6 +97,30 @@ void print2_temperature_ps(IAPWS::Lib97 *ptr_eos,
     return;
 }
 
+void print3_functions(IAPWS::Lib97 *ptr_eos,
+                      double mdensity_in,
+                      double temperature_in) {
+    fprintf(stdout, "  mdensity = %f kg / m^3\n", mdensity_in);
+    fprintf(stdout, "  temperature = %f degK\n", temperature_in);
+
+    fprintf(stdout, "    pressure = %.9e Pa\n",
+        ptr_eos->get_param3_pressure(mdensity_in, temperature_in));
+    fprintf(stdout, "    erg_int = %.9e J / kg\n",
+        ptr_eos->get_param3_erg_int(mdensity_in, temperature_in));
+    fprintf(stdout, "    entropy = %.9e J / kg / degK\n",
+        ptr_eos->get_param3_entropy(mdensity_in, temperature_in));
+    fprintf(stdout, "    enthalpy = %.9e J / kg\n",
+        ptr_eos->get_param3_enthalpy(mdensity_in, temperature_in));
+    fprintf(stdout, "    heat_c_p = %.9e J / kg / degK\n",
+        ptr_eos->get_param3_heat_c_p(mdensity_in, temperature_in));
+    fprintf(stdout, "    heat_c_v = %.9e J / kg / degK\n",
+        ptr_eos->get_param3_heat_c_v(mdensity_in, temperature_in));
+    fprintf(stdout, "    speed_sound = %.9e m / sec\n",
+        ptr_eos->get_param3_speed_sound(mdensity_in, temperature_in));
+
+    return;
+}
+
 void print4_sat_pressure(IAPWS::Lib97 *ptr_eos,
                          double temperature_in) {
     fprintf(stdout, "  temperature = %f degK\n", temperature_in);
@@ -267,6 +291,18 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "\n");
     print2_temperature_ps(&iapws97eos,
                           80. * 1.0e+6, 5.75 * 1.0e+3);
+    fprintf(stdout, "\n");
+
+    fprintf(stdout, "###  REGION 3  ###\n");
+    fprintf(stdout, "\n");
+
+    print3_functions(&iapws97eos, 500., 650.);
+    fprintf(stdout, "\n");
+
+    print3_functions(&iapws97eos, 200., 650.);
+    fprintf(stdout, "\n");
+
+    print3_functions(&iapws97eos, 500., 750.);
     fprintf(stdout, "\n");
 
     fprintf(stdout, "###  REGION 4  ###\n");

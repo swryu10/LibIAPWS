@@ -1520,6 +1520,161 @@ double Lib97::get_param2c_temperature_ps(double pressure_in,
     return temperature_ref2cTps_ * fn_theta;
 }
 
+double Lib97::get_param3_f(double mdensity_in,
+                           double temperature_in) {
+    double f =
+        const_R_spec_ * temperature_in *
+        get_param3_phi(mdensity_in,
+                       temperature_in);
+
+    return f;
+}
+
+double Lib97::get_param3_g(double mdensity_in,
+                           double temperature_in) {
+    double g =
+        get_param3_f(mdensity_in,
+                    temperature_in) +
+        get_param3_pressure(mdensity_in,
+                            temperature_in) / mdensity_in;
+
+    return g;
+}
+
+double Lib97::get_param3_pressure(double mdensity_in,
+                                  double temperature_in) {
+    double delta = mdensity_in / mdensity_ref3_;
+    //double tau = temperature_ref3_ / temperature_in;
+
+    double press =
+        mdensity_in * const_R_spec_ * temperature_in *
+        delta * get_param3_dphi_ddelta(mdensity_in,
+                                       temperature_in);
+
+    return press;
+}
+
+double Lib97::get_param3_dpress_drho(double mdensity_in,
+                                     double temperature_in) {
+    double delta = mdensity_in / mdensity_ref3_;
+    //double tau = temperature_ref3_ / temperature_in;
+
+    double dpress_drho =
+        const_R_spec_ * temperature_in *
+        (2. * delta * get_param3_dphi_ddelta(mdensity_in,
+                                             temperature_in) +
+         delta * delta *
+            get_param3_d2phi_ddelta_ddelta(mdensity_in,
+                                           temperature_in));
+
+    return dpress_drho;
+}
+
+double Lib97::get_param3_erg_int(double mdensity_in,
+                                 double temperature_in) {
+    //double delta = mdensity_in / mdensity_ref3_;
+    double tau = temperature_ref3_ / temperature_in;
+
+    double erg_int =
+        const_R_spec_ * temperature_in * tau *
+        get_param3_dphi_dtau(mdensity_in, temperature_in);
+
+    return erg_int;
+}
+
+double Lib97::get_param3_entropy(double mdensity_in,
+                                 double temperature_in) {
+    //double delta = mdensity_in / mdensity_ref3_;
+    double tau = temperature_ref3_ / temperature_in;
+
+    double entropy =
+        const_R_spec_ *
+        (tau * get_param3_dphi_dtau(mdensity_in,
+                                    temperature_in) -
+         get_param3_phi(mdensity_in, temperature_in));
+
+    return entropy;
+}
+
+double Lib97::get_param3_enthalpy(double mdensity_in,
+                                  double temperature_in) {
+    double delta = mdensity_in / mdensity_ref3_;
+    double tau = temperature_ref3_ / temperature_in;
+
+    double enthalpy =
+        const_R_spec_ * temperature_in *
+        (tau * get_param3_dphi_dtau(mdensity_in,
+                                    temperature_in) +
+         delta * get_param3_dphi_ddelta(mdensity_in,
+                                        temperature_in));
+
+    return enthalpy;
+}
+
+double Lib97::get_param3_heat_c_v(double mdensity_in,
+                                  double temperature_in) {
+    //double delta = mdensity_in / mdensity_ref3_;
+    double tau = temperature_ref3_ / temperature_in;
+
+    double c_v =
+        -const_R_spec_ * tau * tau *
+        get_param3_d2phi_dtau_dtau(mdensity_in, temperature_in);
+
+    return c_v;
+}
+
+double Lib97::get_param3_heat_c_p(double mdensity_in,
+                                  double temperature_in) {
+    double delta = mdensity_in / mdensity_ref3_;
+    double tau = temperature_ref3_ / temperature_in;
+
+    double dphi_ddelta =
+        get_param3_dphi_ddelta(mdensity_in, temperature_in);
+
+    double fac_nom =
+        delta * dphi_ddelta -
+        delta * tau * get_param3_d2phi_ddelta_dtau(mdensity_in,
+                                                   temperature_in);
+    double fac_den =
+        2. * delta * dphi_ddelta +
+        delta * delta * get_param3_d2phi_ddelta_ddelta(mdensity_in,
+                                                       temperature_in);
+
+    double c_p =
+        const_R_spec_ *
+        (fac_nom * fac_nom / fac_den -
+         tau * tau * get_param3_d2phi_dtau_dtau(mdensity_in,
+                                                temperature_in));
+
+    return c_p;
+}
+
+double Lib97::get_param3_speed_sound(double mdensity_in,
+                                     double temperature_in) {
+    double delta = mdensity_in / mdensity_ref3_;
+    double tau = temperature_ref3_ / temperature_in;
+
+    double dphi_ddelta =
+        get_param3_dphi_ddelta(mdensity_in, temperature_in);
+
+    double fac_nom =
+        delta * dphi_ddelta -
+        delta * tau * get_param3_d2phi_ddelta_dtau(mdensity_in,
+                                                   temperature_in);
+    double fac_den =
+        tau * tau * get_param3_d2phi_dtau_dtau(mdensity_in,
+                                               temperature_in);
+
+    double v2_s =
+        const_R_spec_ * temperature_in *
+        (2. * delta * dphi_ddelta +
+         delta * delta * get_param3_d2phi_ddelta_ddelta(mdensity_in,
+                                                        temperature_in) -
+         fac_nom * fac_nom / fac_den);
+
+    return sqrt(v2_s);
+}
+
 double Lib97::get_param3_phi(double mdensity_in,
                              double temperature_in) {
     double delta = mdensity_in / mdensity_ref3_;
