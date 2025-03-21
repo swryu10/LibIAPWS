@@ -129,6 +129,13 @@ class Lib97 {
     int *coeff2cTps_J_;
     double *coeff2cTps_n_;
 
+    double mdensity_ref3_;
+    double temperature_ref3_;
+
+    int *coeff3_I_;
+    int *coeff3_J_;
+    double *coeff3_n_;
+
     double temperature_ref4_;
     double pressure_ref4_;
 
@@ -200,6 +207,10 @@ class Lib97 {
         coeff2cTps_J_ = new int[31];
         coeff2cTps_n_ = new double[31];
 
+        coeff3_I_ = new int[41];
+        coeff3_J_ = new int[41];
+        coeff3_n_ = new double[41];
+
         coeff4_n_ = new double[11];
 
         coeff5_ide_J_ = new int[7];
@@ -265,6 +276,10 @@ class Lib97 {
         delete [] coeff2cTps_I_;
         delete [] coeff2cTps_J_;
         delete [] coeff2cTps_n_;
+
+        delete [] coeff3_I_;
+        delete [] coeff3_J_;
+        delete [] coeff3_n_;
 
         delete [] coeff4_n_;
 
@@ -451,6 +466,21 @@ class Lib97 {
      * in region 2c */
     double get_param2c_temperature_ps(double pressure_in,
                                       double entropy_in);
+
+    /* parametrized specific Helmholtz free energy
+     * and its derivatives in region 3 */
+    double get_param3_phi(double mdensity_in,
+                          double temperature_in);
+    double get_param3_dphi_ddelta(double mdensity_in,
+                                  double temperature_in);
+    double get_param3_dphi_dtau(double mdensity_in,
+                                double temperature_in);
+    double get_param3_d2phi_ddelta_ddelta(double mdensity_in,
+                                          double temperature_in);
+    double get_param3_d2phi_ddelta_dtau(double mdensity_in,
+                                        double temperature_in);
+    double get_param3_d2phi_dtau_dtau(double mdensity_in,
+                                      double temperature_in);
 
     /* parametrized vapor-liquid saturation pressure (in Pa)
      * as a function of saturation temperature (in degK) */
