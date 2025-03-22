@@ -341,9 +341,33 @@ class Lib97 {
                                  double pressure_in,
                                  bool flag_metastable = false);
 
+    /* determine which region the system belongs
+     * with given temperature and pressure */
     int get_region(double temperature_in,
                    double pressure_in,
                    bool flag_metastable = false);
+
+    /* mass density of water vapor at coexisting phase
+     * in kg / m^3 */
+    double get_coex_mden_vap(double temperature_in);
+    /* mass density of water liquid at coexisting phase
+     * in kg / m^3 */
+    double get_coex_mden_liq(double temperature_in);
+    /* specific enthalpy of water vapor at coexisting phase
+     * in J / kg */
+    double get_coex_enthalpy_vap(double temperature_in);
+    /* specific enthalpy of water liquid at coexisting phase
+     * in J / kg */
+    double get_coex_enthalpy_liq(double temperature_in);
+    /* specific entropy of water vapor at coexisting phase
+     * in J / kg / degK */
+    double get_coex_entropy_vap(double temperature_in);
+    /* specific entropy of water liquid at coexisting phase
+     * in J / kg / degK */
+    double get_coex_entropy_liq(double temperature_in);
+    /* specific latent heat
+     * in J / kg */
+    double get_coex_heat_latent(double temperature_in);
 
     /* auxiliary equations for the boundary
      * between Regions 2 and 3 */

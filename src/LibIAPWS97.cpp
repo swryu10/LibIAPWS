@@ -682,6 +682,195 @@ int Lib97::get_region(double temperature_in,
     return n_reg;
 }
 
+double Lib97::get_coex_mden_vap(double temperature_in) {
+    if (temperature_in >= temperature_crit_) {
+        return 0.;
+    }
+
+    double mden_vap = 0.;
+
+    if (temperature_in <= 623.15) {
+        // boundary between region 1 and 2
+        double pressure_in =
+            get_param4_sat_pressure(temperature_in);
+        double ppi = pressure_in / pressure_ref2_;
+
+        double fn_dgamma_dppi =
+            get_param2_dgamma_ide_dppi(temperature_in,
+                                       pressure_in) +
+            get_param2_dgamma_res_dppi(temperature_in,
+                                       pressure_in);
+        double vol_spec =
+            (const_R_spec_ * temperature_in /
+             pressure_in) *
+            ppi * fn_dgamma_dppi;
+        mden_vap = 1. / vol_spec;
+    } else {
+        // region 3
+    }
+
+    return mden_vap;
+}
+
+double Lib97::get_coex_mden_liq(double temperature_in) {
+    if (temperature_in >= temperature_crit_) {
+        return 0.;
+    }
+
+    double mden_liq = 0.;
+
+    if (temperature_in <= 623.15) {
+        // boundary between region 1 and 2
+        double pressure_in =
+            get_param4_sat_pressure(temperature_in);
+        double ppi = pressure_in / pressure_ref1_;
+
+        double fn_dgamma_dppi =
+            get_param1_dgamma_dppi(temperature_in,
+                                   pressure_in);
+        double vol_spec =
+            (const_R_spec_ * temperature_in /
+             pressure_in) *
+            ppi * fn_dgamma_dppi;
+        mden_liq = 1. / vol_spec;
+    } else {
+        // region 3
+    }
+
+    return mden_liq;
+}
+
+double Lib97::get_coex_enthalpy_vap(double temperature_in) {
+    if (temperature_in >= temperature_crit_) {
+        return 0.;
+    }
+
+    double enthalpy_vap = 0.;
+
+    if (temperature_in <= 623.15) {
+        // boundary between region 1 and 2
+        double pressure_in =
+            get_param4_sat_pressure(temperature_in);
+        double tau = temperature_ref2_ / temperature_in;
+
+        double fn_dgamma_dtau =
+            get_param2_dgamma_ide_dtau(temperature_in,
+                                       pressure_in) +
+            get_param2_dgamma_res_dtau(temperature_in,
+                                       pressure_in);
+        enthalpy_vap =
+            const_R_spec_ * temperature_in *
+            tau * fn_dgamma_dtau;
+    } else {
+        // region 3
+    }
+
+    return enthalpy_vap;
+}
+
+double Lib97::get_coex_enthalpy_liq(double temperature_in) {
+    if (temperature_in >= temperature_crit_) {
+        return 0.;
+    }
+
+    double enthalpy_liq = 0.;
+
+    if (temperature_in <= 623.15) {
+        // boundary between region 1 and 2
+        double pressure_in =
+            get_param4_sat_pressure(temperature_in);
+
+        double tau = temperature_ref1_ / temperature_in;
+        double fn_dgamma_dtau =
+            get_param1_dgamma_dtau(temperature_in,
+                                   pressure_in);
+        enthalpy_liq =
+            const_R_spec_ * temperature_in *
+            tau * fn_dgamma_dtau;
+    } else {
+        // region 3
+    }
+
+    return enthalpy_liq;
+}
+
+double Lib97::get_coex_entropy_vap(double temperature_in) {
+    if (temperature_in >= temperature_crit_) {
+        return 0.;
+    }
+
+    double pressure_in =
+        get_param4_sat_pressure(temperature_in);
+    double entropy_vap = 0.;
+
+    if (temperature_in <= 623.15) {
+        // boundary between region 1 and 2
+        double pressure_in =
+            get_param4_sat_pressure(temperature_in);
+        double tau = temperature_ref2_ / temperature_in;
+
+        double fn_gamma =
+            get_param2_gamma_ide(temperature_in,
+                                 pressure_in) +
+            get_param2_gamma_res(temperature_in,
+                                 pressure_in);
+        double fn_dgamma_dtau =
+            get_param2_dgamma_ide_dtau(temperature_in,
+                                       pressure_in) +
+            get_param2_dgamma_res_dtau(temperature_in,
+                                       pressure_in);
+        entropy_vap =
+            const_R_spec_ *
+            (tau * fn_dgamma_dtau - fn_gamma);
+    } else {
+        // region 3
+    }
+
+    return entropy_vap;
+}
+
+double Lib97::get_coex_entropy_liq(double temperature_in) {
+    if (temperature_in >= temperature_crit_) {
+        return 0.;
+    }
+
+    double entropy_liq = 0.;
+
+    if (temperature_in <= 623.15) {
+        // boundary between region 1 and 2
+        double pressure_in =
+            get_param4_sat_pressure(temperature_in);
+        double tau = temperature_ref1_ / temperature_in;
+
+        double fn_gamma =
+            get_param1_gamma(temperature_in,
+                             pressure_in);
+        double fn_dgamma_dtau =
+            get_param1_dgamma_dtau(temperature_in,
+                                   pressure_in);
+        entropy_liq =
+            const_R_spec_ *
+            (tau * fn_dgamma_dtau - fn_gamma);
+    } else {
+        // region 3
+    }
+
+    return entropy_liq;
+}
+
+double Lib97::get_coex_heat_latent(double temperature_in) {
+    if (temperature_in >= temperature_crit_) {
+        return 0.;
+    }
+
+    double h_latent =
+        temperature_in *
+        (get_coex_entropy_vap(temperature_in) -
+         get_coex_entropy_liq(temperature_in));
+
+    return h_latent;
+}
+
 double Lib97::get_paramB23_pressure(double temperature_in) {
     double tau = temperature_in / temperature_refB23_;
 
