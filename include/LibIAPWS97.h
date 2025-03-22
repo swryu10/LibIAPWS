@@ -3,6 +3,7 @@
 
 #include<stdio.h>
 #include"BaseIAPWS.h"
+#include"InterCSpline.h"
 
 namespace IAPWS {
 
@@ -24,6 +25,9 @@ class Lib97 {
     /* specific gas constant
      * in J / kg / degK */
     double const_R_spec_;
+
+    double temperature_low3_;
+    double pressure_low3_;
 
     double temperature_refB23_;
     double pressure_refB23_;
@@ -151,6 +155,27 @@ class Lib97 {
     int *coeff5_res_J_;
     double *coeff5_res_n_;
 
+    bool have_tab_coex_;
+    int nbin_coex_;
+    double temperature_coex_min_;
+    double temperature_coex_max_;
+    double *tab_coex_temperature_;
+    double *tab_coex_pressure_;
+    double *tab_coex_mden_vap_;
+    double *tab_coex_mden_liq_;
+    double *tab_coex_enthalpy_vap_;
+    double *tab_coex_enthalpy_liq_;
+    double *tab_coex_entropy_vap_;
+    double *tab_coex_entropy_liq_;
+
+    InterCSpline csp_coex_pressure_;
+    InterCSpline csp_coex_mden_vap_;
+    InterCSpline csp_coex_mden_liq_;
+    InterCSpline csp_coex_enthalpy_vap_;
+    InterCSpline csp_coex_enthalpy_liq_;
+    InterCSpline csp_coex_entropy_vap_;
+    InterCSpline csp_coex_entropy_liq_;
+
     void set_coefficients();
 
   public :
@@ -222,10 +247,14 @@ class Lib97 {
 
         set_coefficients();
 
+        have_tab_coex_ = false;
+
         return;
     }
 
     ~Lib97() {
+        reset_tab_coex();
+
         delete [] coeffB23_n_;
 
         delete [] coeff1_I_;
@@ -293,6 +322,27 @@ class Lib97 {
         return;
     }
 
+    void reset_tab_coex() {
+        if (!have_tab_coex_) {
+            return;
+        }
+
+        nbin_coex_ = 0;
+
+        delete [] tab_coex_temperature_;
+        delete [] tab_coex_pressure_;
+        delete [] tab_coex_mden_vap_;
+        delete [] tab_coex_mden_liq_;
+        delete [] tab_coex_enthalpy_vap_;
+        delete [] tab_coex_enthalpy_liq_;
+        delete [] tab_coex_entropy_vap_;
+        delete [] tab_coex_entropy_liq_;
+
+        have_tab_coex_ = false;
+
+        return;
+    }
+
     void print_header(FILE *ptr_fout = stdout);
 
     /* specific Gibbs free energy in J / kg
@@ -347,6 +397,9 @@ class Lib97 {
                    double pressure_in,
                    bool flag_metastable = false);
 
+    /* pressure at coexisting phase
+     * in Pa (N / m^2) */
+    double get_coex_pressure(double temperature_in);
     /* mass density of water vapor at coexisting phase
      * in kg / m^3 */
     double get_coex_mden_vap(double temperature_in);
@@ -374,6 +427,12 @@ class Lib97 {
     double get_paramB23_pressure(double temperature_in);
     double get_paramB23_temperature(double pressure_in);
 
+
+    /* mass density in kg / m^3
+     * parametrization for region 1 */
+    double get_param1_mdensity(double temperature_in,
+                               double pressure_in);
+
     /* parametrized specific Gibbs free energy
      * and its derivatives in region 1 */
     double get_param1_gamma(double temperature_in,
@@ -399,6 +458,11 @@ class Lib97 {
      * in region 1 */
     double get_param1_temperature_ps(double pressure_in,
                                      double entropy_in);
+
+    /* mass density in kg / m^3
+     * parametrization for region 2 */
+    double get_param2_mdensity(double temperature_in,
+                               double pressure_in);
 
     /* parametrized ideal-gas part
      * of the specific Gibbs free energy
@@ -586,6 +650,38 @@ class Lib97 {
                                             double pressure_in);
     double get_param5_d2gamma_res_dtau_dtau(double temperature_in,
                                             double pressure_in);
+
+    /* find mass density which yields certain pressure
+     * with given temperature,
+     * using Newton's method for root finding */
+    bool find_root3_mdensity(double temperature_in,
+                             double pressure_in,
+                             double &mdensity_out,
+                             int sign_ini = 0);
+
+    /* find a coexisting phase
+     * based on Maxwell criterion */
+    bool find_state3_coex(double temperature_in,
+                          double &pressure_out,
+                          double &mden_vap_out,
+                          double &mden_liq_out);
+
+    /* populate table
+     * for coexisting phases */
+    void make_tab_coex(int nbin_in);
+
+    /* print out the table
+     * for coexisting phases */
+    void export_tab_coex(char *filename);
+
+    /* import table for coexisting phases
+     * from an external data file */
+    void import_tab_coex(char *filename);
+
+    /* initialize cubic spline interpolation
+     * for thermodynamic quantities
+     * at coexisting phases */
+    void set_cspline_coex();
 };
 
 } // end namespace IAPWS
