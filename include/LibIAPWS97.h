@@ -427,7 +427,6 @@ class Lib97 {
     double get_paramB23_pressure(double temperature_in);
     double get_paramB23_temperature(double pressure_in);
 
-
     /* mass density in kg / m^3
      * parametrization for region 1 */
     double get_param1_mdensity(double temperature_in,

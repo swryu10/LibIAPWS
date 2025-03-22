@@ -305,6 +305,15 @@ int main(int argc, char *argv[]) {
     print3_functions(&iapws97eos, 500., 750.);
     fprintf(stdout, "\n");
 
+    print_functions(&iapws97eos, 650., 0.255837018 * 1.0e+8);
+    fprintf(stdout, "\n");
+
+    print_functions(&iapws97eos, 650., 0.222930643 * 1.0e+8);
+    fprintf(stdout, "\n");
+
+    print_functions(&iapws97eos, 750., 0.783095639 * 1.0e+8);
+    fprintf(stdout, "\n");
+
     fprintf(stdout, "###  REGION 4  ###\n");
     fprintf(stdout, "\n");
 
