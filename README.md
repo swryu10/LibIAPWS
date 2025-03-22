@@ -1,6 +1,6 @@
 # About
 A C++ library to implement IAPWS (International Association for the Properties of Water and Steam) formulation.
-Detailed documentations can be found in IAPWS webpage : https://iapws.org/
+Detailed documentations can be found in IAPWS webpage : https://iapws.org/. Additional information is provided in the documentations at doc subdirectory.
 
 # Ingredients
 The following releases are currently implemented.
@@ -10,6 +10,9 @@ The following releases are currently implemented.
 * **IAPWS R6-95 (2018)** \
   **IAPWS::Lib95** class \
   Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use
+* **IAPWS R7-97 (2012)** \
+  **IAPWS::Lib97** class \
+  Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam
 * **IAPWS R10-06 (2009)** \
   **IAPWS::Lib06** class \
   Revised Release on the Equation of State 2006 for H2O Ice Ih
