@@ -731,8 +731,17 @@ bool Lib95::find_root_mdensity(double temperature_in,
         double dpress_drho_prev =
             get_param_dpress_drho(mden_prev, temperature_in);
 
-        mden_now = mden_prev +
-            0.5 * (pressure_in - press_prev) / dpress_drho_prev;
+        if (pressure_in < pressure_crit_) {
+            double dmden = mden_prev - mdensity_crit_;
+            mden_now = mden_prev +
+                0.5 * dmden *
+                tanh((pressure_in - press_prev) /
+                     (dpress_drho_prev * dmden));
+        } else {
+            mden_now = mden_prev +
+                0.5 * (pressure_in - press_prev) /
+                dpress_drho_prev;
+        }
         press_now =
             get_param_pressure(mden_now, temperature_in);
 
@@ -825,7 +834,8 @@ bool Lib95::find_state_coex(double temperature_in,
 }
 
 void Lib95::make_tab_coex(int nbin_in,
-                          double temperature_max) {
+                          double temperature_max,
+                          double (*ptr_pressure_sat)(double)) {
     reset_tab_coex();
 
     if (temperature_max < temperature_trip_) {
@@ -865,36 +875,45 @@ void Lib95::make_tab_coex(int nbin_in,
             delta_temp * static_cast<double>(it);
 
         if (it == 0) {
-            tab_coex_pressure_[it] = 600.;
             tab_coex_mden_vap_[it] = 0.005;
             tab_coex_mden_liq_[it] = 1100.;
         } else {
-            if (tab_coex_temperature_[it] > 640.) {
-                frac_temp[0] =
-                    (temperature_crit_ -
-                     tab_coex_temperature_[it]) /
-                    (temperature_crit_ -
-                     tab_coex_temperature_[it - 1]);
-                frac_temp[1] =
-                    (tab_coex_temperature_[it] -
-                     tab_coex_temperature_[it - 1]) /
-                    (temperature_crit_ -
-                     tab_coex_temperature_[it - 1]);
+            tab_coex_mden_vap_[it] = tab_coex_mden_vap_[it - 1];
+            tab_coex_mden_liq_[it] = tab_coex_mden_liq_[it - 1];
+        }
 
-                tab_coex_pressure_[it] =
-                    tab_coex_pressure_[it - 1] * frac_temp[0] +
-                    pressure_crit_ * frac_temp[1];
-                tab_coex_mden_vap_[it] =
-                    tab_coex_mden_vap_[it - 1] * frac_temp[0] +
-                    mdensity_crit_ * frac_temp[1];
-                tab_coex_mden_liq_[it] =
-                    tab_coex_mden_liq_[it - 1] * frac_temp[0] +
-                    mdensity_crit_ * frac_temp[1];
+        if (ptr_pressure_sat == NULL) {
+            if (it == 0) {
+                tab_coex_pressure_[it] = 600.;
             } else {
-                tab_coex_pressure_[it] = tab_coex_pressure_[it - 1];
-                tab_coex_mden_vap_[it] = tab_coex_mden_vap_[it - 1];
-                tab_coex_mden_liq_[it] = tab_coex_mden_liq_[it - 1];
+                if (tab_coex_temperature_[it] > 640.) {
+                    frac_temp[0] =
+                        (temperature_crit_ -
+                         tab_coex_temperature_[it]) /
+                        (temperature_crit_ -
+                         tab_coex_temperature_[it - 1]);
+                    frac_temp[1] =
+                        (tab_coex_temperature_[it] -
+                         tab_coex_temperature_[it - 1]) /
+                        (temperature_crit_ -
+                         tab_coex_temperature_[it - 1]);
+
+                    tab_coex_pressure_[it] =
+                        tab_coex_pressure_[it - 1] * frac_temp[0] +
+                        pressure_crit_ * frac_temp[1];
+                    tab_coex_mden_vap_[it] =
+                        tab_coex_mden_vap_[it - 1] * frac_temp[0] +
+                        mdensity_crit_ * frac_temp[1];
+                    tab_coex_mden_liq_[it] =
+                        tab_coex_mden_liq_[it - 1] * frac_temp[0] +
+                        mdensity_crit_ * frac_temp[1];
+                } else {
+                    tab_coex_pressure_[it] = tab_coex_pressure_[it - 1];
+                }
             }
+        } else {
+            tab_coex_pressure_[it] =
+                (*ptr_pressure_sat)(tab_coex_temperature_[it]);
         }
 
         bool found_state =

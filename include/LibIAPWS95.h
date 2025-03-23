@@ -237,7 +237,8 @@ class Lib95 {
     /* populate table
      * for coexisting phases */
     void make_tab_coex(int nbin_in,
-                       double temperature_max);
+                       double temperature_max,
+                       double (*ptr_pressure_sat)(double) = NULL);
 
     /* print out the table
      * for coexisting phases */

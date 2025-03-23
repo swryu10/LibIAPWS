@@ -15,6 +15,7 @@ project(make_tab_IAPWS95)
 add_executable(make_tab_IAPWS95 ${PROJECT_SOURCE_DIR}/src/make_tab_IAPWS95.cpp
                                 ${PROJECT_SOURCE_DIR}/src/BaseIAPWS.cpp
                                 ${PROJECT_SOURCE_DIR}/src/LibIAPWS95.cpp
+                                ${PROJECT_SOURCE_DIR}/src/LibIAPWS97.cpp
                                 ${PROJECT_SOURCE_DIR}/src/InterCSpline.cpp)
 set_target_properties(make_tab_IAPWS95 PROPERTIES OUTPUT_NAME "make_tab_IAPWS95.exec")
 target_include_directories(make_tab_IAPWS95 PUBLIC "${PROJECT_SOURCE_DIR}/include")
