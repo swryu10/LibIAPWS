@@ -2831,7 +2831,7 @@ void Lib97::export_tab_coex(char *filename) {
         return;
     }
 
-    fprintf(ptr_fout, "# table for coexisting phases in IAPWS95\n");
+    fprintf(ptr_fout, "# table for coexisting phases in IAPWS97\n");
     fprintf(ptr_fout, "nbin_coex    %d\n", nbin_coex_);
     fprintf(ptr_fout, "temperature_coex_min    %e\n",
             temperature_coex_min_);

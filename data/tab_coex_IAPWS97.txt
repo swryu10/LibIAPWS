@@ -1,4 +1,4 @@
-# table for coexisting phases in IAPWS95
+# table for coexisting phases in IAPWS97
 nbin_coex    100
 temperature_coex_min    6.231500e+02
 temperature_coex_max    6.470960e+02
