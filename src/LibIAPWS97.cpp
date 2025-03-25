@@ -24,8 +24,6 @@ double Lib97::get_param_g(double temperature_in,
 
     double fn_gamma;
 
-    bool found_mden = false;
-    int sign_ini = 0;
     double mdensity = 0.;
 
     double g;
@@ -48,28 +46,10 @@ double Lib97::get_param_g(double temperature_in,
         g = const_R_spec_ * temperature_in * fn_gamma;
         break;
       case 3 :
-        if (pressure_in < pressure_crit_) {
-            double temp_sat =
-                get_param4_sat_temperature(pressure_in);
-            if (temperature_in > temp_sat) {
-                sign_ini = 1;
-            } else {
-                sign_ini = -1;
-            }
-        } else {
-            sign_ini = 1;
-        }
-        found_mden =
-            find_root3_mdensity(temperature_in,
-                                pressure_in,
-                                mdensity,
-                                sign_ini);
-        if (found_mden) {
-            g = get_param3_g(mdensity,
-                             temperature_in);
-        } else {
-            g = 0.;
-        }
+        mdensity = get_param3_mdensity(temperature_in,
+                                       pressure_in);
+        g = get_param3_g(mdensity,
+                         temperature_in);
         break;
       case 5 :
         fn_gamma =
@@ -96,8 +76,6 @@ double Lib97::get_param_vol_spec(double temperature_in,
     double ppi = 0.;
     double fn_dgamma_dppi;
 
-    bool found_mden = false;
-    int sign_ini = 0;
     double mdensity = 0.;
 
     double vol_spec;
@@ -132,27 +110,9 @@ double Lib97::get_param_vol_spec(double temperature_in,
             ppi * fn_dgamma_dppi;
         break;
       case 3 :
-        if (pressure_in < pressure_crit_) {
-            double temp_sat =
-                get_param4_sat_temperature(pressure_in);
-            if (temperature_in > temp_sat) {
-                sign_ini = 1;
-            } else {
-                sign_ini = -1;
-            }
-        } else {
-            sign_ini = 1;
-        }
-        found_mden =
-            find_root3_mdensity(temperature_in,
-                                pressure_in,
-                                mdensity,
-                                sign_ini);
-        if (found_mden) {
-            vol_spec = 1. / mdensity;
-        } else {
-            vol_spec = 0.;
-        }
+        mdensity = get_param3_mdensity(temperature_in,
+                                       pressure_in);
+        vol_spec = 1. / mdensity;
         break;
       case 5 :
         ppi = pressure_in / pressure_ref5_;
@@ -196,8 +156,6 @@ double Lib97::get_param_erg_int(double temperature_in,
     double fn_dgamma_dtau;
     double fn_dgamma_dppi;
 
-    bool found_mden = false;
-    int sign_ini = 0;
     double mdensity = 0.;
 
     double erg_int;
@@ -245,29 +203,11 @@ double Lib97::get_param_erg_int(double temperature_in,
              ppi * fn_dgamma_dppi);
         break;
       case 3 :
-        if (pressure_in < pressure_crit_) {
-            double temp_sat =
-                get_param4_sat_temperature(pressure_in);
-            if (temperature_in > temp_sat) {
-                sign_ini = 1;
-            } else {
-                sign_ini = -1;
-            }
-        } else {
-            sign_ini = 1;
-        }
-        found_mden =
-            find_root3_mdensity(temperature_in,
-                                pressure_in,
-                                mdensity,
-                                sign_ini);
-        if (found_mden) {
-            erg_int =
-                get_param3_erg_int(mdensity,
-                                   temperature_in);
-        } else {
-            erg_int = 0.;
-        }
+        mdensity = get_param3_mdensity(temperature_in,
+                                       pressure_in);
+        erg_int =
+            get_param3_erg_int(mdensity,
+                               temperature_in);
         break;
       case 5 :
         tau = temperature_ref5_ / temperature_in;
@@ -305,8 +245,6 @@ double Lib97::get_param_entropy(double temperature_in,
     double fn_gamma;
     double fn_dgamma_dtau;
 
-    bool found_mden = false;
-    int sign_ini = 0;
     double mdensity = 0.;
 
     double entropy;
@@ -349,29 +287,11 @@ double Lib97::get_param_entropy(double temperature_in,
             (tau * fn_dgamma_dtau - fn_gamma);
         break;
       case 3 :
-        if (pressure_in < pressure_crit_) {
-            double temp_sat =
-                get_param4_sat_temperature(pressure_in);
-            if (temperature_in > temp_sat) {
-                sign_ini = 1;
-            } else {
-                sign_ini = -1;
-            }
-        } else {
-            sign_ini = 1;
-        }
-        found_mden =
-            find_root3_mdensity(temperature_in,
-                                pressure_in,
-                                mdensity,
-                                sign_ini);
-        if (found_mden) {
-            entropy =
-                get_param3_entropy(mdensity,
-                                   temperature_in);
-        } else {
-            entropy = 0.;
-        }
+        mdensity = get_param3_mdensity(temperature_in,
+                                       pressure_in);
+        entropy =
+            get_param3_entropy(mdensity,
+                               temperature_in);
         break;
       case 5 :
         tau = temperature_ref5_ / temperature_in;
@@ -406,8 +326,6 @@ double Lib97::get_param_enthalpy(double temperature_in,
     double tau = 0.;
     double fn_dgamma_dtau;
 
-    bool found_mden = false;
-    int sign_ini = 0;
     double mdensity = 0.;
 
     double enthalpy;
@@ -440,29 +358,11 @@ double Lib97::get_param_enthalpy(double temperature_in,
             tau * fn_dgamma_dtau;
         break;
       case 3 :
-        if (pressure_in < pressure_crit_) {
-            double temp_sat =
-                get_param4_sat_temperature(pressure_in);
-            if (temperature_in > temp_sat) {
-                sign_ini = 1;
-            } else {
-                sign_ini = -1;
-            }
-        } else {
-            sign_ini = 1;
-        }
-        found_mden =
-            find_root3_mdensity(temperature_in,
-                                pressure_in,
-                                mdensity,
-                                sign_ini);
-        if (found_mden) {
-            enthalpy =
-                get_param3_enthalpy(mdensity,
-                                    temperature_in);
-        } else {
-            enthalpy = 0.;
-        }
+        mdensity = get_param3_mdensity(temperature_in,
+                                       pressure_in);
+        enthalpy =
+            get_param3_enthalpy(mdensity,
+                                temperature_in);
         break;
       case 5 :
         tau = temperature_ref5_ / temperature_in;
@@ -492,8 +392,6 @@ double Lib97::get_param_heat_c_p(double temperature_in,
     double tau = 0.;
     double fn_d2gamma_dtau_dtau;
 
-    bool found_mden = false;
-    int sign_ini = 0;
     double mdensity = 0.;
 
     double heat_c_p;
@@ -524,29 +422,11 @@ double Lib97::get_param_heat_c_p(double temperature_in,
             -const_R_spec_ * tau * tau * fn_d2gamma_dtau_dtau;
         break;
       case 3 :
-        if (pressure_in < pressure_crit_) {
-            double temp_sat =
-                get_param4_sat_temperature(pressure_in);
-            if (temperature_in > temp_sat) {
-                sign_ini = 1;
-            } else {
-                sign_ini = -1;
-            }
-        } else {
-            sign_ini = 1;
-        }
-        found_mden =
-            find_root3_mdensity(temperature_in,
-                                pressure_in,
-                                mdensity,
-                                sign_ini);
-        if (found_mden) {
-            heat_c_p =
-                get_param3_heat_c_p(mdensity,
-                                    temperature_in);
-        } else {
-            heat_c_p = 0.;
-        }
+        mdensity = get_param3_mdensity(temperature_in,
+                                       pressure_in);
+        heat_c_p =
+            get_param3_heat_c_p(mdensity,
+                                temperature_in);
         break;
       case 5 :
         tau = temperature_ref5_ / temperature_in;
@@ -578,8 +458,6 @@ double Lib97::get_param_heat_c_v(double temperature_in,
     double fn_d2gamma_dppi_dtau;
     double fn_d2gamma_dtau_dtau;
 
-    bool found_mden = false;
-    int sign_ini = 0;
     double mdensity = 0.;
 
     double heat_c_v;
@@ -648,29 +526,11 @@ double Lib97::get_param_heat_c_v(double temperature_in,
             fn_d2gamma_dppi_dppi;
         break;
       case 3 :
-        if (pressure_in < pressure_crit_) {
-            double temp_sat =
-                get_param4_sat_temperature(pressure_in);
-            if (temperature_in > temp_sat) {
-                sign_ini = 1;
-            } else {
-                sign_ini = -1;
-            }
-        } else {
-            sign_ini = 1;
-        }
-        found_mden =
-            find_root3_mdensity(temperature_in,
-                                pressure_in,
-                                mdensity,
-                                sign_ini);
-        if (found_mden) {
-            heat_c_v =
-                get_param3_heat_c_v(mdensity,
-                                    temperature_in);
-        } else {
-            heat_c_v = 0.;
-        }
+        mdensity = get_param3_mdensity(temperature_in,
+                                       pressure_in);
+        heat_c_v =
+            get_param3_heat_c_v(mdensity,
+                                temperature_in);
         break;
       case 5 :
         tau = temperature_ref5_ / temperature_in;
@@ -794,28 +654,10 @@ double Lib97::get_param_speed_sound(double temperature_in,
         v_s = sqrt(v2_s);
         break;
       case 3 :
-        if (pressure_in < pressure_crit_) {
-            double temp_sat =
-                get_param4_sat_temperature(pressure_in);
-            if (temperature_in > temp_sat) {
-                sign_ini = 1;
-            } else {
-                sign_ini = -1;
-            }
-        } else {
-            sign_ini = 1;
-        }
-        found_mden =
-            find_root3_mdensity(temperature_in,
-                                pressure_in,
-                                mdensity,
-                                sign_ini);
-        if (found_mden) {
-            v_s = get_param3_speed_sound(mdensity,
-                                         temperature_in);
-        } else {
-            v_s = 0.;
-        }
+        mdensity = get_param3_mdensity(temperature_in,
+                                       pressure_in);
+        v_s = get_param3_speed_sound(mdensity,
+                                     temperature_in);
         break;
       case 5 :
         tau = temperature_ref5_ / temperature_in;
@@ -1975,6 +1817,45 @@ double Lib97::get_param2c_temperature_ps(double pressure_in,
     }
 
     return temperature_ref2cTps_ * fn_theta;
+}
+
+double Lib97::get_param3_mdensity(double temperature_in,
+                                  double pressure_in) {
+    int sign_ini = 0;
+    double mdensity_out = 0.;
+
+    if (pressure_in < pressure_crit_) {
+        double temp_sat =
+            get_param4_sat_temperature(pressure_in);
+        if (temperature_in > temp_sat) {
+            sign_ini = 1;
+        } else {
+            sign_ini = -1;
+        }
+    } else {
+        double temp_b2 =
+            get_paramB23_temperature(pressure_in);
+        double mden_vap =
+            get_param2_mdensity(temp_b2,
+                                pressure_in);
+        double mden_liq =
+            get_param1_mdensity(temperature_low3_,
+                                pressure_in);
+        mdensity_out =
+            mden_vap * (temperature_in - temperature_low3_) /
+                       (temp_b2 - temperature_low3_) +
+            mden_liq * (temp_b2 - temperature_in) /
+                       (temp_b2 - temperature_low3_);
+        sign_ini = 0;
+    }
+
+    bool found_mden =
+        find_root3_mdensity(temperature_in,
+                            pressure_in,
+                            mdensity_out,
+                            sign_ini);
+
+    return mdensity_out;
 }
 
 double Lib97::get_param3_f(double mdensity_in,

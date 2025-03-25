@@ -554,6 +554,10 @@ class Lib97 {
     double get_param2c_temperature_ps(double pressure_in,
                                       double entropy_in);
 
+    /* mass density in kg / m^3
+     * root-finding for region 3 */
+    double get_param3_mdensity(double temperature_in,
+                               double pressure_in);
     /* specific Helmholtz free energy in J / kg
      * parametrization for region 3 */
     double get_param3_f(double mdensity_in,
