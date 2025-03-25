@@ -114,15 +114,14 @@ int main(int argc, char *argv[]) {
     }
 
     fprintf(stderr, "temperature (K)\n");
-    fprintf(stdout, "  pressure (Pa)  ");
-    fprintf(stdout, "n_reg  ");
-    fprintf(stdout, "diff_mdensity  ");
-    fprintf(stdout, "diff_erg_int  ");
-    fprintf(stdout, "diff_entropy  ");
-    fprintf(stdout, "diff_enthalpy  ");
-    fprintf(stdout, "diff_heat_c_p  ");
-    fprintf(stdout, "diff_heat_c_v");
-    fprintf(stdout, "\n");
+    fprintf(stdout, "  pressure (Pa)");
+    fprintf(stdout, "  n_reg");
+    fprintf(stdout, "  diff_mdensity");
+    fprintf(stdout, "  diff_erg_int");
+    fprintf(stdout, "  diff_entropy");
+    fprintf(stdout, "  diff_enthalpy");
+    fprintf(stdout, "  diff_heat_c_p");
+    fprintf(stdout, "  diff_heat_c_v\n");
     for (int it = 0; it <= nbin_temperature; it++) {
         fprintf(stdout, "  %e\n", temperature_bin[it]);
         for (int ip = 0; ip <= nbin_pressure; ip++) {
@@ -250,6 +249,81 @@ int main(int argc, char *argv[]) {
                tab_diff_heat_c_v,
                fname_diff_heat_c_v);
 
+    int nbin_coex_temp = 800;
+    double coex_temp_min = 273.2;
+    double coex_temp_max = 647.;
+    double coex_d_temp =
+        (coex_temp_max - coex_temp_min) /
+        static_cast<double>(nbin_coex_temp);
+    double *coex_temp_bin =
+        new double[nbin_coex_temp + 1];
+
+    char fname_diff_coex[100];
+    strcpy(fname_diff_coex,
+           "./diff_coex_IAPWS95_97.txt");
+    FILE *ptr_fout = fopen(fname_diff_coex, "w");
+
+    fprintf(ptr_fout, "# temperature (K)");
+    fprintf(ptr_fout, "  diff_coex_pressure");
+    fprintf(ptr_fout, "  diff_coex_mden_vap");
+    fprintf(ptr_fout, "  diff_coex_mden_liq");
+    fprintf(ptr_fout, "  diff_coex_entropy_vap");
+    fprintf(ptr_fout, "  diff_coex_entropy_liq\n");
+    for (int it = 0; it <= nbin_coex_temp; it++) {
+        coex_temp_bin[it] =
+            coex_temp_min +
+            coex_d_temp * static_cast<double>(it);
+
+        double coex_press97 =
+            iapws97eos.get_coex_pressure(coex_temp_bin[it]);
+        double coex_press95 =
+            iapws95eos.get_coex_pressure(coex_temp_bin[it]);
+        double diff_coex_press =
+            (coex_press97 - coex_press95) /
+            (coex_press97 + coex_press95);
+
+        double coex_mden_vap97 =
+            iapws97eos.get_coex_mden_vap(coex_temp_bin[it]);
+        double coex_mden_vap95 =
+            iapws95eos.get_coex_mden_vap(coex_temp_bin[it]);
+        double diff_coex_mden_vap =
+            (coex_mden_vap97 - coex_mden_vap95) /
+            (coex_mden_vap97 + coex_mden_vap95);
+
+        double coex_mden_liq97 =
+            iapws97eos.get_coex_mden_liq(coex_temp_bin[it]);
+        double coex_mden_liq95 =
+            iapws95eos.get_coex_mden_liq(coex_temp_bin[it]);
+        double diff_coex_mden_liq =
+            (coex_mden_liq97 - coex_mden_liq95) /
+            (coex_mden_liq97 + coex_mden_liq95);
+
+        double coex_entropy_vap97 =
+            iapws97eos.get_coex_entropy_vap(coex_temp_bin[it]);
+        double coex_entropy_vap95 =
+            iapws95eos.get_coex_entropy_vap(coex_temp_bin[it]);
+        double diff_coex_entropy_vap =
+            (coex_entropy_vap97 - coex_entropy_vap95) /
+            (coex_entropy_vap97 + coex_entropy_vap95);
+
+        double coex_entropy_liq97 =
+            iapws97eos.get_coex_entropy_liq(coex_temp_bin[it]);
+        double coex_entropy_liq95 =
+            iapws95eos.get_coex_entropy_liq(coex_temp_bin[it]);
+        double diff_coex_entropy_liq =
+            (coex_entropy_liq97 - coex_entropy_liq95) /
+            (coex_entropy_liq97 + coex_entropy_liq95);
+
+        fprintf(ptr_fout, "    %e    %e",
+            coex_temp_bin[it], diff_coex_press);
+        fprintf(ptr_fout, "    %e    %e",
+            diff_coex_mden_vap, diff_coex_mden_liq);
+        fprintf(ptr_fout, "    %e    %e\n",
+            diff_coex_entropy_vap, diff_coex_entropy_liq);
+    }
+
+    fclose(ptr_fout);
+
     for (int it = 0; it <= nbin_temperature; it++) {
         delete [] tab_diff_mdensity[it];
         delete [] tab_diff_erg_int[it];
@@ -264,6 +338,8 @@ int main(int argc, char *argv[]) {
     delete [] tab_diff_enthalpy;
     delete [] tab_diff_heat_c_p;
     delete [] tab_diff_heat_c_v;
+
+    delete [] coex_temp_bin;
 
     return 0;
 }
