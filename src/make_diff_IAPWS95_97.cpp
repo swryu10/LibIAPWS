@@ -5,6 +5,35 @@
 #include"LibIAPWS95.h"
 #include"LibIAPWS97.h"
 
+void print_diff(int nbin_t, double *t_bin,
+                int nbin_p, double *p_bin,
+                double **tab_diff,
+                char *filename_diff) {
+    FILE *ptr_fout = fopen(filename_diff, "w");
+    if (ptr_fout == NULL) {
+        return;
+    }
+
+    for (int it = 0; it <= nbin_t; it++) {
+        for (int ip = 0; ip <= nbin_p; ip++) {
+            fprintf(ptr_fout, "    %e    %e    ",
+                    t_bin[it], p_bin[ip]);
+            fprintf(ptr_fout, "%e\n",
+                    tab_diff[it][ip]);
+        }
+
+        if (it == nbin_t) {
+            continue;
+        }
+
+        fprintf(ptr_fout, "\n");
+    }
+
+    fclose(ptr_fout);
+
+    return;
+}
+
 int main(int argc, char *argv[]) {
     IAPWS::flag_verbose_ = true;
 
@@ -22,7 +51,7 @@ int main(int argc, char *argv[]) {
     strcpy(filename_coex97, "./tab_coex_IAPWS97.txt");
     iapws97eos.import_tab_coex(filename_coex97);
 
-    int nbin_temperature = 200;
+    int nbin_temperature = 128;
     double temperature_min = 273.15;
     double temperature_max = 2273.15;
     double d_temperature =
@@ -35,7 +64,7 @@ int main(int argc, char *argv[]) {
             d_temperature * static_cast<double>(it);
     }
 
-    int nbin_pressure = 100;
+    int nbin_pressure = 256;
     double pressure_min = 611.657;
     double pressure_max = 99. * 1.0e+6;
     double *pressure_bin =
@@ -90,6 +119,9 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "diff_mdensity  ");
     fprintf(stdout, "diff_erg_int  ");
     fprintf(stdout, "diff_entropy  ");
+    fprintf(stdout, "diff_enthalpy  ");
+    fprintf(stdout, "diff_heat_c_p  ");
+    fprintf(stdout, "diff_heat_c_v");
     fprintf(stdout, "\n");
     for (int it = 0; it <= nbin_temperature; it++) {
         fprintf(stdout, "  %e\n", temperature_bin[it]);
@@ -169,6 +201,54 @@ int main(int argc, char *argv[]) {
             fprintf(stdout, "\n");
         }
     }
+
+    char fname_diff_mdensity[100];
+    strcpy(fname_diff_mdensity,
+           "./diff_IAPWS95_97_mdensity.txt");
+    print_diff(nbin_temperature, temperature_bin,
+               nbin_pressure, pressure_bin,
+               tab_diff_mdensity,
+               fname_diff_mdensity);
+
+    char fname_diff_entropy[100];
+    strcpy(fname_diff_entropy,
+           "./diff_IAPWS95_97_entropy.txt");
+    print_diff(nbin_temperature, temperature_bin,
+               nbin_pressure, pressure_bin,
+               tab_diff_entropy,
+               fname_diff_entropy);
+
+    char fname_diff_enthalpy[100];
+    strcpy(fname_diff_enthalpy,
+           "./diff_IAPWS95_97_enthalpy.txt");
+    print_diff(nbin_temperature, temperature_bin,
+               nbin_pressure, pressure_bin,
+               tab_diff_enthalpy,
+               fname_diff_enthalpy);
+
+    char fname_diff_erg_int[100];
+    strcpy(fname_diff_erg_int,
+           "./diff_IAPWS95_97_erg_int.txt");
+    print_diff(nbin_temperature, temperature_bin,
+               nbin_pressure, pressure_bin,
+               tab_diff_erg_int,
+               fname_diff_erg_int);
+
+    char fname_diff_heat_c_p[100];
+    strcpy(fname_diff_heat_c_p,
+           "./diff_IAPWS95_97_heat_c_p.txt");
+    print_diff(nbin_temperature, temperature_bin,
+               nbin_pressure, pressure_bin,
+               tab_diff_heat_c_p,
+               fname_diff_heat_c_p);
+
+    char fname_diff_heat_c_v[100];
+    strcpy(fname_diff_heat_c_v,
+           "./diff_IAPWS95_97_heat_c_v.txt");
+    print_diff(nbin_temperature, temperature_bin,
+               nbin_pressure, pressure_bin,
+               tab_diff_heat_c_v,
+               fname_diff_heat_c_v);
 
     for (int it = 0; it <= nbin_temperature; it++) {
         delete [] tab_diff_mdensity[it];
