@@ -1833,19 +1833,28 @@ double Lib97::get_param3_mdensity(double temperature_in,
             sign_ini = -1;
         }
     } else {
-        double temp_b2 =
-            get_paramB23_temperature(pressure_in);
-        double mden_vap =
-            get_param2_mdensity(temp_b2,
-                                pressure_in);
-        double mden_liq =
+        double mden_end_liq =
             get_param1_mdensity(temperature_low3_,
                                 pressure_in);
-        mdensity_out =
-            mden_vap * (temperature_in - temperature_low3_) /
-                       (temp_b2 - temperature_low3_) +
-            mden_liq * (temp_b2 - temperature_in) /
-                       (temp_b2 - temperature_low3_);
+        if (temperature_in < temperature_crit_) {
+            double mden_sat_liq =
+                get_coex_mden_liq(temperature_in);
+            mdensity_out = 0.5 *
+                (mden_sat_liq + mden_end_liq);
+        } else {
+            double temp_b2 =
+                get_paramB23_temperature(pressure_in);
+            double mden_end_vap =
+                get_param2_mdensity(temp_b2,
+                                    pressure_in);
+            mdensity_out =
+                mden_end_vap * (temperature_in -
+                                temperature_low3_) /
+                               (temp_b2 - temperature_low3_) +
+                mden_end_liq * (temp_b2 - temperature_in) /
+                               (temp_b2 - temperature_low3_);
+        }
+
         sign_ini = 0;
     }
 
