@@ -64,17 +64,17 @@ int main(int argc, char *argv[]) {
             d_temperature * static_cast<double>(it);
     }
 
-    int nbin_pressure = 256;
+    int nbin_pressure = 128;
     double pressure_min = 611.657;
     double pressure_max = 99. * 1.0e+6;
     double *pressure_bin =
         new double[nbin_pressure + 1];
     double d_pressure =
-        log(pressure_max / pressure_min) /
-        static_cast<double>(nbin_temperature);
+        log(pressure_max / pressure_min);
     for (int ip = 0; ip <= nbin_pressure; ip++) {
         pressure_bin[ip] = pressure_min *
-            exp(d_pressure * static_cast<double>(ip));
+            exp(d_pressure * static_cast<double>(ip) /
+                static_cast<double>(nbin_pressure));
     }
 
     double **tab_diff_mdensity =

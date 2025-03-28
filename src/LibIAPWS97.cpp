@@ -2446,16 +2446,20 @@ bool Lib97::find_root3_mdensity(double temperature_in,
                                 double &mdensity_out,
                                 int sign_ini) {
     double mden_now = 0.;
+
+    double pressure_in2 =
+        get_paramB23_pressure(temperature_in);
+    double mden_end_vap =
+        get_param2_mdensity(temperature_in,
+                            pressure_in2);
+    double mden_end_liq =
+        get_param1_mdensity(temperature_low3_,
+                            pressure_in);
+
     if (sign_ini > 0) {
-        double pressure_in2 =
-            get_paramB23_pressure(temperature_in);
-        mden_now =
-            get_param2_mdensity(temperature_in,
-                                pressure_in2);
+        mden_now = mden_end_vap;
     } else if (sign_ini < 0) {
-        mden_now =
-            get_param1_mdensity(temperature_low3_,
-                                pressure_in);
+        mden_now = mden_end_liq;
     } else {
         mden_now = mdensity_out;
     }
@@ -2474,16 +2478,23 @@ bool Lib97::find_root3_mdensity(double temperature_in,
         double dpress_drho_prev =
             get_param3_dpress_drho(mden_prev, temperature_in);
 
+        double d_mden_slope =
+            (pressure_in - press_prev) / dpress_drho_prev;
         if (pressure_in < pressure_crit_) {
-            double dmden = mden_prev - mdensity_crit_;
+            double d_mden_crit =
+                mdensity_crit_ - mden_prev;
             mden_now = mden_prev +
-                0.5 * dmden *
-                tanh((pressure_in - press_prev) /
-                     (dpress_drho_prev * dmden));
+                0.5 * d_mden_crit *
+                tanh(d_mden_slope / d_mden_crit);
         } else {
             mden_now = mden_prev +
                 0.5 * (pressure_in - press_prev) /
                 dpress_drho_prev;
+            if (mden_now > mden_end_liq) {
+                mden_now = 0.99 * mden_end_liq;
+            } else if (mden_now < mden_end_vap) {
+                mden_now = 1.01 * mden_end_vap;
+            }
         }
         press_now =
             get_param3_pressure(mden_now, temperature_in);
