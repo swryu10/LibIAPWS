@@ -134,6 +134,19 @@ void print3a_temperature_ph(IAPWS::Lib97 *ptr_eos,
     return;
 }
 
+void print3b_temperature_ph(IAPWS::Lib97 *ptr_eos,
+                            double pressure_in,
+                            double enthalpy_in) {
+    fprintf(stdout, "  pressure = %f Pa\n", pressure_in);
+    fprintf(stdout, "  enthalpy = %f J / kg\n", enthalpy_in);
+
+    fprintf(stdout, "    T = %.9e degK\n",
+        ptr_eos->get_param3b_temperature_ph(pressure_in,
+                                            enthalpy_in));
+
+    return;
+}
+
 void print4_sat_pressure(IAPWS::Lib97 *ptr_eos,
                          double temperature_in) {
     fprintf(stdout, "  temperature = %f degK\n", temperature_in);
@@ -335,6 +348,16 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "\n");
     print3a_temperature_ph(&iapws97eos,
                            100. * 1.0e+6, 2100. * 1.0e+3);
+    fprintf(stdout, "\n");
+
+    print3b_temperature_ph(&iapws97eos,
+                           20. * 1.0e+6, 2500. * 1.0e+3);
+    fprintf(stdout, "\n");
+    print3b_temperature_ph(&iapws97eos,
+                           50. * 1.0e+6, 2400. * 1.0e+3);
+    fprintf(stdout, "\n");
+    print3b_temperature_ph(&iapws97eos,
+                           100. * 1.0e+6, 2700. * 1.0e+3);
     fprintf(stdout, "\n");
 
     fprintf(stdout, "###  REGION 4  ###\n");
