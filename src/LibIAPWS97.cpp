@@ -2168,6 +2168,44 @@ double Lib97::get_param3_d2phi_dtau_dtau(double mdensity_in,
     return d2phi_dtau_dtau;
 }
 
+double Lib97::get_param3a_temperature_ph(double pressure_in,
+                                         double enthalpy_in) {
+    double ppi = pressure_in / pressure_ref3aTph_;
+    double eta = enthalpy_in / enthalpy_ref3aTph_;
+
+    double fn_theta = 0.;
+    for (int i = 1; i <= 31; i++) {
+        double ppi_pow_I =
+            get_pow_int(ppi + 0.240, coeff3aTph_I_[i]);
+        double eta_pow_J =
+            get_pow_int(eta - 0.615, coeff3aTph_J_[i]);
+
+        fn_theta +=
+            coeff3aTph_n_[i] * ppi_pow_I * eta_pow_J;
+    }
+
+    return temperature_ref3aTph_ * fn_theta;
+}
+
+double Lib97::get_param3b_temperature_ph(double pressure_in,
+                                         double enthalpy_in) {
+    double ppi = pressure_in / pressure_ref3bTph_;
+    double eta = enthalpy_in / enthalpy_ref3bTph_;
+
+    double fn_theta = 0.;
+    for (int i = 1; i <= 33; i++) {
+        double ppi_pow_I =
+            get_pow_int(ppi + 0.298, coeff3bTph_I_[i]);
+        double eta_pow_J =
+            get_pow_int(eta - 0.720, coeff3bTph_J_[i]);
+
+        fn_theta +=
+            coeff3bTph_n_[i] * ppi_pow_I * eta_pow_J;
+    }
+
+    return temperature_ref3bTph_ * fn_theta;
+}
+
 double Lib97::get_param4_sat_pressure(double temperature_in) {
     double fn_tau = temperature_in / temperature_ref4_;
     double fn_theta =
@@ -4292,6 +4330,125 @@ void Lib97::set_coefficients() {
     coeff3_n_[38] = 0.80964802996215 * 1.0e-4;
     coeff3_n_[39] = -0.16557679795037 * 1.0e-3;
     coeff3_n_[40] = -0.44923899061815 * 1.0e-4;
+
+    temperature_ref3aTph_ = 760.;
+    pressure_ref3aTph_ = 100. * 1.0e+6;
+    enthalpy_ref3aTph_ = 2300. * 1.0e+3;
+
+    coeff3aTph_I_[0] = 0;
+    // backward T(p,h) coefficient region 3a I_i
+    coeff3aTph_I_[1] = -12;
+    coeff3aTph_I_[2] = -12;
+    coeff3aTph_I_[3] = -12;
+    coeff3aTph_I_[4] = -12;
+    coeff3aTph_I_[5] = -12;
+    coeff3aTph_I_[6] = -12;
+    coeff3aTph_I_[7] = -12;
+    coeff3aTph_I_[8] = -12;
+    coeff3aTph_I_[9] = -10;
+    coeff3aTph_I_[10] = -10;
+    coeff3aTph_I_[11] = -10;
+    coeff3aTph_I_[12] = -8;
+    coeff3aTph_I_[13] = -8;
+    coeff3aTph_I_[14] = -8;
+    coeff3aTph_I_[15] = -8;
+    coeff3aTph_I_[16] = -5;
+    coeff3aTph_I_[17] = -3;
+    coeff3aTph_I_[18] = -2;
+    coeff3aTph_I_[19] = -2;
+    coeff3aTph_I_[20] = -2;
+    coeff3aTph_I_[21] = -1;
+    coeff3aTph_I_[22] = -1;
+    coeff3aTph_I_[23] = 0;
+    coeff3aTph_I_[24] = 0;
+    coeff3aTph_I_[25] = 1;
+    coeff3aTph_I_[26] = 3;
+    coeff3aTph_I_[27] = 3;
+    coeff3aTph_I_[28] = 4;
+    coeff3aTph_I_[29] = 4;
+    coeff3aTph_I_[30] = 10;
+    coeff3aTph_I_[31] = 12;
+
+    coeff3aTph_J_[0] = 0;
+    // backward T(p,h) coefficient region 3a J_i
+    coeff3aTph_J_[1] = 0;
+    coeff3aTph_J_[2] = 1;
+    coeff3aTph_J_[3] = 2;
+    coeff3aTph_J_[4] = 6;
+    coeff3aTph_J_[5] = 14;
+    coeff3aTph_J_[6] = 16;
+    coeff3aTph_J_[7] = 20;
+    coeff3aTph_J_[8] = 22;
+    coeff3aTph_J_[9] = 1;
+    coeff3aTph_J_[10] = 5;
+    coeff3aTph_J_[11] = 12;
+    coeff3aTph_J_[12] = 0;
+    coeff3aTph_J_[13] = 2;
+    coeff3aTph_J_[14] = 4;
+    coeff3aTph_J_[15] = 10;
+    coeff3aTph_J_[16] = 2;
+    coeff3aTph_J_[17] = 0;
+    coeff3aTph_J_[18] = 1;
+    coeff3aTph_J_[19] = 3;
+    coeff3aTph_J_[20] = 4;
+    coeff3aTph_J_[21] = 0;
+    coeff3aTph_J_[22] = 2;
+    coeff3aTph_J_[23] = 0;
+    coeff3aTph_J_[24] = 1;
+    coeff3aTph_J_[25] = 1;
+    coeff3aTph_J_[26] = 0;
+    coeff3aTph_J_[27] = 1;
+    coeff3aTph_J_[28] = 0;
+    coeff3aTph_J_[29] = 3;
+    coeff3aTph_J_[30] = 4;
+    coeff3aTph_J_[31] = 5;
+
+    coeff3aTph_n_[0] = 0.;
+    // backward T(p,h) coefficient region 3a n_i
+    coeff3aTph_n_[1] = -0.133645667811215 * 1.0e-6;
+    coeff3aTph_n_[2] = 0.455912656802978 * 1.0e-5;
+    coeff3aTph_n_[3] = -0.146294640700979 * 1.0e-4;
+    coeff3aTph_n_[4] = 0.639341312970080 * 1.0e-2;
+    coeff3aTph_n_[5] = 0.372783927268847 * 1.0e+3;
+    coeff3aTph_n_[6] = -0.718654377460447 * 1.0e+4;
+    coeff3aTph_n_[7] = 0.573494752103400 * 1.0e+6;
+    coeff3aTph_n_[8] = -0.267569329111439 * 1.0e+7;
+    coeff3aTph_n_[9] = -0.334066283302614 * 1.0e-4;
+    coeff3aTph_n_[10] = -0.245479214069597 * 1.0e-1;
+    coeff3aTph_n_[11] = 0.478087847764996 * 1.0e+2;
+    coeff3aTph_n_[12] = 0.764664131818904 * 1.0e-5;
+    coeff3aTph_n_[13] = 0.128350627676972 * 1.0e-2;
+    coeff3aTph_n_[14] = 0.171219081377331 * 1.0e-1;
+    coeff3aTph_n_[15] = -0.851007304583213 * 1.0e+1;
+    coeff3aTph_n_[16] = -0.136513461629781 * 1.0e-1;
+    coeff3aTph_n_[17] = -0.384460997596657 * 1.0e-5;
+    coeff3aTph_n_[18] = 0.337423807911655 * 1.0e-2;
+    coeff3aTph_n_[19] = -0.551624873066791;
+    coeff3aTph_n_[20] = 0.729202277107470;
+    coeff3aTph_n_[21] = -0.992522757376041 * 1.0e-2;
+    coeff3aTph_n_[22] = -0.119308831407288;
+    coeff3aTph_n_[23] = 0.793929190615421;
+    coeff3aTph_n_[24] = 0.454270731799386;
+    coeff3aTph_n_[25] = 0.209998591259910;
+    coeff3aTph_n_[26] = -0.642109823904738 * 1.0e-2;
+    coeff3aTph_n_[27] = -0.235155868604540 * 1.0e-1;
+    coeff3aTph_n_[28] = 0.252233108341612 * 1.0e-2;
+    coeff3aTph_n_[29] = -0.764885133368119 * 1.0e-2;
+    coeff3aTph_n_[30] = 0.136176427574291 * 1.0e-1;
+    coeff3aTph_n_[31] = -0.133027883575669 * 1.0e-1;
+
+    temperature_ref3bTph_ = 860.;
+    pressure_ref3bTph_ = 100. * 1.0e+6;
+    enthalpy_ref3bTph_ = 2800. * 1.0e+3;
+
+    coeff3bTph_I_[0] = 0;
+    // backward T(p,h) coefficient region 3b I_i
+
+    coeff3bTph_J_[0] = 0;
+    // backward T(p,h) coefficient region 3b J_i
+
+    coeff3bTph_n_[0] = 0.;
+    // backward T(p,h) coefficient region 3b n_i
 
     temperature_ref4_ = 1.;
     pressure_ref4_ = 1.0e+6;

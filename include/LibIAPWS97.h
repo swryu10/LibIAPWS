@@ -7,7 +7,7 @@
 
 namespace IAPWS {
 
-/* implementation of IAPWS R7-97(2012)
+/* implementation of IAPWS R7-97 (2012)
  * Revised Release on the IAPWS Industrial Formulation 1997
  * for the Thermodynamic Properties of Water and Steam */
 class Lib97 {
@@ -140,6 +140,22 @@ class Lib97 {
     int *coeff3_J_;
     double *coeff3_n_;
 
+    double temperature_ref3aTph_;
+    double pressure_ref3aTph_;
+    double enthalpy_ref3aTph_;
+
+    int *coeff3aTph_I_;
+    int *coeff3aTph_J_;
+    double *coeff3aTph_n_;
+
+    double temperature_ref3bTph_;
+    double pressure_ref3bTph_;
+    double enthalpy_ref3bTph_;
+
+    int *coeff3bTph_I_;
+    int *coeff3bTph_J_;
+    double *coeff3bTph_n_;
+
     double temperature_ref4_;
     double pressure_ref4_;
 
@@ -236,6 +252,14 @@ class Lib97 {
         coeff3_J_ = new int[41];
         coeff3_n_ = new double[41];
 
+        coeff3aTph_I_ = new int[32];
+        coeff3aTph_J_ = new int[32];
+        coeff3aTph_n_ = new double[32];
+
+        coeff3bTph_I_ = new int[34];
+        coeff3bTph_J_ = new int[34];
+        coeff3bTph_n_ = new double[34];
+
         coeff4_n_ = new double[11];
 
         coeff5_ide_J_ = new int[7];
@@ -309,6 +333,14 @@ class Lib97 {
         delete [] coeff3_I_;
         delete [] coeff3_J_;
         delete [] coeff3_n_;
+
+        delete [] coeff3aTph_I_;
+        delete [] coeff3aTph_J_;
+        delete [] coeff3aTph_n_;
+
+        delete [] coeff3bTph_I_;
+        delete [] coeff3bTph_J_;
+        delete [] coeff3bTph_n_;
 
         delete [] coeff4_n_;
 
@@ -614,6 +646,17 @@ class Lib97 {
                                         double temperature_in);
     double get_param3_d2phi_dtau_dtau(double mdensity_in,
                                       double temperature_in);
+
+    /* backward equation for temperature
+     * as function of pressure and specific enthalpy
+     * in region 3a */
+    double get_param3a_temperature_ph(double pressure_in,
+                                      double enthalpy_in);
+    /* backward equation for temperature
+     * as function of pressure and specific enthalpy
+     * in region 3b */
+    double get_param3b_temperature_ph(double pressure_in,
+                                      double enthalpy_in);
 
     /* parametrized vapor-liquid saturation pressure (in Pa)
      * as a function of saturation temperature (in degK) */
