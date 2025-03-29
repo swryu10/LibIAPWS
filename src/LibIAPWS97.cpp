@@ -2168,6 +2168,59 @@ double Lib97::get_param3_d2phi_dtau_dtau(double mdensity_in,
     return d2phi_dtau_dtau;
 }
 
+double Lib97::get_paramB3ab_enthalpy(double pressure_in) {
+    double ppi =
+        pressure_in / pressure_refB3ab_;
+
+    double eta =
+        coeffB3ab_n_[1] +
+        coeffB3ab_n_[2] * ppi +
+        coeffB3ab_n_[3] * ppi * ppi +
+        coeffB3ab_n_[4] * ppi * ppi * ppi;
+
+    return enthalpy_refB3ab_ * eta;
+}
+
+double Lib97::get_param3_temperature_ph(double pressure_in,
+                                        double enthalpy_in) {
+    double temperature_out = 0.;
+
+    if (pressure_in < pressure_crit_) {
+        double temperature_sat =
+            get_param4_sat_temperature(pressure_in);
+        double enthalpy_sat_vap =
+            get_coex_enthalpy_vap(temperature_sat);
+        double enthalpy_sat_liq =
+            get_coex_enthalpy_liq(temperature_sat);
+        if (enthalpy_in < enthalpy_sat_liq) {
+            temperature_out =
+                get_param3a_temperature_ph(pressure_in,
+                                           enthalpy_in);
+        } else if (enthalpy_in > enthalpy_sat_vap) {
+            temperature_out =
+                get_param3b_temperature_ph(pressure_in,
+                                           enthalpy_in);
+        } else {
+            temperature_out = temperature_sat;
+        }
+    } else {
+        double enthalpy_threshold =
+            get_paramB3ab_enthalpy(pressure_in);
+
+        if (enthalpy_in > enthalpy_threshold) {
+            temperature_out =
+                get_param3b_temperature_ph(pressure_in,
+                                           enthalpy_in);
+        } else {
+            temperature_out =
+                get_param3a_temperature_ph(pressure_in,
+                                           enthalpy_in);
+        }
+    }
+
+    return temperature_out;
+}
+
 double Lib97::get_param3a_temperature_ph(double pressure_in,
                                          double enthalpy_in) {
     double ppi = pressure_in / pressure_ref3aTph_;
@@ -4330,6 +4383,16 @@ void Lib97::set_coefficients() {
     coeff3_n_[38] = 0.80964802996215 * 1.0e-4;
     coeff3_n_[39] = -0.16557679795037 * 1.0e-3;
     coeff3_n_[40] = -0.44923899061815 * 1.0e-4;
+
+    pressure_refB3ab_ = 1.0e+6;
+    enthalpy_refB3ab_ = 1.0e+3;
+
+    coeffB3ab_n_[0] = 0.;
+    // coefficient boundary between regions 3a and 3b n_i
+    coeffB3ab_n_[1] = 0.201464004206875 * 1.0e+4;
+    coeffB3ab_n_[2] = 0.374696550136983 * 1.0e+1;
+    coeffB3ab_n_[3] = -0.219921901054187 * 1.0e-1;
+    coeffB3ab_n_[4] = 0.875131686009950 * 1.0e-4;
 
     temperature_ref3aTph_ = 760.;
     pressure_ref3aTph_ = 100. * 1.0e+6;

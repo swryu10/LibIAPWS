@@ -140,6 +140,11 @@ class Lib97 {
     int *coeff3_J_;
     double *coeff3_n_;
 
+    double pressure_refB3ab_;
+    double enthalpy_refB3ab_;
+
+    double *coeffB3ab_n_;
+
     double temperature_ref3aTph_;
     double pressure_ref3aTph_;
     double enthalpy_ref3aTph_;
@@ -252,6 +257,8 @@ class Lib97 {
         coeff3_J_ = new int[41];
         coeff3_n_ = new double[41];
 
+        coeffB3ab_n_ = new double[5];
+
         coeff3aTph_I_ = new int[32];
         coeff3aTph_J_ = new int[32];
         coeff3aTph_n_ = new double[32];
@@ -333,6 +340,8 @@ class Lib97 {
         delete [] coeff3_I_;
         delete [] coeff3_J_;
         delete [] coeff3_n_;
+
+        delete [] coeffB3ab_n_;
 
         delete [] coeff3aTph_I_;
         delete [] coeff3aTph_J_;
@@ -647,6 +656,15 @@ class Lib97 {
     double get_param3_d2phi_dtau_dtau(double mdensity_in,
                                       double temperature_in);
 
+    /* auxiliary equations for the boundary
+     * between Regions 3a and 3b */
+    double get_paramB3ab_enthalpy(double pressure_in);
+
+    /* backward equation for temperature
+     * as function of pressure and specific enthalpy
+     * in region 3 */
+    double get_param3_temperature_ph(double pressure_in,
+                                     double enthalpy_in);
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 3a */
