@@ -12,7 +12,7 @@ The following releases are currently implemented.
   Revised Release on the IAPWS Formulation 1995 for the Thermodynamic Properties of Ordinary Water Substance for General and Scientific Use
 * **IAPWS R7-97 (2012)** \
   **IAPWS::Lib97** class \
-  Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam
+  Revised Release on the IAPWS Industrial Formulation 1997 (IF97) for the Thermodynamic Properties of Water and Steam
 * **IAPWS R10-06 (2009)** \
   **IAPWS::Lib06** class \
   Revised Release on the Equation of State 2006 for H2O Ice Ih
@@ -22,7 +22,7 @@ The following releases are currently implemented.
 
 # Build
 This library can be built with cmake. \
-One can build at a subdirectory with the following commands. \
+In a Linux/UNIX system, one can build at a subdirectory with the following commands. \
 &ensp;$ mkdir [subdirectory name] \
 &ensp;$ cd [subdirectory name] \
 &ensp;$ cmake [directory for the LibIAPWS local repository] \
