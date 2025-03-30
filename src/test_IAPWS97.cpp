@@ -45,54 +45,28 @@ void print_functions(IAPWS::Lib97 *ptr_eos,
     return;
 }
 
-void print1_temperature_ph(IAPWS::Lib97 *ptr_eos,
-                           double pressure_in,
-                           double enthalpy_in) {
+void print_temperature_ph(IAPWS::Lib97 *ptr_eos,
+                          double pressure_in,
+                          double enthalpy_in) {
     fprintf(stdout, "  pressure = %f Pa\n", pressure_in);
     fprintf(stdout, "  enthalpy = %f J / kg\n", enthalpy_in);
 
     fprintf(stdout, "    T = %.9e degK\n",
-        ptr_eos->get_param1_temperature_ph(pressure_in,
-                                           enthalpy_in));
+        ptr_eos->get_param_temperature_ph(pressure_in,
+                                          enthalpy_in));
 
     return;
 }
 
-void print1_temperature_ps(IAPWS::Lib97 *ptr_eos,
-                           double pressure_in,
-                           double entropy_in) {
+void print_temperature_ps(IAPWS::Lib97 *ptr_eos,
+                          double pressure_in,
+                          double entropy_in) {
     fprintf(stdout, "  pressure = %f Pa\n", pressure_in);
     fprintf(stdout, "  entropy = %f J / kg / degK\n", entropy_in);
 
     fprintf(stdout, "    T = %.9e degK\n",
-        ptr_eos->get_param1_temperature_ps(pressure_in,
-                                           entropy_in));
-
-    return;
-}
-
-void print2_temperature_ph(IAPWS::Lib97 *ptr_eos,
-                           double pressure_in,
-                           double enthalpy_in) {
-    fprintf(stdout, "  pressure = %f Pa\n", pressure_in);
-    fprintf(stdout, "  enthalpy = %f J / kg\n", enthalpy_in);
-
-    fprintf(stdout, "    T = %.9e degK\n",
-        ptr_eos->get_param2_temperature_ph(pressure_in,
-                                           enthalpy_in));
-
-    return;
-}
-
-void print2_temperature_ps(IAPWS::Lib97 *ptr_eos,
-                           double pressure_in,
-                           double entropy_in) {
-    fprintf(stdout, "  pressure = %f Pa\n", pressure_in);
-    fprintf(stdout, "  entropy = %f J / kg / degK\n", entropy_in);
-
-    fprintf(stdout, "    T = %.9e degK\n",
-        ptr_eos->get_param2_temperature_ps(pressure_in,
-                                           entropy_in));
+        ptr_eos->get_param_temperature_ps(pressure_in,
+                                          entropy_in));
 
     return;
 }
@@ -117,32 +91,6 @@ void print3_functions(IAPWS::Lib97 *ptr_eos,
         ptr_eos->get_param3_heat_c_v(mdensity_in, temperature_in));
     fprintf(stdout, "    speed_sound = %.9e m / sec\n",
         ptr_eos->get_param3_speed_sound(mdensity_in, temperature_in));
-
-    return;
-}
-
-void print3_temperature_ph(IAPWS::Lib97 *ptr_eos,
-                           double pressure_in,
-                           double enthalpy_in) {
-    fprintf(stdout, "  pressure = %f Pa\n", pressure_in);
-    fprintf(stdout, "  enthalpy = %f J / kg\n", enthalpy_in);
-
-    fprintf(stdout, "    T = %.9e degK\n",
-        ptr_eos->get_param3_temperature_ph(pressure_in,
-                                           enthalpy_in));
-
-    return;
-}
-
-void print3_temperature_ps(IAPWS::Lib97 *ptr_eos,
-                           double pressure_in,
-                           double entropy_in) {
-    fprintf(stdout, "  pressure = %f Pa\n", pressure_in);
-    fprintf(stdout, "  entropy = %f J / kg / degK\n", entropy_in);
-
-    fprintf(stdout, "    T = %.9e degK\n",
-        ptr_eos->get_param3_temperature_ps(pressure_in,
-                                           entropy_in));
 
     return;
 }
@@ -229,28 +177,28 @@ int main(int argc, char *argv[]) {
     print_functions(&iapws97eos, 500., 3. * 1.0e+6);
     fprintf(stdout, "\n");
 
-    print1_temperature_ph(&iapws97eos,
-                          3. * 1.0e+6, 500. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         3. * 1.0e+6, 500. * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print1_temperature_ph(&iapws97eos,
-                          80. * 1.0e+6, 500. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         80. * 1.0e+6, 500. * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print1_temperature_ph(&iapws97eos,
-                          80. * 1.0e+6, 1500. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         80. * 1.0e+6, 1500. * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print1_temperature_ps(&iapws97eos,
-                          3. * 1.0e+6, 0.5 * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         3. * 1.0e+6, 0.5 * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print1_temperature_ps(&iapws97eos,
-                          80. * 1.0e+6, 0.5 * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         80. * 1.0e+6, 0.5 * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print1_temperature_ps(&iapws97eos,
-                          80. * 1.0e+6, 3. * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         80. * 1.0e+6, 3. * 1.0e+3);
     fprintf(stdout, "\n");
 
     fprintf(stdout, "###  REGION 2  ###\n");
@@ -274,64 +222,64 @@ int main(int argc, char *argv[]) {
     print_functions(&iapws97eos, 450., 1.5 * 1.0e+6, true);
     fprintf(stdout, "\n");
 
-    print2_temperature_ph(&iapws97eos,
-                          0.001 * 1.0e+6, 3000. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         0.001 * 1.0e+6, 3000. * 1.0e+3);
     fprintf(stdout, "\n");
-    print2_temperature_ph(&iapws97eos,
-                          3. * 1.0e+6, 3000. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         3. * 1.0e+6, 3000. * 1.0e+3);
     fprintf(stdout, "\n");
-    print2_temperature_ph(&iapws97eos,
-                          3. * 1.0e+6, 4000. * 1.0e+3);
-    fprintf(stdout, "\n");
-
-    print2_temperature_ph(&iapws97eos,
-                          5. * 1.0e+6, 3500. * 1.0e+3);
-    fprintf(stdout, "\n");
-    print2_temperature_ph(&iapws97eos,
-                          5. * 1.0e+6, 4000. * 1.0e+3);
-    fprintf(stdout, "\n");
-    print2_temperature_ph(&iapws97eos,
-                          25. * 1.0e+6, 3500. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         3. * 1.0e+6, 4000. * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print2_temperature_ph(&iapws97eos,
-                          40. * 1.0e+6, 2700. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         5. * 1.0e+6, 3500. * 1.0e+3);
     fprintf(stdout, "\n");
-    print2_temperature_ph(&iapws97eos,
-                          60. * 1.0e+6, 2700. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         5. * 1.0e+6, 4000. * 1.0e+3);
     fprintf(stdout, "\n");
-    print2_temperature_ph(&iapws97eos,
-                          60. * 1.0e+6, 3200. * 1.0e+3);
-    fprintf(stdout, "\n");
-
-    print2_temperature_ps(&iapws97eos,
-                          0.1 * 1.0e+6, 7.5 * 1.0e+3);
-    fprintf(stdout, "\n");
-    print2_temperature_ps(&iapws97eos,
-                          0.1 * 1.0e+6, 8. * 1.0e+3);
-    fprintf(stdout, "\n");
-    print2_temperature_ps(&iapws97eos,
-                          2.5 * 1.0e+6, 8. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         25. * 1.0e+6, 3500. * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print2_temperature_ps(&iapws97eos,
-                          8. * 1.0e+6, 6. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         40. * 1.0e+6, 2700. * 1.0e+3);
     fprintf(stdout, "\n");
-    print2_temperature_ps(&iapws97eos,
-                          8. * 1.0e+6, 7.5 * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         60. * 1.0e+6, 2700. * 1.0e+3);
     fprintf(stdout, "\n");
-    print2_temperature_ps(&iapws97eos,
-                          90. * 1.0e+6, 6. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         60. * 1.0e+6, 3200. * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print2_temperature_ps(&iapws97eos,
-                          20. * 1.0e+6, 5.75 * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         0.1 * 1.0e+6, 7.5 * 1.0e+3);
     fprintf(stdout, "\n");
-    print2_temperature_ps(&iapws97eos,
-                          80. * 1.0e+6, 5.25 * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         0.1 * 1.0e+6, 8. * 1.0e+3);
     fprintf(stdout, "\n");
-    print2_temperature_ps(&iapws97eos,
-                          80. * 1.0e+6, 5.75 * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         2.5 * 1.0e+6, 8. * 1.0e+3);
+    fprintf(stdout, "\n");
+
+    print_temperature_ps(&iapws97eos,
+                         8. * 1.0e+6, 6. * 1.0e+3);
+    fprintf(stdout, "\n");
+    print_temperature_ps(&iapws97eos,
+                         8. * 1.0e+6, 7.5 * 1.0e+3);
+    fprintf(stdout, "\n");
+    print_temperature_ps(&iapws97eos,
+                         90. * 1.0e+6, 6. * 1.0e+3);
+    fprintf(stdout, "\n");
+
+    print_temperature_ps(&iapws97eos,
+                         20. * 1.0e+6, 5.75 * 1.0e+3);
+    fprintf(stdout, "\n");
+    print_temperature_ps(&iapws97eos,
+                         80. * 1.0e+6, 5.25 * 1.0e+3);
+    fprintf(stdout, "\n");
+    print_temperature_ps(&iapws97eos,
+                         80. * 1.0e+6, 5.75 * 1.0e+3);
     fprintf(stdout, "\n");
 
     fprintf(stdout, "###  REGION 3  ###\n");
@@ -355,44 +303,44 @@ int main(int argc, char *argv[]) {
     print_functions(&iapws97eos, 750., 0.783095639 * 1.0e+8);
     fprintf(stdout, "\n");
 
-    print3_temperature_ph(&iapws97eos,
-                          20. * 1.0e+6, 1700. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         20. * 1.0e+6, 1700. * 1.0e+3);
     fprintf(stdout, "\n");
-    print3_temperature_ph(&iapws97eos,
-                          50. * 1.0e+6, 2000. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         50. * 1.0e+6, 2000. * 1.0e+3);
     fprintf(stdout, "\n");
-    print3_temperature_ph(&iapws97eos,
-                          100. * 1.0e+6, 2100. * 1.0e+3);
-    fprintf(stdout, "\n");
-
-    print3_temperature_ph(&iapws97eos,
-                          20. * 1.0e+6, 2500. * 1.0e+3);
-    fprintf(stdout, "\n");
-    print3_temperature_ph(&iapws97eos,
-                          50. * 1.0e+6, 2400. * 1.0e+3);
-    fprintf(stdout, "\n");
-    print3_temperature_ph(&iapws97eos,
-                          100. * 1.0e+6, 2700. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         100. * 1.0e+6, 2100. * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print3_temperature_ps(&iapws97eos,
-                          20. * 1.0e+6, 3.8 * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         20. * 1.0e+6, 2500. * 1.0e+3);
     fprintf(stdout, "\n");
-    print3_temperature_ps(&iapws97eos,
-                          50. * 1.0e+6, 3.6 * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         50. * 1.0e+6, 2400. * 1.0e+3);
     fprintf(stdout, "\n");
-    print3_temperature_ps(&iapws97eos,
-                          100. * 1.0e+6, 4. * 1.0e+3);
+    print_temperature_ph(&iapws97eos,
+                         100. * 1.0e+6, 2700. * 1.0e+3);
     fprintf(stdout, "\n");
 
-    print3_temperature_ps(&iapws97eos,
-                          20. * 1.0e+6, 5. * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         20. * 1.0e+6, 3.8 * 1.0e+3);
     fprintf(stdout, "\n");
-    print3_temperature_ps(&iapws97eos,
-                          50. * 1.0e+6, 4.5 * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         50. * 1.0e+6, 3.6 * 1.0e+3);
     fprintf(stdout, "\n");
-    print3_temperature_ps(&iapws97eos,
-                          100. * 1.0e+6, 5. * 1.0e+3);
+    print_temperature_ps(&iapws97eos,
+                         100. * 1.0e+6, 4. * 1.0e+3);
+    fprintf(stdout, "\n");
+
+    print_temperature_ps(&iapws97eos,
+                         20. * 1.0e+6, 5. * 1.0e+3);
+    fprintf(stdout, "\n");
+    print_temperature_ps(&iapws97eos,
+                         50. * 1.0e+6, 4.5 * 1.0e+3);
+    fprintf(stdout, "\n");
+    print_temperature_ps(&iapws97eos,
+                         100. * 1.0e+6, 5. * 1.0e+3);
     fprintf(stdout, "\n");
 
     fprintf(stdout, "###  REGION 4  ###\n");

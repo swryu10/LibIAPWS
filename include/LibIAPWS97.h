@@ -213,6 +213,13 @@ class Lib97 {
     InterCSpline csp_coex_entropy_vap_;
     InterCSpline csp_coex_entropy_liq_;
 
+    InterCSpline csp_B31_enthalpy_;
+    InterCSpline csp_B31_entropy_;
+    InterCSpline csp_B32_enthalpy_;
+    InterCSpline csp_B32_entropy_;
+
+    void set_cspline_B3(int n_reg_in, int nbin_in);
+
     void set_coefficients();
 
   public :
@@ -494,6 +501,18 @@ class Lib97 {
     /* specific latent heat
      * in J / kg */
     double get_coex_heat_latent(double temperature_in);
+
+    /* backward equation for temperature
+     * as function of pressure and specific enthalpy
+     * for regions 1, 2 and 3 */
+    double get_param_temperature_ph(double pressure_in,
+                                    double enthalpy_in);
+
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * for region 1, 2 and 3 */
+    double get_param_temperature_ps(double pressure_in,
+                                    double entropy_in);
 
     /* auxiliary equations for the boundary
      * between Regions 2 and 3 */

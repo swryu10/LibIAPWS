@@ -949,6 +949,100 @@ double Lib97::get_coex_heat_latent(double temperature_in) {
     return h_latent;
 }
 
+double Lib97::get_param_temperature_ph(double pressure_in,
+                                       double enthalpy_in) {
+    double temperature_out = 0.;
+
+    if (pressure_in <= pressure_low3_) {
+        double temperature_sat =
+            get_param4_sat_temperature(pressure_in);
+        double enthalpy_sat_vap =
+            get_coex_enthalpy_vap(temperature_sat);
+        double enthalpy_sat_liq =
+            get_coex_enthalpy_liq(temperature_sat);
+
+        if (enthalpy_in < enthalpy_sat_liq) {
+            temperature_out =
+                get_param1_temperature_ph(pressure_in,
+                                          enthalpy_in);
+        } else if (enthalpy_in > enthalpy_sat_vap) {
+            temperature_out =
+                get_param2_temperature_ph(pressure_in,
+                                          enthalpy_in);
+        } else {
+            temperature_out = temperature_sat;
+        }
+    } else {
+        double enthalpy_B31 =
+            csp_B31_enthalpy_.get_func(pressure_in);
+        double enthalpy_B32 =
+            csp_B32_enthalpy_.get_func(pressure_in);
+
+        if (enthalpy_in < enthalpy_B31) {
+            temperature_out =
+                get_param1_temperature_ph(pressure_in,
+                                          enthalpy_in);
+        } else if (enthalpy_in > enthalpy_B32) {
+            temperature_out =
+                get_param2_temperature_ph(pressure_in,
+                                          enthalpy_in);
+        } else {
+            temperature_out =
+                get_param3_temperature_ph(pressure_in,
+                                          enthalpy_in);
+        }
+    }
+
+    return temperature_out;
+}
+
+double Lib97::get_param_temperature_ps(double pressure_in,
+                                       double entropy_in) {
+    double temperature_out = 0.;
+
+    if (pressure_in <= pressure_low3_) {
+        double temperature_sat =
+            get_param4_sat_temperature(pressure_in);
+        double entropy_sat_vap =
+            get_coex_entropy_vap(temperature_sat);
+        double entropy_sat_liq =
+            get_coex_entropy_liq(temperature_sat);
+
+        if (entropy_in < entropy_sat_liq) {
+            temperature_out =
+                get_param1_temperature_ps(pressure_in,
+                                          entropy_in);
+        } else if (entropy_in > entropy_sat_vap) {
+            temperature_out =
+                get_param2_temperature_ps(pressure_in,
+                                          entropy_in);
+        } else {
+            temperature_out = temperature_sat;
+        }
+    } else {
+        double entropy_B31 =
+            csp_B31_entropy_.get_func(pressure_in);
+        double entropy_B32 =
+            csp_B32_entropy_.get_func(pressure_in);
+
+        if (entropy_in < entropy_B31) {
+            temperature_out =
+                get_param1_temperature_ps(pressure_in,
+                                          entropy_in);
+        } else if (entropy_in > entropy_B32) {
+            temperature_out =
+                get_param2_temperature_ps(pressure_in,
+                                          entropy_in);
+        } else {
+            temperature_out =
+                get_param3_temperature_ps(pressure_in,
+                                          entropy_in);
+        }
+    }
+
+    return temperature_out;
+}
+
 double Lib97::get_paramB23_pressure(double temperature_in) {
     double tau = temperature_in / temperature_refB23_;
 
@@ -3092,6 +3186,91 @@ void Lib97::set_cspline_coex() {
     return;
 }
 
+void Lib97::set_cspline_B3(int n_reg_in, int nbin_in) {
+    if (n_reg_in != 1 &&
+        n_reg_in != 2) {
+        return;
+    }
+
+    int nbin_pressure = nbin_in;
+    if (nbin_pressure < 128) {
+        nbin_pressure = 128;
+    }
+
+    double pressure_min = pressure_low3_;
+    double pressure_max = 100. * 1.0e+6;
+    double d_pressure = log(pressure_max / pressure_min);
+    double *pressure_bin = new double[nbin_pressure + 1];
+    double *enthalpy_bin = new double[nbin_pressure + 1];
+    double *entropy_bin = new double[nbin_pressure + 1];
+
+    for (int ip = 0; ip <= nbin_pressure; ip++) {
+        pressure_bin[ip] =
+            pressure_min *
+            exp(d_pressure * static_cast<double>(ip) /
+                             static_cast<double>(nbin_pressure));
+
+        double temperature_in = 0.;
+        double tau = 0.;
+        double fn_gamma = 0.;
+        double fn_dgamma_dtau = 0.;
+        if (n_reg_in == 1) {
+            temperature_in = temperature_low3_;
+            tau = temperature_ref1_ / temperature_in;
+            fn_gamma =
+                get_param1_gamma(temperature_in,
+                                 pressure_bin[ip]);
+            fn_dgamma_dtau =
+                get_param1_dgamma_dtau(temperature_in,
+                                       pressure_bin[ip]);
+        } else if (n_reg_in == 2) {
+            temperature_in =
+                get_paramB23_temperature(pressure_bin[ip]);
+            tau = temperature_ref2_ / temperature_in;
+            fn_gamma =
+                get_param2_gamma_ide(temperature_in,
+                                     pressure_bin[ip]) +
+                get_param2_gamma_res(temperature_in,
+                                     pressure_bin[ip]);
+            fn_dgamma_dtau =
+                get_param2_dgamma_ide_dtau(temperature_in,
+                                           pressure_bin[ip]) +
+                get_param2_dgamma_res_dtau(temperature_in,
+                                           pressure_bin[ip]);
+        }
+
+        enthalpy_bin[ip] =
+            const_R_spec_ * temperature_in *
+            tau * fn_dgamma_dtau;
+
+        entropy_bin[ip] =
+            const_R_spec_ *
+            (tau * fn_dgamma_dtau - fn_gamma);
+    }
+
+    if (n_reg_in == 1) {
+        csp_B31_enthalpy_.init(nbin_pressure,
+                               pressure_bin,
+                               enthalpy_bin);
+        csp_B31_entropy_.init(nbin_pressure,
+                              pressure_bin,
+                              entropy_bin);
+    } else if (n_reg_in == 2) {
+        csp_B32_enthalpy_.init(nbin_pressure,
+                               pressure_bin,
+                               enthalpy_bin);
+        csp_B32_entropy_.init(nbin_pressure,
+                              pressure_bin,
+                              entropy_bin);
+    }
+
+    delete [] pressure_bin;
+    delete [] enthalpy_bin;
+    delete [] entropy_bin;
+
+    return;
+}
+
 void Lib97::set_coefficients() {
     temperature_crit_ = 647.096;
     mdensity_crit_ = 322.;
@@ -4963,6 +5142,9 @@ void Lib97::set_coefficients() {
     temperature_low3_ = 623.15;
     pressure_low3_ =
         get_paramB23_pressure(temperature_low3_);
+
+    set_cspline_B3(1, 512);
+    set_cspline_B3(2, 512);
 
     return;
 }
