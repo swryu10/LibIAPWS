@@ -161,6 +161,22 @@ class Lib97 {
     int *coeff3bTph_J_;
     double *coeff3bTph_n_;
 
+    double temperature_ref3aTps_;
+    double pressure_ref3aTps_;
+    double entropy_ref3aTps_;
+
+    int *coeff3aTps_I_;
+    int *coeff3aTps_J_;
+    double *coeff3aTps_n_;
+
+    double temperature_ref3bTps_;
+    double pressure_ref3bTps_;
+    double entropy_ref3bTps_;
+
+    int *coeff3bTps_I_;
+    int *coeff3bTps_J_;
+    double *coeff3bTps_n_;
+
     double temperature_ref4_;
     double pressure_ref4_;
 
@@ -267,6 +283,14 @@ class Lib97 {
         coeff3bTph_J_ = new int[34];
         coeff3bTph_n_ = new double[34];
 
+        coeff3aTps_I_ = new int[34];
+        coeff3aTps_J_ = new int[34];
+        coeff3aTps_n_ = new double[34];
+
+        coeff3bTps_I_ = new int[29];
+        coeff3bTps_J_ = new int[29];
+        coeff3bTps_n_ = new double[29];
+
         coeff4_n_ = new double[11];
 
         coeff5_ide_J_ = new int[7];
@@ -350,6 +374,14 @@ class Lib97 {
         delete [] coeff3bTph_I_;
         delete [] coeff3bTph_J_;
         delete [] coeff3bTph_n_;
+
+        delete [] coeff3aTps_I_;
+        delete [] coeff3aTps_J_;
+        delete [] coeff3aTps_n_;
+
+        delete [] coeff3bTps_I_;
+        delete [] coeff3bTps_J_;
+        delete [] coeff3bTps_n_;
 
         delete [] coeff4_n_;
 
@@ -675,6 +707,22 @@ class Lib97 {
      * in region 3b */
     double get_param3b_temperature_ph(double pressure_in,
                                       double enthalpy_in);
+
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * in region 3 */
+    double get_param3_temperature_ps(double pressure_in,
+                                     double entropy_in);
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * in region 3a */
+    double get_param3a_temperature_ps(double pressure_in,
+                                      double entropy_in);
+    /* backward equation for temperature
+     * as function of pressure and specific entropy
+     * in region 3b */
+    double get_param3b_temperature_ps(double pressure_in,
+                                      double entropy_in);
 
     /* parametrized vapor-liquid saturation pressure (in Pa)
      * as a function of saturation temperature (in degK) */
