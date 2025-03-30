@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     for (int ip = 0; ip <= nbin_pressure; ip++) {
         pressure_bin[ip] = pressure_min *
             exp(d_pressure * static_cast<double>(ip) /
-                static_cast<double>(nbin_pressure));
+                             static_cast<double>(nbin_pressure));
     }
 
     double **tab_diff_mdensity =

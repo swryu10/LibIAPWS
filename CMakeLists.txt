@@ -37,6 +37,14 @@ add_executable(make_tab_IAPWS06 ${PROJECT_SOURCE_DIR}/src/make_tab_IAPWS06.cpp
 set_target_properties(make_tab_IAPWS06 PROPERTIES OUTPUT_NAME "make_tab_IAPWS06.exec")
 target_include_directories(make_tab_IAPWS06 PUBLIC "${PROJECT_SOURCE_DIR}/include")
 
+project(make_bkwd_IAPWS97)
+add_executable(make_bkwd_IAPWS97 ${PROJECT_SOURCE_DIR}/src/make_bkwd_IAPWS97.cpp
+                                 ${PROJECT_SOURCE_DIR}/src/BaseIAPWS.cpp
+                                 ${PROJECT_SOURCE_DIR}/src/LibIAPWS97.cpp
+                                 ${PROJECT_SOURCE_DIR}/src/InterCSpline.cpp)
+set_target_properties(make_bkwd_IAPWS97 PROPERTIES OUTPUT_NAME "make_bkwd_IAPWS97.exec")
+target_include_directories(make_bkwd_IAPWS97 PUBLIC "${PROJECT_SOURCE_DIR}/include")
+
 project(make_diff_IAPWS95_97)
 add_executable(make_diff_IAPWS95_97 ${PROJECT_SOURCE_DIR}/src/make_diff_IAPWS95_97.cpp
                                     ${PROJECT_SOURCE_DIR}/src/BaseIAPWS.cpp
