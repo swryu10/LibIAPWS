@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/928039225.svg)](https://doi.org/10.5281/zenodo.15117651)
+
 # About
 A C++ library to implement IAPWS (International Association for the Properties of Water and Steam) formulation.
 Detailed documentations can be found in IAPWS webpage : https://iapws.org/. Additional information is provided in the documentations at doc subdirectory.
@@ -21,8 +23,8 @@ The following releases are currently implemented.
   Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance
 
 # Build
-This library can be built with cmake. \
-In a Linux/UNIX system, one can build at a subdirectory with the following commands. \
+This library can be built with **cmake**. \
+In a **Linux/UNIX** system, one can build at a subdirectory with the following commands. \
 &ensp;$ mkdir [subdirectory name] \
 &ensp;$ cd [subdirectory name] \
 &ensp;$ cmake [directory for the LibIAPWS local repository] \
