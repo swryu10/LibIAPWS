@@ -3,7 +3,7 @@
 
 namespace IAPWS {
 
-void Lib76::print_header(FILE *ptr_fout) {
+void Lib76::print_header(FILE *ptr_fout) const {
     fprintf(ptr_fout, "\n");
     fprintf(ptr_fout, "IAPWS R1-76 (2014)\n");
     fprintf(ptr_fout, "Surface Tension of Ordinary Water Substance\n");
@@ -12,7 +12,7 @@ void Lib76::print_header(FILE *ptr_fout) {
     return;
 }
 
-double Lib76::get_tension_surf(double temperature_in) {
+double Lib76::get_tension_surf(double temperature_in) const {
     double tau = 1. - temperature_in / temperature_crit_;
 
     double sigma =

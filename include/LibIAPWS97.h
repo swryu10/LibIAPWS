@@ -423,364 +423,364 @@ class Lib97 {
         return;
     }
 
-    void print_header(FILE *ptr_fout = stdout);
+    void print_header(FILE *ptr_fout = stdout) const;
 
     /* specific Gibbs free energy in J / kg
      * parametrization for single-phase state */
     double get_param_g(double temperature_in,
                        double pressure_in,
-                       bool flag_metastable = false);
+                       bool flag_metastable = false) const;
     /* specific volume in m^3 / kg
      * parametrization for single-phase state */
     double get_param_vol_spec(double temperature_in,
                               double pressure_in,
-                              bool flag_metastable = false);
+                              bool flag_metastable = false) const;
     /* mass density in kg / m^3
      * parametrization for single-phase state */
     double get_param_mdensity(double temperature_in,
                               double pressure_in,
-                              bool flag_metastable = false);
+                              bool flag_metastable = false) const;
     /* specific internal energy in J / kg
      * parametrization for single-phase state */
     double get_param_erg_int(double temperature_in,
                              double pressure_in,
-                             bool flag_metastable = false);
+                             bool flag_metastable = false) const;
     /* specific entropy in J / kg / degK
      * parametrization for single-phase state */
     double get_param_entropy(double temperature_in,
                              double pressure_in,
-                             bool flag_metastable = false);
+                             bool flag_metastable = false) const;
     /* specific enthalpy in J / kg
      * parametrization for single-phase state */
     double get_param_enthalpy(double temperature_in,
                               double pressure_in,
-                              bool flag_metastable = false);
+                              bool flag_metastable = false) const;
     /* specific isobaric heat capacity in J / kg / degK
      * parametrization for single-phase state */
     double get_param_heat_c_p(double temperature_in,
                               double pressure_in,
-                              bool flag_metastable = false);
+                              bool flag_metastable = false) const;
     /* specific isochoric heat capacity in J / kg / degK
      * parametrization for single-phase state */
     double get_param_heat_c_v(double temperature_in,
                               double pressure_in,
-                              bool flag_metastable = false);
+                              bool flag_metastable = false) const;
     /* speed of sound in m / sec
      * parametrization for single-phase state */
     double get_param_speed_sound(double temperature_in,
                                  double pressure_in,
-                                 bool flag_metastable = false);
+                                 bool flag_metastable = false) const;
 
     /* determine which region the system belongs
      * with given temperature and pressure */
     int get_region(double temperature_in,
                    double pressure_in,
-                   bool flag_metastable = false);
+                   bool flag_metastable = false) const;
 
     /* pressure at coexisting phase
      * in Pa (N / m^2) */
-    double get_coex_pressure(double temperature_in);
+    double get_coex_pressure(double temperature_in) const;
     /* mass density of water vapor at coexisting phase
      * in kg / m^3 */
-    double get_coex_mden_vap(double temperature_in);
+    double get_coex_mden_vap(double temperature_in) const;
     /* mass density of water liquid at coexisting phase
      * in kg / m^3 */
-    double get_coex_mden_liq(double temperature_in);
+    double get_coex_mden_liq(double temperature_in) const;
     /* specific enthalpy of water vapor at coexisting phase
      * in J / kg */
-    double get_coex_enthalpy_vap(double temperature_in);
+    double get_coex_enthalpy_vap(double temperature_in) const;
     /* specific enthalpy of water liquid at coexisting phase
      * in J / kg */
-    double get_coex_enthalpy_liq(double temperature_in);
+    double get_coex_enthalpy_liq(double temperature_in) const;
     /* specific entropy of water vapor at coexisting phase
      * in J / kg / degK */
-    double get_coex_entropy_vap(double temperature_in);
+    double get_coex_entropy_vap(double temperature_in) const;
     /* specific entropy of water liquid at coexisting phase
      * in J / kg / degK */
-    double get_coex_entropy_liq(double temperature_in);
+    double get_coex_entropy_liq(double temperature_in) const;
     /* specific latent heat
      * in J / kg */
-    double get_coex_heat_latent(double temperature_in);
+    double get_coex_heat_latent(double temperature_in) const;
 
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * for regions 1, 2 and 3 */
     double get_param_temperature_ph(double pressure_in,
-                                    double enthalpy_in);
+                                    double enthalpy_in) const;
 
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * for region 1, 2 and 3 */
     double get_param_temperature_ps(double pressure_in,
-                                    double entropy_in);
+                                    double entropy_in) const;
 
     /* auxiliary equations for the boundary
      * between Regions 2 and 3 */
-    double get_paramB23_pressure(double temperature_in);
-    double get_paramB23_temperature(double pressure_in);
+    double get_paramB23_pressure(double temperature_in) const;
+    double get_paramB23_temperature(double pressure_in) const;
 
     /* mass density in kg / m^3
      * parametrization for region 1 */
     double get_param1_mdensity(double temperature_in,
-                               double pressure_in);
+                               double pressure_in) const;
 
     /* parametrized specific Gibbs free energy
      * and its derivatives in region 1 */
     double get_param1_gamma(double temperature_in,
-                            double pressure_in);
+                            double pressure_in) const;
     double get_param1_dgamma_dppi(double temperature_in,
-                                  double pressure_in);
+                                  double pressure_in) const;
     double get_param1_dgamma_dtau(double temperature_in,
-                                  double pressure_in);
+                                  double pressure_in) const;
     double get_param1_d2gamma_dppi_dppi(double temperature_in,
-                                        double pressure_in);
+                                        double pressure_in) const;
     double get_param1_d2gamma_dppi_dtau(double temperature_in,
-                                        double pressure_in);
+                                        double pressure_in) const;
     double get_param1_d2gamma_dtau_dtau(double temperature_in,
-                                        double pressure_in);
+                                        double pressure_in) const;
 
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 1 */
     double get_param1_temperature_ph(double pressure_in,
-                                     double enthalpy_in);
+                                     double enthalpy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * in region 1 */
     double get_param1_temperature_ps(double pressure_in,
-                                     double entropy_in);
+                                     double entropy_in) const;
 
     /* mass density in kg / m^3
      * parametrization for region 2 */
     double get_param2_mdensity(double temperature_in,
-                               double pressure_in);
+                               double pressure_in) const;
 
     /* parametrized ideal-gas part
      * of the specific Gibbs free energy
      * and its derivatives in region 2 */
     double get_param2_gamma_ide(double temperature_in,
                                 double pressure_in,
-                                bool flag_metastable = false);
+                                bool flag_metastable = false) const;
     double get_param2_dgamma_ide_dppi(double temperature_in,
                                       double pressure_in,
-                                      bool flag_metastable = false);
+                                      bool flag_metastable = false) const;
     double get_param2_dgamma_ide_dtau(double temperature_in,
                                       double pressure_in,
-                                      bool flag_metastable = false);
+                                      bool flag_metastable = false) const;
     double get_param2_d2gamma_ide_dppi_dppi(double temperature_in,
                                             double pressure_in,
-                                            bool flag_metastable = false);
+                                            bool flag_metastable = false) const;
     double get_param2_d2gamma_ide_dppi_dtau(double temperature_in,
                                             double pressure_in,
-                                            bool flag_metastable = false);
+                                            bool flag_metastable = false) const;
     double get_param2_d2gamma_ide_dtau_dtau(double temperature_in,
                                             double pressure_in,
-                                            bool flag_metastable = false);
+                                            bool flag_metastable = false) const;
 
     /* parametrized residual part
      * of the specific Gibbs free energy
      * and its derivatives in region 2 */
     double get_param2_gamma_res(double temperature_in,
                                 double pressure_in,
-                                bool flag_metastable = false);
+                                bool flag_metastable = false) const;
     double get_param2_dgamma_res_dppi(double temperature_in,
                                       double pressure_in,
-                                      bool flag_metastable = false);
+                                      bool flag_metastable = false) const;
     double get_param2_dgamma_res_dtau(double temperature_in,
                                       double pressure_in,
-                                      bool flag_metastable = false);
+                                      bool flag_metastable = false) const;
     double get_param2_d2gamma_res_dppi_dppi(double temperature_in,
                                             double pressure_in,
-                                            bool flag_metastable = false);
+                                            bool flag_metastable = false) const;
     double get_param2_d2gamma_res_dppi_dtau(double temperature_in,
                                             double pressure_in,
-                                            bool flag_metastable = false);
+                                            bool flag_metastable = false) const;
     double get_param2_d2gamma_res_dtau_dtau(double temperature_in,
                                             double pressure_in,
-                                            bool flag_metastable = false);
+                                            bool flag_metastable = false) const;
 
     /* auxiliary equations for the boundary
      * between Regions 2b and 2c */
-    double get_paramB2bc_pressure(double enthalpy_in);
-    double get_paramB2bc_enthalpy(double pressure_in);
+    double get_paramB2bc_pressure(double enthalpy_in) const;
+    double get_paramB2bc_enthalpy(double pressure_in) const;
 
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 2 */
     double get_param2_temperature_ph(double pressure_in,
-                                     double enthalpy_in);
+                                     double enthalpy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 2a */
     double get_param2a_temperature_ph(double pressure_in,
-                                      double enthalpy_in);
+                                      double enthalpy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 2b */
     double get_param2b_temperature_ph(double pressure_in,
-                                      double enthalpy_in);
+                                      double enthalpy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 2c */
     double get_param2c_temperature_ph(double pressure_in,
-                                      double enthalpy_in);
+                                      double enthalpy_in) const;
 
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * in region 2 */
     double get_param2_temperature_ps(double pressure_in,
-                                     double entropy_in);
+                                     double entropy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * in region 2a */
     double get_param2a_temperature_ps(double pressure_in,
-                                      double entropy_in);
+                                      double entropy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * in region 2b */
     double get_param2b_temperature_ps(double pressure_in,
-                                      double entropy_in);
+                                      double entropy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * in region 2c */
     double get_param2c_temperature_ps(double pressure_in,
-                                      double entropy_in);
+                                      double entropy_in) const;
 
     /* mass density in kg / m^3
      * root-finding for region 3 */
     double get_param3_mdensity(double temperature_in,
-                               double pressure_in);
+                               double pressure_in) const;
     /* specific Helmholtz free energy in J / kg
      * parametrization for region 3 */
     double get_param3_f(double mdensity_in,
-                        double temperature_in);
+                        double temperature_in) const;
     /* specific Gibbs free energy in J / kg
      * parametrization for region 3 */
     double get_param3_g(double mdensity_in,
-                        double temperature_in);
+                        double temperature_in) const;
     /* pressure in Pa (N / m^2)
      * parametrization for region 3 */
     double get_param3_pressure(double mdensity_in,
-                               double temperature_in);
+                               double temperature_in) const;
     /* derivative of pressure with respect to mass density
      * in m^2 / sec^2
      * parametrization for region 3 */
     double get_param3_dpress_drho(double mdensity_in,
-                                  double temperature_in);
+                                  double temperature_in) const;
     /* specific internal energy in J / kg
      * parametrization for region 3 */
     double get_param3_erg_int(double mdensity_in,
-                              double temperature_in);
+                              double temperature_in) const;
     /* specific entropy in J / kg / degK
      * parametrization for region 3 */
     double get_param3_entropy(double mdensity_in,
-                              double temperature_in);
+                              double temperature_in) const;
     /* specific enthalpy in J / kg
      * parametrization for region 3 */
     double get_param3_enthalpy(double mdensity_in,
-                               double temperature_in);
+                               double temperature_in) const;
     /* specific isochoric heat capacity in J / kg / degK
      * parametrization for region 3 */
     double get_param3_heat_c_v(double mdensity_in,
-                               double temperature_in);
+                               double temperature_in) const;
     /* specific isobaric heat capacity in J / kg / degK
      * parametrization for region 3 */
     double get_param3_heat_c_p(double mdensity_in,
-                               double temperature_in);
+                               double temperature_in) const;
     /* speed of sound in m / sec
      * parametrization for region 3 */
     double get_param3_speed_sound(double mdensity_in,
-                                  double temperature_in);
+                                  double temperature_in) const;
 
     /* parametrized specific Helmholtz free energy
      * and its derivatives in region 3 */
     double get_param3_phi(double mdensity_in,
-                          double temperature_in);
+                          double temperature_in) const;
     double get_param3_dphi_ddelta(double mdensity_in,
-                                  double temperature_in);
+                                  double temperature_in) const;
     double get_param3_dphi_dtau(double mdensity_in,
-                                double temperature_in);
+                                double temperature_in) const;
     double get_param3_d2phi_ddelta_ddelta(double mdensity_in,
-                                          double temperature_in);
+                                          double temperature_in) const;
     double get_param3_d2phi_ddelta_dtau(double mdensity_in,
-                                        double temperature_in);
+                                        double temperature_in) const;
     double get_param3_d2phi_dtau_dtau(double mdensity_in,
-                                      double temperature_in);
+                                      double temperature_in) const;
 
     /* auxiliary equations for the boundary
      * between Regions 3a and 3b */
-    double get_paramB3ab_enthalpy(double pressure_in);
+    double get_paramB3ab_enthalpy(double pressure_in) const;
 
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 3 */
     double get_param3_temperature_ph(double pressure_in,
-                                     double enthalpy_in);
+                                     double enthalpy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 3a */
     double get_param3a_temperature_ph(double pressure_in,
-                                      double enthalpy_in);
+                                      double enthalpy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific enthalpy
      * in region 3b */
     double get_param3b_temperature_ph(double pressure_in,
-                                      double enthalpy_in);
+                                      double enthalpy_in) const;
 
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * in region 3 */
     double get_param3_temperature_ps(double pressure_in,
-                                     double entropy_in);
+                                     double entropy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * in region 3a */
     double get_param3a_temperature_ps(double pressure_in,
-                                      double entropy_in);
+                                      double entropy_in) const;
     /* backward equation for temperature
      * as function of pressure and specific entropy
      * in region 3b */
     double get_param3b_temperature_ps(double pressure_in,
-                                      double entropy_in);
+                                      double entropy_in) const;
 
     /* parametrized vapor-liquid saturation pressure (in Pa)
      * as a function of saturation temperature (in degK) */
-    double get_param4_sat_pressure(double temperature_in);
+    double get_param4_sat_pressure(double temperature_in) const;
     /* parametrized vapor-liquid saturation temperature (in degK)
      * as a function of saturation pressure (in Pa) */
-    double get_param4_sat_temperature(double pressure_in);
+    double get_param4_sat_temperature(double pressure_in) const;
 
     /* parametrized ideal-gas part
      * of the specific Gibbs free energy
      * and its derivatives in region 5 */
     double get_param5_gamma_ide(double temperature_in,
-                                double pressure_in);
+                                double pressure_in) const;
     double get_param5_dgamma_ide_dppi(double temperature_in,
-                                      double pressure_in);
+                                      double pressure_in) const;
     double get_param5_dgamma_ide_dtau(double temperature_in,
-                                      double pressure_in);
+                                      double pressure_in) const;
     double get_param5_d2gamma_ide_dppi_dppi(double temperature_in,
-                                            double pressure_in);
+                                            double pressure_in) const;
     double get_param5_d2gamma_ide_dppi_dtau(double temperature_in,
-                                            double pressure_in);
+                                            double pressure_in) const;
     double get_param5_d2gamma_ide_dtau_dtau(double temperature_in,
-                                            double pressure_in);
+                                            double pressure_in) const;
 
     /* parametrized residual part
      * of the specific Gibbs free energy
      * and its derivatives in region 5 */
     double get_param5_gamma_res(double temperature_in,
-                                double pressure_in);
+                                double pressure_in) const;
     double get_param5_dgamma_res_dppi(double temperature_in,
-                                      double pressure_in);
+                                      double pressure_in) const;
     double get_param5_dgamma_res_dtau(double temperature_in,
-                                      double pressure_in);
+                                      double pressure_in) const;
     double get_param5_d2gamma_res_dppi_dppi(double temperature_in,
-                                            double pressure_in);
+                                            double pressure_in) const;
     double get_param5_d2gamma_res_dppi_dtau(double temperature_in,
-                                            double pressure_in);
+                                            double pressure_in) const;
     double get_param5_d2gamma_res_dtau_dtau(double temperature_in,
-                                            double pressure_in);
+                                            double pressure_in) const;
 
     /* find mass density which yields certain pressure
      * with given temperature,
@@ -788,14 +788,14 @@ class Lib97 {
     bool find_root3_mdensity(double temperature_in,
                              double pressure_in,
                              double &mdensity_out,
-                             int sign_ini = 0);
+                             int sign_ini = 0) const;
 
     /* find a coexisting phase
      * based on Maxwell criterion */
     bool find_state3_coex(double temperature_in,
                           double &pressure_out,
                           double &mden_vap_out,
-                          double &mden_liq_out);
+                          double &mden_liq_out) const;
 
     /* populate table
      * for coexisting phases */
@@ -803,7 +803,7 @@ class Lib97 {
 
     /* print out the table
      * for coexisting phases */
-    void export_tab_coex(char *filename);
+    void export_tab_coex(char *filename) const;
 
     /* import table for coexisting phases
      * from an external data file */

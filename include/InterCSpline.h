@@ -51,7 +51,7 @@ class InterCSpline {
 
     double get_func(double x_in,
                     double *ptr_dy_dx_out = NULL,
-                    double *ptr_d2y_dx_dx_out = NULL);
+                    double *ptr_d2y_dx_dx_out = NULL) const;
 };
 
 #endif

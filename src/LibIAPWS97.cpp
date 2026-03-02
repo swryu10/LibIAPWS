@@ -3,7 +3,7 @@
 
 namespace IAPWS {
 
-void Lib97::print_header(FILE *ptr_fout) {
+void Lib97::print_header(FILE *ptr_fout) const {
     fprintf(ptr_fout, "\n");
     fprintf(ptr_fout, "IAPWS R7-97(2012)\n");
     fprintf(ptr_fout, "Revised Release on the IAPWS");
@@ -17,7 +17,7 @@ void Lib97::print_header(FILE *ptr_fout) {
 
 double Lib97::get_param_g(double temperature_in,
                           double pressure_in,
-                          bool flag_metastable) {
+                          bool flag_metastable) const {
     int n_reg = get_region(temperature_in,
                            pressure_in,
                            flag_metastable);
@@ -68,7 +68,7 @@ double Lib97::get_param_g(double temperature_in,
 
 double Lib97::get_param_vol_spec(double temperature_in,
                                  double pressure_in,
-                                 bool flag_metastable) {
+                                 bool flag_metastable) const {
     int n_reg = get_region(temperature_in,
                            pressure_in,
                            flag_metastable);
@@ -135,7 +135,7 @@ double Lib97::get_param_vol_spec(double temperature_in,
 
 double Lib97::get_param_mdensity(double temperature_in,
                                  double pressure_in,
-                                 bool flag_metastable) {
+                                 bool flag_metastable) const {
     double mdensity =
         1. / get_param_vol_spec(temperature_in,
                                 pressure_in,
@@ -146,7 +146,7 @@ double Lib97::get_param_mdensity(double temperature_in,
 
 double Lib97::get_param_erg_int(double temperature_in,
                                 double pressure_in,
-                                bool flag_metastable) {
+                                bool flag_metastable) const {
     int n_reg = get_region(temperature_in,
                            pressure_in,
                            flag_metastable);
@@ -236,7 +236,7 @@ double Lib97::get_param_erg_int(double temperature_in,
 
 double Lib97::get_param_entropy(double temperature_in,
                                 double pressure_in,
-                                bool flag_metastable) {
+                                bool flag_metastable) const {
     int n_reg = get_region(temperature_in,
                            pressure_in,
                            flag_metastable);
@@ -318,7 +318,7 @@ double Lib97::get_param_entropy(double temperature_in,
 
 double Lib97::get_param_enthalpy(double temperature_in,
                                  double pressure_in,
-                                 bool flag_metastable) {
+                                 bool flag_metastable) const {
     int n_reg = get_region(temperature_in,
                            pressure_in,
                            flag_metastable);
@@ -384,7 +384,7 @@ double Lib97::get_param_enthalpy(double temperature_in,
 
 double Lib97::get_param_heat_c_p(double temperature_in,
                                  double pressure_in,
-                                 bool flag_metastable) {
+                                 bool flag_metastable) const {
     int n_reg = get_region(temperature_in,
                            pressure_in,
                            flag_metastable);
@@ -447,7 +447,7 @@ double Lib97::get_param_heat_c_p(double temperature_in,
 
 double Lib97::get_param_heat_c_v(double temperature_in,
                                  double pressure_in,
-                                 bool flag_metastable) {
+                                 bool flag_metastable) const {
     int n_reg = get_region(temperature_in,
                            pressure_in,
                            flag_metastable);
@@ -570,7 +570,7 @@ double Lib97::get_param_heat_c_v(double temperature_in,
 
 double Lib97::get_param_speed_sound(double temperature_in,
                                     double pressure_in,
-                                    bool flag_metastable) {
+                                    bool flag_metastable) const {
     int n_reg = get_region(temperature_in,
                            pressure_in,
                            flag_metastable);
@@ -698,7 +698,7 @@ double Lib97::get_param_speed_sound(double temperature_in,
 
 int Lib97::get_region(double temperature_in,
                       double pressure_in,
-                      bool flag_metastable) {
+                      bool flag_metastable) const {
     int n_reg = 0;
 
     if (flag_metastable) {
@@ -742,7 +742,7 @@ int Lib97::get_region(double temperature_in,
     return n_reg;
 }
 
-double Lib97::get_coex_pressure(double temperature_in) {
+double Lib97::get_coex_pressure(double temperature_in) const {
     if (temperature_in >= temperature_crit_) {
         return 0.;
     }
@@ -762,7 +762,7 @@ double Lib97::get_coex_pressure(double temperature_in) {
     return press_sat;
 }
 
-double Lib97::get_coex_mden_vap(double temperature_in) {
+double Lib97::get_coex_mden_vap(double temperature_in) const {
     if (temperature_in >= temperature_crit_) {
         return 0.;
     }
@@ -786,7 +786,7 @@ double Lib97::get_coex_mden_vap(double temperature_in) {
     return mden_vap;
 }
 
-double Lib97::get_coex_mden_liq(double temperature_in) {
+double Lib97::get_coex_mden_liq(double temperature_in) const {
     if (temperature_in >= temperature_crit_) {
         return 0.;
     }
@@ -810,7 +810,7 @@ double Lib97::get_coex_mden_liq(double temperature_in) {
     return mden_liq;
 }
 
-double Lib97::get_coex_enthalpy_vap(double temperature_in) {
+double Lib97::get_coex_enthalpy_vap(double temperature_in) const {
     if (temperature_in >= temperature_crit_) {
         return 0.;
     }
@@ -840,7 +840,7 @@ double Lib97::get_coex_enthalpy_vap(double temperature_in) {
     return enthalpy_vap;
 }
 
-double Lib97::get_coex_enthalpy_liq(double temperature_in) {
+double Lib97::get_coex_enthalpy_liq(double temperature_in) const {
     if (temperature_in >= temperature_crit_) {
         return 0.;
     }
@@ -868,7 +868,7 @@ double Lib97::get_coex_enthalpy_liq(double temperature_in) {
     return enthalpy_liq;
 }
 
-double Lib97::get_coex_entropy_vap(double temperature_in) {
+double Lib97::get_coex_entropy_vap(double temperature_in) const {
     if (temperature_in >= temperature_crit_) {
         return 0.;
     }
@@ -905,7 +905,7 @@ double Lib97::get_coex_entropy_vap(double temperature_in) {
     return entropy_vap;
 }
 
-double Lib97::get_coex_entropy_liq(double temperature_in) {
+double Lib97::get_coex_entropy_liq(double temperature_in) const {
     if (temperature_in >= temperature_crit_) {
         return 0.;
     }
@@ -936,7 +936,7 @@ double Lib97::get_coex_entropy_liq(double temperature_in) {
     return entropy_liq;
 }
 
-double Lib97::get_coex_heat_latent(double temperature_in) {
+double Lib97::get_coex_heat_latent(double temperature_in) const {
     if (temperature_in >= temperature_crit_) {
         return 0.;
     }
@@ -950,7 +950,7 @@ double Lib97::get_coex_heat_latent(double temperature_in) {
 }
 
 double Lib97::get_param_temperature_ph(double pressure_in,
-                                       double enthalpy_in) {
+                                       double enthalpy_in) const {
     double temperature_out = 0.;
 
     if (pressure_in <= pressure_low3_) {
@@ -997,7 +997,7 @@ double Lib97::get_param_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param_temperature_ps(double pressure_in,
-                                       double entropy_in) {
+                                       double entropy_in) const {
     double temperature_out = 0.;
 
     if (pressure_in <= pressure_low3_) {
@@ -1043,7 +1043,7 @@ double Lib97::get_param_temperature_ps(double pressure_in,
     return temperature_out;
 }
 
-double Lib97::get_paramB23_pressure(double temperature_in) {
+double Lib97::get_paramB23_pressure(double temperature_in) const {
     double tau = temperature_in / temperature_refB23_;
 
     double ppi =
@@ -1054,7 +1054,7 @@ double Lib97::get_paramB23_pressure(double temperature_in) {
     return pressure_refB23_ * ppi;
 }
 
-double Lib97::get_paramB23_temperature(double pressure_in) {
+double Lib97::get_paramB23_temperature(double pressure_in) const {
     double ppi = pressure_in / pressure_refB23_;
 
     double tau =
@@ -1065,7 +1065,7 @@ double Lib97::get_paramB23_temperature(double pressure_in) {
 }
 
 double Lib97::get_param1_mdensity(double temperature_in,
-                                  double pressure_in) {
+                                  double pressure_in) const {
     double ppi = pressure_in / pressure_ref1_;
 
     double fn_dgamma_dppi =
@@ -1080,7 +1080,7 @@ double Lib97::get_param1_mdensity(double temperature_in,
 }
 
 double Lib97::get_param1_gamma(double temperature_in,
-                               double pressure_in) {
+                               double pressure_in) const {
     double tau = temperature_ref1_ / temperature_in;
     double ppi = pressure_in / pressure_ref1_;
 
@@ -1101,7 +1101,7 @@ double Lib97::get_param1_gamma(double temperature_in,
 }
 
 double Lib97::get_param1_dgamma_dppi(double temperature_in,
-                                     double pressure_in) {
+                                     double pressure_in) const {
     double tau = temperature_ref1_ / temperature_in;
     double ppi = pressure_in / pressure_ref1_;
 
@@ -1128,7 +1128,7 @@ double Lib97::get_param1_dgamma_dppi(double temperature_in,
 }
 
 double Lib97::get_param1_dgamma_dtau(double temperature_in,
-                                     double pressure_in) {
+                                     double pressure_in) const {
     double tau = temperature_ref1_ / temperature_in;
     double ppi = pressure_in / pressure_ref1_;
 
@@ -1155,7 +1155,7 @@ double Lib97::get_param1_dgamma_dtau(double temperature_in,
 }
 
 double Lib97::get_param1_d2gamma_dppi_dppi(double temperature_in,
-                                           double pressure_in) {
+                                           double pressure_in) const {
     double tau = temperature_ref1_ / temperature_in;
     double ppi = pressure_in / pressure_ref1_;
 
@@ -1183,7 +1183,7 @@ double Lib97::get_param1_d2gamma_dppi_dppi(double temperature_in,
 }
 
 double Lib97::get_param1_d2gamma_dppi_dtau(double temperature_in,
-                                           double pressure_in) {
+                                           double pressure_in) const {
     double tau = temperature_ref1_ / temperature_in;
     double ppi = pressure_in / pressure_ref1_;
 
@@ -1211,7 +1211,7 @@ double Lib97::get_param1_d2gamma_dppi_dtau(double temperature_in,
 }
 
 double Lib97::get_param1_d2gamma_dtau_dtau(double temperature_in,
-                                           double pressure_in) {
+                                           double pressure_in) const {
     double tau = temperature_ref1_ / temperature_in;
     double ppi = pressure_in / pressure_ref1_;
 
@@ -1239,7 +1239,7 @@ double Lib97::get_param1_d2gamma_dtau_dtau(double temperature_in,
 }
 
 double Lib97::get_param1_temperature_ph(double pressure_in,
-                                        double enthalpy_in) {
+                                        double enthalpy_in) const {
     double ppi = pressure_in / pressure_ref1Tph_;
     double eta = enthalpy_in / enthalpy_ref1Tph_;
 
@@ -1258,7 +1258,7 @@ double Lib97::get_param1_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param1_temperature_ps(double pressure_in,
-                                        double entropy_in) {
+                                        double entropy_in) const {
     double ppi = pressure_in / pressure_ref1Tps_;
     double sig = entropy_in / entropy_ref1Tps_;
 
@@ -1277,7 +1277,7 @@ double Lib97::get_param1_temperature_ps(double pressure_in,
 }
 
 double Lib97::get_param2_mdensity(double temperature_in,
-                                  double pressure_in) {
+                                  double pressure_in) const {
     double ppi = pressure_in / pressure_ref2_;
 
     double fn_dgamma_dppi =
@@ -1295,7 +1295,7 @@ double Lib97::get_param2_mdensity(double temperature_in,
 
 double Lib97::get_param2_gamma_ide(double temperature_in,
                                    double pressure_in,
-                                   bool flag_metastable) {
+                                   bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1324,7 +1324,7 @@ double Lib97::get_param2_gamma_ide(double temperature_in,
 
 double Lib97::get_param2_dgamma_ide_dppi(double temperature_in,
                                          double pressure_in,
-                                         bool flag_metastable) {
+                                         bool flag_metastable) const {
     //double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1335,7 +1335,7 @@ double Lib97::get_param2_dgamma_ide_dppi(double temperature_in,
 
 double Lib97::get_param2_dgamma_ide_dtau(double temperature_in,
                                          double pressure_in,
-                                         bool flag_metastable) {
+                                         bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     //double ppi = pressure_in / pressure_ref2_;
 
@@ -1369,7 +1369,7 @@ double Lib97::get_param2_dgamma_ide_dtau(double temperature_in,
 
 double Lib97::get_param2_d2gamma_ide_dppi_dppi(double temperature_in,
                                                double pressure_in,
-                                               bool flag_metastable) {
+                                               bool flag_metastable) const {
     //double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1380,7 +1380,7 @@ double Lib97::get_param2_d2gamma_ide_dppi_dppi(double temperature_in,
 
 double Lib97::get_param2_d2gamma_ide_dppi_dtau(double temperature_in,
                                                double pressure_in,
-                                               bool flag_metastable) {
+                                               bool flag_metastable) const {
     //double tau = temperature_ref2_ / temperature_in;
     //double ppi = pressure_in / pressure_ref2_;
 
@@ -1389,7 +1389,7 @@ double Lib97::get_param2_d2gamma_ide_dppi_dtau(double temperature_in,
 
 double Lib97::get_param2_d2gamma_ide_dtau_dtau(double temperature_in,
                                                double pressure_in,
-                                               bool flag_metastable) {
+                                               bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     //double ppi = pressure_in / pressure_ref2_;
 
@@ -1425,7 +1425,7 @@ double Lib97::get_param2_d2gamma_ide_dtau_dtau(double temperature_in,
 
 double Lib97::get_param2_gamma_res(double temperature_in,
                                    double pressure_in,
-                                   bool flag_metastable) {
+                                   bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1464,7 +1464,7 @@ double Lib97::get_param2_gamma_res(double temperature_in,
 
 double Lib97::get_param2_dgamma_res_dppi(double temperature_in,
                                          double pressure_in,
-                                         bool flag_metastable) {
+                                         bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1513,7 +1513,7 @@ double Lib97::get_param2_dgamma_res_dppi(double temperature_in,
 
 double Lib97::get_param2_dgamma_res_dtau(double temperature_in,
                                          double pressure_in,
-                                         bool flag_metastable) {
+                                         bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1562,7 +1562,7 @@ double Lib97::get_param2_dgamma_res_dtau(double temperature_in,
 
 double Lib97::get_param2_d2gamma_res_dppi_dppi(double temperature_in,
                                                double pressure_in,
-                                               bool flag_metastable) {
+                                               bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1615,7 +1615,7 @@ double Lib97::get_param2_d2gamma_res_dppi_dppi(double temperature_in,
 
 double Lib97::get_param2_d2gamma_res_dppi_dtau(double temperature_in,
                                                double pressure_in,
-                                               bool flag_metastable) {
+                                               bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1668,7 +1668,7 @@ double Lib97::get_param2_d2gamma_res_dppi_dtau(double temperature_in,
 
 double Lib97::get_param2_d2gamma_res_dtau_dtau(double temperature_in,
                                                double pressure_in,
-                                               bool flag_metastable) {
+                                               bool flag_metastable) const {
     double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref2_;
 
@@ -1719,7 +1719,7 @@ double Lib97::get_param2_d2gamma_res_dtau_dtau(double temperature_in,
     return d2gamma_dtau_dtau;
 }
 
-double Lib97::get_paramB2bc_pressure(double enthalpy_in) {
+double Lib97::get_paramB2bc_pressure(double enthalpy_in) const {
     double eta =
         enthalpy_in / enthalpy_refB2bc_;
 
@@ -1731,7 +1731,7 @@ double Lib97::get_paramB2bc_pressure(double enthalpy_in) {
     return pressure_refB2bc_ * ppi;
 }
 
-double Lib97::get_paramB2bc_enthalpy(double pressure_in) {
+double Lib97::get_paramB2bc_enthalpy(double pressure_in) const {
     double ppi =
         pressure_in / pressure_refB2bc_;
 
@@ -1743,7 +1743,7 @@ double Lib97::get_paramB2bc_enthalpy(double pressure_in) {
 }
 
 double Lib97::get_param2_temperature_ph(double pressure_in,
-                                        double enthalpy_in) {
+                                        double enthalpy_in) const {
     double temperature_out = 0.;
 
     if (pressure_in < 4. * 1.0e+6) {
@@ -1773,7 +1773,7 @@ double Lib97::get_param2_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param2a_temperature_ph(double pressure_in,
-                                         double enthalpy_in) {
+                                         double enthalpy_in) const {
     double ppi = pressure_in / pressure_ref2aTph_;
     double eta = enthalpy_in / enthalpy_ref2aTph_;
 
@@ -1792,7 +1792,7 @@ double Lib97::get_param2a_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param2b_temperature_ph(double pressure_in,
-                                         double enthalpy_in) {
+                                         double enthalpy_in) const {
     double ppi = pressure_in / pressure_ref2bTph_;
     double eta = enthalpy_in / enthalpy_ref2bTph_;
 
@@ -1811,7 +1811,7 @@ double Lib97::get_param2b_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param2c_temperature_ph(double pressure_in,
-                                         double enthalpy_in) {
+                                         double enthalpy_in) const {
     double ppi = pressure_in / pressure_ref2cTph_;
     double eta = enthalpy_in / enthalpy_ref2cTph_;
 
@@ -1830,7 +1830,7 @@ double Lib97::get_param2c_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param2_temperature_ps(double pressure_in,
-                                        double entropy_in) {
+                                        double entropy_in) const {
     double temperature_out = 0.;
 
     if (pressure_in < 4. * 1.0e+6) {
@@ -1857,7 +1857,7 @@ double Lib97::get_param2_temperature_ps(double pressure_in,
 }
 
 double Lib97::get_param2a_temperature_ps(double pressure_in,
-                                         double entropy_in) {
+                                         double entropy_in) const {
     double ppi = pressure_in / pressure_ref2aTps_;
     double sig = entropy_in / entropy_ref2aTps_;
 
@@ -1876,7 +1876,7 @@ double Lib97::get_param2a_temperature_ps(double pressure_in,
 }
 
 double Lib97::get_param2b_temperature_ps(double pressure_in,
-                                         double entropy_in) {
+                                         double entropy_in) const {
     double ppi = pressure_in / pressure_ref2bTps_;
     double sig = entropy_in / entropy_ref2bTps_;
 
@@ -1895,7 +1895,7 @@ double Lib97::get_param2b_temperature_ps(double pressure_in,
 }
 
 double Lib97::get_param2c_temperature_ps(double pressure_in,
-                                         double entropy_in) {
+                                         double entropy_in) const {
     double ppi = pressure_in / pressure_ref2cTps_;
     double sig = entropy_in / entropy_ref2cTps_;
 
@@ -1914,7 +1914,7 @@ double Lib97::get_param2c_temperature_ps(double pressure_in,
 }
 
 double Lib97::get_param3_mdensity(double temperature_in,
-                                  double pressure_in) {
+                                  double pressure_in) const {
     int sign_ini = 0;
     double mdensity_out = 0.;
 
@@ -1962,7 +1962,7 @@ double Lib97::get_param3_mdensity(double temperature_in,
 }
 
 double Lib97::get_param3_f(double mdensity_in,
-                           double temperature_in) {
+                           double temperature_in) const {
     double f =
         const_R_spec_ * temperature_in *
         get_param3_phi(mdensity_in,
@@ -1972,7 +1972,7 @@ double Lib97::get_param3_f(double mdensity_in,
 }
 
 double Lib97::get_param3_g(double mdensity_in,
-                           double temperature_in) {
+                           double temperature_in) const {
     double g =
         get_param3_f(mdensity_in,
                     temperature_in) +
@@ -1983,7 +1983,7 @@ double Lib97::get_param3_g(double mdensity_in,
 }
 
 double Lib97::get_param3_pressure(double mdensity_in,
-                                  double temperature_in) {
+                                  double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     //double tau = temperature_ref3_ / temperature_in;
 
@@ -1996,7 +1996,7 @@ double Lib97::get_param3_pressure(double mdensity_in,
 }
 
 double Lib97::get_param3_dpress_drho(double mdensity_in,
-                                     double temperature_in) {
+                                     double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     //double tau = temperature_ref3_ / temperature_in;
 
@@ -2012,7 +2012,7 @@ double Lib97::get_param3_dpress_drho(double mdensity_in,
 }
 
 double Lib97::get_param3_erg_int(double mdensity_in,
-                                 double temperature_in) {
+                                 double temperature_in) const {
     //double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2024,7 +2024,7 @@ double Lib97::get_param3_erg_int(double mdensity_in,
 }
 
 double Lib97::get_param3_entropy(double mdensity_in,
-                                 double temperature_in) {
+                                 double temperature_in) const {
     //double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2038,7 +2038,7 @@ double Lib97::get_param3_entropy(double mdensity_in,
 }
 
 double Lib97::get_param3_enthalpy(double mdensity_in,
-                                  double temperature_in) {
+                                  double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2053,7 +2053,7 @@ double Lib97::get_param3_enthalpy(double mdensity_in,
 }
 
 double Lib97::get_param3_heat_c_v(double mdensity_in,
-                                  double temperature_in) {
+                                  double temperature_in) const {
     //double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2065,7 +2065,7 @@ double Lib97::get_param3_heat_c_v(double mdensity_in,
 }
 
 double Lib97::get_param3_heat_c_p(double mdensity_in,
-                                  double temperature_in) {
+                                  double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2091,7 +2091,7 @@ double Lib97::get_param3_heat_c_p(double mdensity_in,
 }
 
 double Lib97::get_param3_speed_sound(double mdensity_in,
-                                     double temperature_in) {
+                                     double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2117,7 +2117,7 @@ double Lib97::get_param3_speed_sound(double mdensity_in,
 }
 
 double Lib97::get_param3_phi(double mdensity_in,
-                             double temperature_in) {
+                             double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2136,7 +2136,7 @@ double Lib97::get_param3_phi(double mdensity_in,
 }
 
 double Lib97::get_param3_dphi_ddelta(double mdensity_in,
-                                     double temperature_in) {
+                                     double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2160,7 +2160,7 @@ double Lib97::get_param3_dphi_ddelta(double mdensity_in,
 }
 
 double Lib97::get_param3_dphi_dtau(double mdensity_in,
-                                   double temperature_in) {
+                                   double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2184,7 +2184,7 @@ double Lib97::get_param3_dphi_dtau(double mdensity_in,
 }
 
 double Lib97::get_param3_d2phi_ddelta_ddelta(double mdensity_in,
-                                             double temperature_in) {
+                                             double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2203,15 +2203,14 @@ double Lib97::get_param3_d2phi_ddelta_ddelta(double mdensity_in,
 
         d2phi_ddelta_ddelta +=
             coeff3_n_[i] * delta_pow_I * tau_pow_J *
-            static_cast<double>(coeff3_I_[i] *
-                                (coeff3_I_[i] - 1));
+            static_cast<double>(coeff3_I_[i] * (coeff3_I_[i] - 1));
     }
 
     return d2phi_ddelta_ddelta;
 }
 
 double Lib97::get_param3_d2phi_ddelta_dtau(double mdensity_in,
-                                           double temperature_in) {
+                                           double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2229,15 +2228,14 @@ double Lib97::get_param3_d2phi_ddelta_dtau(double mdensity_in,
 
         d2phi_ddelta_dtau +=
             coeff3_n_[i] * delta_pow_I * tau_pow_J *
-            static_cast<double>(coeff3_I_[i] *
-                                coeff3_J_[i]);
+            static_cast<double>(coeff3_I_[i] * coeff3_J_[i]);
     }
 
     return d2phi_ddelta_dtau;
 }
 
 double Lib97::get_param3_d2phi_dtau_dtau(double mdensity_in,
-                                         double temperature_in) {
+                                         double temperature_in) const {
     double delta = mdensity_in / mdensity_ref3_;
     double tau = temperature_ref3_ / temperature_in;
 
@@ -2255,14 +2253,13 @@ double Lib97::get_param3_d2phi_dtau_dtau(double mdensity_in,
 
         d2phi_dtau_dtau +=
             coeff3_n_[i] * delta_pow_I * tau_pow_J *
-            static_cast<double>(coeff3_J_[i] *
-                                (coeff3_J_[i] - 1));
+            static_cast<double>(coeff3_J_[i] * (coeff3_J_[i] - 1));
     }
 
     return d2phi_dtau_dtau;
 }
 
-double Lib97::get_paramB3ab_enthalpy(double pressure_in) {
+double Lib97::get_paramB3ab_enthalpy(double pressure_in) const {
     double ppi =
         pressure_in / pressure_refB3ab_;
 
@@ -2276,7 +2273,7 @@ double Lib97::get_paramB3ab_enthalpy(double pressure_in) {
 }
 
 double Lib97::get_param3_temperature_ph(double pressure_in,
-                                        double enthalpy_in) {
+                                        double enthalpy_in) const {
     double temperature_out = 0.;
 
     if (pressure_in < pressure_crit_) {
@@ -2316,7 +2313,7 @@ double Lib97::get_param3_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param3a_temperature_ph(double pressure_in,
-                                         double enthalpy_in) {
+                                         double enthalpy_in) const {
     double ppi = pressure_in / pressure_ref3aTph_;
     double eta = enthalpy_in / enthalpy_ref3aTph_;
 
@@ -2335,7 +2332,7 @@ double Lib97::get_param3a_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param3b_temperature_ph(double pressure_in,
-                                         double enthalpy_in) {
+                                         double enthalpy_in) const {
     double ppi = pressure_in / pressure_ref3bTph_;
     double eta = enthalpy_in / enthalpy_ref3bTph_;
 
@@ -2354,7 +2351,7 @@ double Lib97::get_param3b_temperature_ph(double pressure_in,
 }
 
 double Lib97::get_param3_temperature_ps(double pressure_in,
-                                        double entropy_in) {
+                                        double entropy_in) const {
     double temperature_out = 0.;
 
     if (pressure_in < pressure_crit_) {
@@ -2391,7 +2388,7 @@ double Lib97::get_param3_temperature_ps(double pressure_in,
 }
 
 double Lib97::get_param3a_temperature_ps(double pressure_in,
-                                         double entropy_in) {
+                                         double entropy_in) const {
     double ppi = pressure_in / pressure_ref3aTps_;
     double sig = entropy_in / entropy_ref3aTps_;
 
@@ -2410,7 +2407,7 @@ double Lib97::get_param3a_temperature_ps(double pressure_in,
 }
 
 double Lib97::get_param3b_temperature_ps(double pressure_in,
-                                         double entropy_in) {
+                                         double entropy_in) const {
     double ppi = pressure_in / pressure_ref3bTps_;
     double sig = entropy_in / entropy_ref3bTps_;
 
@@ -2428,7 +2425,7 @@ double Lib97::get_param3b_temperature_ps(double pressure_in,
     return temperature_ref3bTps_ * fn_theta;
 }
 
-double Lib97::get_param4_sat_pressure(double temperature_in) {
+double Lib97::get_param4_sat_pressure(double temperature_in) const {
     double fn_tau = temperature_in / temperature_ref4_;
     double fn_theta =
         fn_tau + coeff4_n_[9] / (fn_tau - coeff4_n_[10]);
@@ -2452,7 +2449,7 @@ double Lib97::get_param4_sat_pressure(double temperature_in) {
     return press_sat;
 }
 
-double Lib97::get_param4_sat_temperature(double pressure_in) {
+double Lib97::get_param4_sat_temperature(double pressure_in) const {
     double fn_beta = pow(pressure_in / pressure_ref4_, 0.25);
 
     double fn_E =
@@ -2478,7 +2475,7 @@ double Lib97::get_param4_sat_temperature(double pressure_in) {
 }
 
 double Lib97::get_param5_gamma_ide(double temperature_in,
-                                   double pressure_in) {
+                                   double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2494,7 +2491,7 @@ double Lib97::get_param5_gamma_ide(double temperature_in,
 }
 
 double Lib97::get_param5_dgamma_ide_dppi(double temperature_in,
-                                         double pressure_in) {
+                                         double pressure_in) const {
     //double tau = temperature_ref2_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2504,7 +2501,7 @@ double Lib97::get_param5_dgamma_ide_dppi(double temperature_in,
 }
 
 double Lib97::get_param5_dgamma_ide_dtau(double temperature_in,
-                                         double pressure_in) {
+                                         double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     //double ppi = pressure_in / pressure_ref5_;
 
@@ -2525,7 +2522,7 @@ double Lib97::get_param5_dgamma_ide_dtau(double temperature_in,
 }
 
 double Lib97::get_param5_d2gamma_ide_dppi_dppi(double temperature_in,
-                                               double pressure_in) {
+                                               double pressure_in) const {
     //double tau = temperature_ref5_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2535,7 +2532,7 @@ double Lib97::get_param5_d2gamma_ide_dppi_dppi(double temperature_in,
 }
 
 double Lib97::get_param5_d2gamma_ide_dppi_dtau(double temperature_in,
-                                               double pressure_in) {
+                                               double pressure_in) const {
     //double tau = temperature_ref5_ / temperature_in;
     //double ppi = pressure_in / pressure_ref5_;
 
@@ -2543,7 +2540,7 @@ double Lib97::get_param5_d2gamma_ide_dppi_dtau(double temperature_in,
 }
 
 double Lib97::get_param5_d2gamma_ide_dtau_dtau(double temperature_in,
-                                               double pressure_in) {
+                                               double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     //double ppi = pressure_in / pressure_ref5_;
 
@@ -2558,15 +2555,14 @@ double Lib97::get_param5_d2gamma_ide_dtau_dtau(double temperature_in,
             get_pow_int(tau, coeff5_ide_J_[i] - 2);
         d2gamma_dtau_dtau +=
             coeff5_ide_n_[i] * tau_pow_J *
-            static_cast<double>(coeff5_ide_J_[i] *
-                                (coeff5_ide_J_[i] - 1));
+            static_cast<double>(coeff5_ide_J_[i] * (coeff5_ide_J_[i] - 1));
     }
 
     return d2gamma_dtau_dtau;
 }
 
 double Lib97::get_param5_gamma_res(double temperature_in,
-                                   double pressure_in) {
+                                   double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2585,7 +2581,7 @@ double Lib97::get_param5_gamma_res(double temperature_in,
 }
 
 double Lib97::get_param5_dgamma_res_dppi(double temperature_in,
-                                         double pressure_in) {
+                                         double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2609,7 +2605,7 @@ double Lib97::get_param5_dgamma_res_dppi(double temperature_in,
 }
 
 double Lib97::get_param5_dgamma_res_dtau(double temperature_in,
-                                         double pressure_in) {
+                                         double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2633,7 +2629,7 @@ double Lib97::get_param5_dgamma_res_dtau(double temperature_in,
 }
 
 double Lib97::get_param5_d2gamma_res_dppi_dppi(double temperature_in,
-                                               double pressure_in) {
+                                               double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2651,15 +2647,14 @@ double Lib97::get_param5_d2gamma_res_dppi_dppi(double temperature_in,
 
         d2gamma_dppi_dppi +=
             coeff5_res_n_[i] * ppi_pow_I * tau_pow_J *
-            static_cast<double>(coeff5_res_I_[i] *
-                                (coeff5_res_I_[i] - 1));
+            static_cast<double>(coeff5_res_I_[i] * (coeff5_res_I_[i] - 1));
     }
 
     return d2gamma_dppi_dppi;
 }
 
 double Lib97::get_param5_d2gamma_res_dppi_dtau(double temperature_in,
-                                               double pressure_in) {
+                                               double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2677,15 +2672,14 @@ double Lib97::get_param5_d2gamma_res_dppi_dtau(double temperature_in,
 
         d2gamma_dppi_dtau +=
             coeff5_res_n_[i] * ppi_pow_I * tau_pow_J *
-            static_cast<double>(coeff5_res_I_[i] *
-                                coeff5_res_J_[i]);
+            static_cast<double>(coeff5_res_I_[i] * coeff5_res_J_[i]);
     }
 
     return d2gamma_dppi_dtau;
 }
 
 double Lib97::get_param5_d2gamma_res_dtau_dtau(double temperature_in,
-                                               double pressure_in) {
+                                               double pressure_in) const {
     double tau = temperature_ref5_ / temperature_in;
     double ppi = pressure_in / pressure_ref5_;
 
@@ -2703,8 +2697,7 @@ double Lib97::get_param5_d2gamma_res_dtau_dtau(double temperature_in,
 
         d2gamma_dtau_dtau +=
             coeff5_res_n_[i] * ppi_pow_I * tau_pow_J *
-            static_cast<double>(coeff5_res_J_[i] *
-                                (coeff5_res_J_[i] - 1));
+            static_cast<double>(coeff5_res_J_[i] * (coeff5_res_J_[i] - 1));
     }
 
     return d2gamma_dtau_dtau;
@@ -2713,7 +2706,7 @@ double Lib97::get_param5_d2gamma_res_dtau_dtau(double temperature_in,
 bool Lib97::find_root3_mdensity(double temperature_in,
                                 double pressure_in,
                                 double &mdensity_out,
-                                int sign_ini) {
+                                int sign_ini) const {
     double mden_now = 0.;
 
     double pressure_in2 =
@@ -2792,7 +2785,7 @@ bool Lib97::find_root3_mdensity(double temperature_in,
 bool Lib97::find_state3_coex(double temperature_in,
                              double &pressure_out,
                              double &mden_vap_out,
-                             double &mden_liq_out) {
+                             double &mden_liq_out) const {
     double press_now = pressure_out;
     double mden_vap = mden_vap_out;
     double mden_liq = mden_liq_out;
@@ -2981,7 +2974,7 @@ void Lib97::make_tab_coex(int nbin_in) {
     return;
 }
 
-void Lib97::export_tab_coex(char *filename) {
+void Lib97::export_tab_coex(char *filename) const {
     if (!have_tab_coex_) {
         return;
     }

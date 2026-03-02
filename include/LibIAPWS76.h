@@ -35,12 +35,12 @@ class Lib76 {
 
     ~Lib76() {}
 
-    void print_header(FILE *ptr_fout = stdout);
+    void print_header(FILE *ptr_fout = stdout) const;
 
     /* returns surface tension
      * between (ordinary) liquid water and vapor
      * in J / m^2 */
-    double get_tension_surf(double temperature_in);
+    double get_tension_surf(double temperature_in) const;
 };
 
 } // end namespace IAPWS

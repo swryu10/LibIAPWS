@@ -3,7 +3,7 @@
 
 namespace IAPWS {
 
-void Lib06::print_header(FILE *ptr_fout) {
+void Lib06::print_header(FILE *ptr_fout) const {
     fprintf(ptr_fout, "\n");
     fprintf(ptr_fout, "IAPWS R10-06 (2009)\n");
     fprintf(ptr_fout, "Revised Release on the Equation of State ");
@@ -13,7 +13,7 @@ void Lib06::print_header(FILE *ptr_fout) {
     return;
 }
 
-double Lib06::get_param_g0(double pressure) {
+double Lib06::get_param_g0(double pressure) const {
     double press_dpi =
         (pressure - pressure_norm_) / pressure_trip_;
 
@@ -30,7 +30,7 @@ double Lib06::get_param_g0(double pressure) {
     return g0;
 }
 
-double Lib06::get_param_dg0_dp(double pressure) {
+double Lib06::get_param_dg0_dp(double pressure) const {
     double press_dpi =
         (pressure - pressure_norm_) / pressure_trip_;
 
@@ -48,7 +48,7 @@ double Lib06::get_param_dg0_dp(double pressure) {
     return dg0_dp;
 }
 
-double Lib06::get_param_d2g0_dp_dp(double pressure) {
+double Lib06::get_param_d2g0_dp_dp(double pressure) const {
     double press_dpi =
         (pressure - pressure_norm_) / pressure_trip_;
 
@@ -68,7 +68,7 @@ double Lib06::get_param_d2g0_dp_dp(double pressure) {
 }
 
 void Lib06::get_param_r(double pressure, int k,
-                        double *r_out) {
+                        double *r_out) const {
     if (k == 1) {
         r_out[0] = coeff_r1_[0];
         r_out[1] = coeff_r1_[1];
@@ -97,7 +97,7 @@ void Lib06::get_param_r(double pressure, int k,
 }
 
 void Lib06::get_param_dr_dp(double pressure, int k,
-                            double *dr_dp_out) {
+                            double *dr_dp_out) const {
     if (k == 1) {
         dr_dp_out[0] = 0.;
         dr_dp_out[1] = 0.;
@@ -130,7 +130,7 @@ void Lib06::get_param_dr_dp(double pressure, int k,
 }
 
 void Lib06::get_param_d2r_dp_dp(double pressure, int k,
-                                double *d2r_dp_dp_out) {
+                                double *d2r_dp_dp_out) const {
     if (k == 1) {
         d2r_dp_dp_out[0] = 0.;
         d2r_dp_dp_out[1] = 0.;
@@ -170,7 +170,7 @@ void Lib06::get_param_d2r_dp_dp(double pressure, int k,
 }
 
 void Lib06::get_param_q(double temperature, int k,
-                        double *q_out) {
+                        double *q_out) const {
     q_out[0] = 0.;
     q_out[1] = 0.;
 
@@ -232,7 +232,7 @@ void Lib06::get_param_q(double temperature, int k,
 }
 
 void Lib06::get_param_dq_dT(double temperature, int k,
-                            double *dq_dT_out) {
+                            double *dq_dT_out) const {
     dq_dT_out[0] = 0.;
     dq_dT_out[1] = 0.;
 
@@ -279,7 +279,7 @@ void Lib06::get_param_dq_dT(double temperature, int k,
 }
 
 void Lib06::get_param_d2q_dT_dT(double temperature, int k,
-                                double *d2q_dT_dT_out) {
+                                double *d2q_dT_dT_out) const {
     d2q_dT_dT_out[0] = 0.;
     d2q_dT_dT_out[1] = 0.;
 
@@ -326,7 +326,7 @@ void Lib06::get_param_d2q_dT_dT(double temperature, int k,
 }
 
 double Lib06::get_param_g(double temperature,
-                          double pressure) {
+                          double pressure) const {
     double tau = temperature / temperature_trip_;
 
     double g = 0.;
@@ -361,7 +361,7 @@ double Lib06::get_param_g(double temperature,
 }
 
 double Lib06::get_param_dg_dT(double temperature,
-                              double pressure) {
+                              double pressure) const {
     double tau = temperature / temperature_trip_;
 
     double dg_dT = 0.;
@@ -394,7 +394,7 @@ double Lib06::get_param_dg_dT(double temperature,
 }
 
 double Lib06::get_param_dg_dp(double temperature,
-                              double pressure) {
+                              double pressure) const {
     double tau = temperature / temperature_trip_;
 
     double dg_dp = 0.;
@@ -418,7 +418,7 @@ double Lib06::get_param_dg_dp(double temperature,
 }
 
 double Lib06::get_param_d2g_dT_dT(double temperature,
-                                  double pressure) {
+                                  double pressure) const {
     double tau = temperature / temperature_trip_;
 
     double d2g_dT_dT = 0.;
@@ -442,7 +442,7 @@ double Lib06::get_param_d2g_dT_dT(double temperature,
 }
 
 double Lib06::get_param_d2g_dT_dp(double temperature,
-                                  double pressure) {
+                                  double pressure) const {
     double tau = temperature / temperature_trip_;
 
     double d2g_dT_dp = 0.;
@@ -464,7 +464,7 @@ double Lib06::get_param_d2g_dT_dp(double temperature,
 }
 
 double Lib06::get_param_d2g_dp_dp(double temperature,
-                                  double pressure) {
+                                  double pressure) const {
     double tau = temperature / temperature_trip_;
 
     double d2g_dp_dp = 0.;
@@ -488,7 +488,7 @@ double Lib06::get_param_d2g_dp_dp(double temperature,
 }
 
 double Lib06::get_param_mdensity(double temperature_in,
-                                 double pressure_in) {
+                                 double pressure_in) const {
     double mden =
         1. / get_param_dg_dp(temperature_in,
                              pressure_in);
@@ -497,7 +497,7 @@ double Lib06::get_param_mdensity(double temperature_in,
 }
 
 double Lib06::get_param_entropy(double temperature_in,
-                                double pressure_in) {
+                                double pressure_in) const {
     double entropy =
         -get_param_dg_dT(temperature_in,
                          pressure_in);
@@ -506,7 +506,7 @@ double Lib06::get_param_entropy(double temperature_in,
 }
 
 double Lib06::get_param_heat_c_p(double temperature_in,
-                                 double pressure_in) {
+                                 double pressure_in) const {
     double c_p =
         -temperature_in *
          get_param_d2g_dT_dT(temperature_in,
@@ -516,7 +516,7 @@ double Lib06::get_param_heat_c_p(double temperature_in,
 }
 
 double Lib06::get_param_enthalpy(double temperature_in,
-                                 double pressure_in) {
+                                 double pressure_in) const {
     double enthalpy =
         get_param_g(temperature_in, pressure_in) -
         temperature_in * get_param_dg_dT(temperature_in,
@@ -526,7 +526,7 @@ double Lib06::get_param_enthalpy(double temperature_in,
 }
 
 double Lib06::get_param_erg_int(double temperature_in,
-                                double pressure_in) {
+                                double pressure_in) const {
     double erg_int =
         get_param_g(temperature_in, pressure_in) -
         temperature_in * get_param_dg_dT(temperature_in,
@@ -538,7 +538,7 @@ double Lib06::get_param_erg_int(double temperature_in,
 }
 
 double Lib06::get_param_f(double temperature_in,
-                          double pressure_in) {
+                          double pressure_in) const {
     double f =
         get_param_g(temperature_in, pressure_in) -
         pressure_in * get_param_dg_dp(temperature_in,
@@ -548,7 +548,7 @@ double Lib06::get_param_f(double temperature_in,
 }
 
 double Lib06::get_param_coeff_alpha(double temperature_in,
-                                    double pressure_in) {
+                                    double pressure_in) const {
     double alpha =
         get_param_d2g_dT_dp(temperature_in,
                             pressure_in) /
@@ -559,7 +559,7 @@ double Lib06::get_param_coeff_alpha(double temperature_in,
 }
 
 double Lib06::get_param_coeff_beta(double temperature_in,
-                                   double pressure_in) {
+                                   double pressure_in) const {
     double beta =
         -get_param_d2g_dT_dp(temperature_in,
                              pressure_in) /
@@ -570,7 +570,7 @@ double Lib06::get_param_coeff_beta(double temperature_in,
 }
 
 double Lib06::get_param_comp_kappa_T(double temperature_in,
-                                     double pressure_in) {
+                                     double pressure_in) const {
     double kappa_T =
         -get_param_d2g_dp_dp(temperature_in,
                              pressure_in) /
@@ -581,7 +581,7 @@ double Lib06::get_param_comp_kappa_T(double temperature_in,
 }
 
 double Lib06::get_param_comp_kappa_s(double temperature_in,
-                                     double pressure_in) {
+                                     double pressure_in) const {
     double g_p = get_param_dg_dp(temperature_in,
                                  pressure_in);
     double g_TT = get_param_d2g_dT_dT(temperature_in,
@@ -601,7 +601,7 @@ bool Lib06::find_state_coex(Lib95 *ptr_lib95eos,
                             double temperature_in,
                             double &pressure_out,
                             double &mden_vap_out,
-                            double &mden_ice_out) {
+                            double &mden_ice_out) const {
     double press_now = pressure_out;
     double mden_vap = mden_vap_out;
     double mden_ice = mden_ice_out;
@@ -757,7 +757,7 @@ void Lib06::make_tab_coex(Lib95 *ptr_lib95eos,
     return;
 }
 
-void Lib06::export_tab_coex(char *filename) {
+void Lib06::export_tab_coex(char *filename) const {
     if (!have_tab_coex_) {
         return;
     }
@@ -957,7 +957,7 @@ bool Lib06::find_state_melt(Lib95 *ptr_lib95eos,
                             double pressure_in,
                             double &temperature_out,
                             double &mden_liq_out,
-                            double &mden_ice_out) {
+                            double &mden_ice_out) const {
     double temp_now = temperature_out;
     double mden_liq = mden_liq_out;
     double mden_ice = mden_ice_out;
@@ -1114,7 +1114,7 @@ void Lib06::make_tab_melt(Lib95 *ptr_lib95eos,
     return;
 }
 
-void Lib06::export_tab_melt(char *filename) {
+void Lib06::export_tab_melt(char *filename) const {
     if (!have_tab_melt_) {
         return;
     }

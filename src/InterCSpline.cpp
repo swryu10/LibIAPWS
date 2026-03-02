@@ -91,6 +91,16 @@ void InterCSpline::init(int nbin_in,
     }
     tab_d2y_dx_[0] = 0.;
 
+    delete [] coeff_a;
+    delete [] coeff_b;
+    delete [] coeff_c;
+    delete [] coeff_d;
+
+    delete [] coeff_ap;
+    delete [] coeff_bp;
+    delete [] coeff_cp;
+    delete [] coeff_dp;
+
     initialized_ = true;
 
     return;
@@ -98,7 +108,7 @@ void InterCSpline::init(int nbin_in,
 
 double InterCSpline::get_func(double x_in,
                               double *ptr_dy_dx_out,
-                              double *ptr_d2y_dx_dx_out) {
+                              double *ptr_d2y_dx_dx_out) const {
     if (!initialized_ ||
         x_in < xmin_ || x_in > xmax_) {
         if (ptr_dy_dx_out != NULL) {
@@ -157,6 +167,9 @@ double InterCSpline::get_func(double x_in,
             frac_d0y[0] * tab_d2y_dx_[ix] +
             frac_d0y[1] * tab_d2y_dx_[ix + 1];
     }
+
+    delete [] frac_d0y;
+    delete [] frac_d2y;
 
     return y_out;
 }

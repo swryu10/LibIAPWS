@@ -4,7 +4,7 @@
 
 namespace IAPWS {
 
-void Lib95::print_header(FILE *ptr_fout) {
+void Lib95::print_header(FILE *ptr_fout) const {
     fprintf(ptr_fout, "\n");
     fprintf(ptr_fout, "IAPWS R6-95 (2018)\n");
     fprintf(ptr_fout, "Thermodynamic Properties of Ordinary Water Substance ");
@@ -15,7 +15,7 @@ void Lib95::print_header(FILE *ptr_fout) {
 }
 
 double Lib95::get_param_phi_ide(double mdensity_in,
-                                double temperature_in) {
+                                double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -34,7 +34,7 @@ double Lib95::get_param_phi_ide(double mdensity_in,
 }
 
 double Lib95::get_param_dphi_ide_ddelta(double mdensity_in,
-                                        double temperature_in) {
+                                        double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -44,7 +44,7 @@ double Lib95::get_param_dphi_ide_ddelta(double mdensity_in,
 }
 
 double Lib95::get_param_dphi_ide_dtau(double mdensity_in,
-                                      double temperature_in) {
+                                      double temperature_in) const {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -63,7 +63,7 @@ double Lib95::get_param_dphi_ide_dtau(double mdensity_in,
 }
 
 double Lib95::get_param_d2phi_ide_ddelta_ddelta(double mdensity_in,
-                                                double temperature_in) {
+                                                double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -73,7 +73,7 @@ double Lib95::get_param_d2phi_ide_ddelta_ddelta(double mdensity_in,
 }
 
 double Lib95::get_param_d2phi_ide_ddelta_dtau(double mdensity_in,
-                                              double temperature_in) {
+                                              double temperature_in) const {
     //double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -83,7 +83,7 @@ double Lib95::get_param_d2phi_ide_ddelta_dtau(double mdensity_in,
 }
 
 double Lib95::get_param_d2phi_ide_dtau_dtau(double mdensity_in,
-                                            double temperature_in) {
+                                            double temperature_in) const {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -102,7 +102,7 @@ double Lib95::get_param_d2phi_ide_dtau_dtau(double mdensity_in,
 }
 
 double Lib95::get_param_phi_res(double mdensity_in,
-                                double temperature_in) {
+                                double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -152,7 +152,7 @@ double Lib95::get_param_phi_res(double mdensity_in,
 }
 
 double Lib95::get_param_dphi_res_ddelta(double mdensity_in,
-                                        double temperature_in) {
+                                        double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -219,7 +219,7 @@ double Lib95::get_param_dphi_res_ddelta(double mdensity_in,
 }
 
 double Lib95::get_param_dphi_res_dtau(double mdensity_in,
-                                      double temperature_in) {
+                                      double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -280,7 +280,7 @@ double Lib95::get_param_dphi_res_dtau(double mdensity_in,
 }
 
 double Lib95::get_param_d2phi_res_ddelta_ddelta(double mdensity_in,
-                                                double temperature_in) {
+                                                double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -383,7 +383,7 @@ double Lib95::get_param_d2phi_res_ddelta_ddelta(double mdensity_in,
 }
 
 double Lib95::get_param_d2phi_res_ddelta_dtau(double mdensity_in,
-                                              double temperature_in) {
+                                              double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -472,7 +472,7 @@ double Lib95::get_param_d2phi_res_ddelta_dtau(double mdensity_in,
 }
 
 double Lib95::get_param_d2phi_res_dtau_dtau(double mdensity_in,
-                                            double temperature_in) {
+                                            double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -549,7 +549,7 @@ double Lib95::get_param_d2phi_res_dtau_dtau(double mdensity_in,
 }
 
 double Lib95::get_param_f(double mdensity_in,
-                          double temperature_in) {
+                          double temperature_in) const {
     double f =
         const_R_spec_ * temperature_in *
         (get_param_phi_ide(mdensity_in,
@@ -561,7 +561,7 @@ double Lib95::get_param_f(double mdensity_in,
 }
 
 double Lib95::get_param_g(double mdensity_in,
-                          double temperature_in) {
+                          double temperature_in) const {
     double g =
         get_param_f(mdensity_in,
                     temperature_in) +
@@ -572,7 +572,7 @@ double Lib95::get_param_g(double mdensity_in,
 }
 
 double Lib95::get_param_pressure(double mdensity_in,
-                                 double temperature_in) {
+                                 double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -585,7 +585,7 @@ double Lib95::get_param_pressure(double mdensity_in,
 }
 
 double Lib95::get_param_dpress_drho(double mdensity_in,
-                                    double temperature_in) {
+                                    double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     //double tau = temperature_crit_ / temperature_in;
 
@@ -600,7 +600,7 @@ double Lib95::get_param_dpress_drho(double mdensity_in,
 }
 
 double Lib95::get_param_erg_int(double mdensity_in,
-                                double temperature_in) {
+                                double temperature_in) const {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -613,7 +613,7 @@ double Lib95::get_param_erg_int(double mdensity_in,
 }
 
 double Lib95::get_param_entropy(double mdensity_in,
-                                double temperature_in) {
+                                double temperature_in) const {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -630,7 +630,7 @@ double Lib95::get_param_entropy(double mdensity_in,
 }
 
 double Lib95::get_param_enthalpy(double mdensity_in,
-                                 double temperature_in) {
+                                 double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -645,7 +645,7 @@ double Lib95::get_param_enthalpy(double mdensity_in,
 }
 
 double Lib95::get_param_heat_c_v(double mdensity_in,
-                                 double temperature_in) {
+                                 double temperature_in) const {
     //double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -658,7 +658,7 @@ double Lib95::get_param_heat_c_v(double mdensity_in,
 }
 
 double Lib95::get_param_heat_c_p(double mdensity_in,
-                                 double temperature_in) {
+                                 double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -686,7 +686,7 @@ double Lib95::get_param_heat_c_p(double mdensity_in,
 }
 
 double Lib95::get_param_speed_sound(double mdensity_in,
-                                    double temperature_in) {
+                                    double temperature_in) const {
     double delta = mdensity_in / mdensity_crit_;
     double tau = temperature_crit_ / temperature_in;
 
@@ -715,7 +715,7 @@ double Lib95::get_param_speed_sound(double mdensity_in,
 
 bool Lib95::find_root_mdensity(double temperature_in,
                                double pressure_in,
-                               double &mdensity_out) {
+                               double &mdensity_out) const {
     double mden_now = mdensity_out;
     double press_now =
         get_param_pressure(mden_now, temperature_in);
@@ -769,7 +769,7 @@ bool Lib95::find_root_mdensity(double temperature_in,
 bool Lib95::find_state_coex(double temperature_in,
                             double &pressure_out,
                             double &mden_vap_out,
-                            double &mden_liq_out) {
+                            double &mden_liq_out) const {
     double press_now = pressure_out;
     double mden_vap = mden_vap_out;
     double mden_liq = mden_liq_out;
@@ -964,7 +964,7 @@ void Lib95::make_tab_coex(int nbin_in,
     return;
 }
 
-void Lib95::export_tab_coex(char *filename) {
+void Lib95::export_tab_coex(char *filename) const {
     if (!have_tab_coex_) {
         return;
     }

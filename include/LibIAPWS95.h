@@ -146,93 +146,93 @@ class Lib95 {
         return;
     }
 
-    void print_header(FILE *ptr_fout = stdout);
+    void print_header(FILE *ptr_fout = stdout) const;
 
     /* the ideal-gas part of the free energy
      * and its derivatives */
     double get_param_phi_ide(double mdensity_in,
-                             double temperature_in);
+                             double temperature_in) const;
     double get_param_dphi_ide_ddelta(double mdensity_in,
-                                     double temperature_in);
+                                     double temperature_in) const;
     double get_param_dphi_ide_dtau(double mdensity_in,
-                                   double temperature_in);
+                                   double temperature_in) const;
     double get_param_d2phi_ide_ddelta_ddelta(double mdensity_in,
-                                             double temperature_in);
+                                             double temperature_in) const;
     double get_param_d2phi_ide_ddelta_dtau(double mdensity_in,
-                                           double temperature_in);
+                                           double temperature_in) const;
     double get_param_d2phi_ide_dtau_dtau(double mdensity_in,
-                                         double temperature_in);
+                                         double temperature_in) const;
 
     /* the residual part of the free energy
      * and its derivatives */
     double get_param_phi_res(double mdensity_in,
-                             double temperature_in);
+                             double temperature_in) const;
     double get_param_dphi_res_ddelta(double mdensity_in,
-                                     double temperature_in);
+                                     double temperature_in) const;
     double get_param_dphi_res_dtau(double mdensity_in,
-                                   double temperature_in);
+                                   double temperature_in) const;
     double get_param_d2phi_res_ddelta_ddelta(double mdensity_in,
-                                             double temperature_in);
+                                             double temperature_in) const;
     double get_param_d2phi_res_ddelta_dtau(double mdensity_in,
-                                           double temperature_in);
+                                           double temperature_in) const;
     double get_param_d2phi_res_dtau_dtau(double mdensity_in,
-                                         double temperature_in);
+                                         double temperature_in) const;
 
     /* specific Helmholtz free energy in J / kg
      * parametrization for single-phase state */
     double get_param_f(double mdensity_in,
-                       double temperature_in);
+                       double temperature_in) const;
     /* specific Gibbs free energy in J / kg
      * parametrization for single-phase state */
     double get_param_g(double mdensity_in,
-                       double temperature_in);
+                       double temperature_in) const;
     /* pressure in Pa (N / m^2)
      * parametrization for single-phase state */
     double get_param_pressure(double mdensity_in,
-                              double temperature_in);
+                              double temperature_in) const;
     /* derivative of pressure with respect to mass density
      * in m^2 / sec^2
      * parametrization for single-phase state */
     double get_param_dpress_drho(double mdensity_in,
-                                 double temperature_in);
+                                 double temperature_in) const;
     /* specific internal energy in J / kg
      * parametrization for single-phase state */
     double get_param_erg_int(double mdensity_in,
-                             double temperature_in);
+                             double temperature_in) const;
     /* specific entropy in J / kg / degK
      * parametrization for single-phase state */
     double get_param_entropy(double mdensity_in,
-                             double temperature_in);
+                             double temperature_in) const;
     /* specific enthalpy in J / kg
      * parametrization for single-phase state */
     double get_param_enthalpy(double mdensity_in,
-                              double temperature_in);
+                              double temperature_in) const;
     /* specific isochoric heat capacity in J / kg / degK
      * parametrization for single-phase state */
     double get_param_heat_c_v(double mdensity_in,
-                              double temperature_in);
+                              double temperature_in) const;
     /* specific isobaric heat capacity in J / kg / degK
      * parametrization for single-phase state */
     double get_param_heat_c_p(double mdensity_in,
-                              double temperature_in);
+                              double temperature_in) const;
     /* speed of sound in m / sec
      * parametrization for single-phase state */
     double get_param_speed_sound(double mdensity_in,
-                                 double temperature_in);
+                                 double temperature_in) const;
 
     /* find mass density which yields certain pressure
      * with given temperature,
      * using Newton's method for root finding */
     bool find_root_mdensity(double temperature_in,
                             double pressure_in,
-                            double &mdensity_out);
+                            double &mdensity_out) const;
 
     /* find a coexisting phase
      * based on Maxwell criterion */
     bool find_state_coex(double temperature_in,
                          double &pressure_out,
                          double &mden_vap_out,
-                         double &mden_liq_out);
+                         double &mden_liq_out) const;
 
     /* populate table
      * for coexisting phases */
@@ -242,7 +242,7 @@ class Lib95 {
 
     /* print out the table
      * for coexisting phases */
-    void export_tab_coex(char *filename);
+    void export_tab_coex(char *filename) const;
 
     /* import table for coexisting phases
      * from an external data file */
@@ -255,42 +255,42 @@ class Lib95 {
 
     /* pressure at coexisting phase
      * in Pa (N / m^2) */
-    double get_coex_pressure(double temperature_in) {
+    double get_coex_pressure(double temperature_in) const {
         return csp_coex_pressure_.get_func(temperature_in);
     }
     /* mass density of water vapor at coexisting phase
      * in kg / m^3 */
-    double get_coex_mden_vap(double temperature_in) {
+    double get_coex_mden_vap(double temperature_in) const {
         return csp_coex_mden_vap_.get_func(temperature_in);
     }
     /* mass density of water liquid at coexisting phase
      * in kg / m^3 */
-    double get_coex_mden_liq(double temperature_in) {
+    double get_coex_mden_liq(double temperature_in) const {
         return csp_coex_mden_liq_.get_func(temperature_in);
     }
     /* specific enthalpy of water vapor at coexisting phase
      * in J / kg */
-    double get_coex_enthalpy_vap(double temperature_in) {
+    double get_coex_enthalpy_vap(double temperature_in) const {
         return csp_coex_enthalpy_vap_.get_func(temperature_in);
     }
     /* specific enthalpy of water liquid at coexisting phase
      * in J / kg */
-    double get_coex_enthalpy_liq(double temperature_in) {
+    double get_coex_enthalpy_liq(double temperature_in) const {
         return csp_coex_enthalpy_liq_.get_func(temperature_in);
     }
     /* specific entropy of water vapor at coexisting phase
      * in J / kg / degK */
-    double get_coex_entropy_vap(double temperature_in) {
+    double get_coex_entropy_vap(double temperature_in) const {
         return csp_coex_entropy_vap_.get_func(temperature_in);
     }
     /* specific entropy of water liquid at coexisting phase
      * in J / kg / degK */
-    double get_coex_entropy_liq(double temperature_in) {
+    double get_coex_entropy_liq(double temperature_in) const {
         return csp_coex_entropy_liq_.get_func(temperature_in);
     }
     /* specific latent heat
      * in J / kg */
-    double get_coex_heat_latent(double temperature_in) {
+    double get_coex_heat_latent(double temperature_in) const {
         double h_latent =
             temperature_in *
             (csp_coex_entropy_vap_.get_func(temperature_in) -

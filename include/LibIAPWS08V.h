@@ -126,7 +126,7 @@ class Lib08V {
         return;
     }
 
-    void print_header(FILE *ptr_fout = stdout);
+    void print_header(FILE *ptr_fout = stdout) const;
 
     void set_ptr_lib95(Lib95 *ptr_in) {
         ptr_lib95_ = ptr_in;
@@ -172,15 +172,15 @@ class Lib08V {
      * of (ordinary) water fluid
      * in Pa * sec */
     double get_param_viscosity(double mdensity_in,
-                               double tempearture_in);
+                               double tempearture_in) const;
 
-    double get_param_visc0_dimless(double tempearture_in);
+    double get_param_visc0_dimless(double tempearture_in) const;
 
     double get_param_visc1_dimless(double mdensity_in,
-                                   double tempearture_in);
+                                   double tempearture_in) const;
 
     double get_param_visc2_dimless(double mdensity_in,
-                                   double tempearture_in);
+                                   double tempearture_in) const;
 };
 
 } // end namespace IAPWS

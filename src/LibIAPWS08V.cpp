@@ -3,7 +3,7 @@
 
 namespace IAPWS {
 
-void Lib08V::print_header(FILE *ptr_fout) {
+void Lib08V::print_header(FILE *ptr_fout) const {
     fprintf(ptr_fout, "\n");
     fprintf(ptr_fout, "IAPWS R12-08 (2008)\n");
     fprintf(ptr_fout, "Release on the IAPWS Formulation 2008\n");
@@ -15,7 +15,7 @@ void Lib08V::print_header(FILE *ptr_fout) {
 }
 
 double Lib08V::get_param_viscosity(double mdensity_in,
-                                   double tempearture_in) {
+                                   double tempearture_in) const {
     double viscosity_out = viscosity_ref_ *
         get_param_visc0_dimless(tempearture_in) *
         get_param_visc1_dimless(mdensity_in, tempearture_in) *
@@ -24,7 +24,7 @@ double Lib08V::get_param_viscosity(double mdensity_in,
     return viscosity_out;
 }
 
-double Lib08V::get_param_visc0_dimless(double tempearture_in) {
+double Lib08V::get_param_visc0_dimless(double tempearture_in) const {
     double temp_dimless = tempearture_in / temperature_ref_;
 
     double nomin = 100. * sqrt(temp_dimless);
@@ -50,7 +50,7 @@ double Lib08V::get_param_visc0_dimless(double tempearture_in) {
 }
 
 double Lib08V::get_param_visc1_dimless(double mdensity_in,
-                                       double tempearture_in) {
+                                       double tempearture_in) const {
     double mden_dimless = mdensity_in / mdensity_ref_;
     double temp_dimless = tempearture_in / temperature_ref_;
 
@@ -90,7 +90,7 @@ double Lib08V::get_param_visc1_dimless(double mdensity_in,
 }
 
 double Lib08V::get_param_visc2_dimless(double mdensity_in,
-                                       double tempearture_in) {
+                                       double tempearture_in) const {
     double visc2_dimless = 1.;
 
     bool in_range_crit =

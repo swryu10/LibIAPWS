@@ -212,85 +212,85 @@ class Lib06 {
         return;
     }
 
-    void print_header(FILE *ptr_fout = stdout);
+    void print_header(FILE *ptr_fout = stdout) const;
 
     void set_flag_s_absolute(bool flag_in) {
         flag_s_absolute_ = flag_in;
     }
 
-    double get_param_g0(double pressure);
-    double get_param_dg0_dp(double pressure);
-    double get_param_d2g0_dp_dp(double pressure);
+    double get_param_g0(double pressure) const;
+    double get_param_dg0_dp(double pressure) const;
+    double get_param_d2g0_dp_dp(double pressure) const;
 
     void get_param_r(double pressure, int k,
-                     double *r_out);
+                     double *r_out) const;
     void get_param_dr_dp(double pressure, int k,
-                         double *dr_dp_out);
+                         double *dr_dp_out) const;
     void get_param_d2r_dp_dp(double pressure, int k,
-                             double *d2r_dp_dp_out);
+                             double *d2r_dp_dp_out) const;
 
     void get_param_q(double temperature, int k,
-                     double *q_out);
+                     double *q_out) const;
     void get_param_dq_dT(double temperature, int k,
-                         double *dq_dT_out);
+                         double *dq_dT_out) const;
     void get_param_d2q_dT_dT(double temperature, int k,
-                             double *d2q_dT_dT_out);
+                             double *d2q_dT_dT_out) const;
 
     /* parametrized specific Gibbs free energy
      * and its derivatives */
     double get_param_g(double temperature,
-                       double pressure);
+                       double pressure) const;
     double get_param_dg_dT(double temperature,
-                           double pressure);
+                           double pressure) const;
     double get_param_dg_dp(double temperature,
-                           double pressure);
+                           double pressure) const;
     double get_param_d2g_dT_dT(double temperature,
-                               double pressure);
+                               double pressure) const;
     double get_param_d2g_dT_dp(double temperature,
-                               double pressure);
+                               double pressure) const;
     double get_param_d2g_dp_dp(double temperature,
-                               double pressure);
+                               double pressure) const;
 
     /* mass density in kg / m^3
      * parametrization for single-phase state */
     double get_param_mdensity(double temperature_in,
-                              double pressure_in);
+                              double pressure_in) const;
     /* specific entropy in J / kg / degK
      * parametrization for single-phase state */
     double get_param_entropy(double temperature_in,
-                             double pressure_in);
+                             double pressure_in) const;
     /* specific isobaric heat capacity in J / kg / degK
      * parametrization for single-phase state */
     double get_param_heat_c_p(double temperature_in,
-                              double pressure_in);
+                              double pressure_in) const;
     /* specific enthalpy in J / kg
      * parametrization for single-phase state */
     double get_param_enthalpy(double temperature_in,
-                              double pressure_in);
+                              double pressure_in) const;
     /* specific internal energy in J / kg
      * parametrization for single-phase state */
     double get_param_erg_int(double temperature_in,
-                             double pressure_in);
+                             double pressure_in) const;
     /* specific Helmholtz free energy in J / kg
      * parametrization for single-phase state */
     double get_param_f(double temperature_in,
-                       double pressure_in);
+                       double pressure_in) const;
     /* cubic expansion coefficient in 1 / degK
      * parametrization for single-phase state */
     double get_param_coeff_alpha(double temperature_in,
-                                 double pressure_in);
+                                 double pressure_in) const;
     /* pressure coefficient in Pa / degK
      * parametrization for single-phase state */
     double get_param_coeff_beta(double temperature_in,
-                                double pressure_in);
+                                double pressure_in) const;
     /* isothermal compressibility in 1 / Pa
      * parametrization for single-phase state */
     double get_param_comp_kappa_T(double temperature_in,
-                                  double pressure_in);
+                                  double pressure_in) const;
     /* isentropic compressibility in 1 / Pa
      * parametrization for single-phase state */
     double get_param_comp_kappa_s(double temperature_in,
-                                  double pressure_in);
+                                  double pressure_in) const;
 
     /* find a coexisting phase
      * of water vapor and ice
@@ -299,7 +299,7 @@ class Lib06 {
                          double temperature_in,
                          double &pressure_out,
                          double &mden_vap_out,
-                         double &mden_ice_out);
+                         double &mden_ice_out) const;
 
     /* populate table
      * for coexisting phases */
@@ -309,7 +309,7 @@ class Lib06 {
 
     /* print out the table
      * for coexisting phases */
-    void export_tab_coex(char *filename);
+    void export_tab_coex(char *filename) const;
 
     /* import table for coexisting phases
      * from an external data file */
@@ -322,43 +322,43 @@ class Lib06 {
 
     /* pressure at coexisting phase
      * in Pa (N / m^2) */
-    double get_coex_pressure(double temperature_in) {
+    double get_coex_pressure(double temperature_in) const {
         return csp_coex_pressure_.get_func(temperature_in);
     }
     /* mass density of water vapor at coexisting phase
      * in kg / m^3 */
-    double get_coex_mden_vap(double temperature_in) {
+    double get_coex_mden_vap(double temperature_in) const {
         return csp_coex_mden_vap_.get_func(temperature_in);
     }
     /* mass density of H2O ice at coexisting phase
      * in kg / m^3 */
-    double get_coex_mden_ice(double temperature_in) {
+    double get_coex_mden_ice(double temperature_in) const {
         return csp_coex_mden_ice_.get_func(temperature_in);
     }
     /* specific enthalpy of water vapor at coexisting phase
      * in J / kg */
-    double get_coex_enthalpy_vap(double temperature_in) {
+    double get_coex_enthalpy_vap(double temperature_in) const {
         return csp_coex_enthalpy_vap_.get_func(temperature_in);
     }
     /* specific enthalpy of H2O ice at coexisting phase
      * in J / kg */
-    double get_coex_enthalpy_ice(double temperature_in) {
+    double get_coex_enthalpy_ice(double temperature_in) const {
         return csp_coex_enthalpy_ice_.get_func(temperature_in);
     }
     /* specific entropy of water vapor at coexisting phase
      * in J / kg / degK */
-    double get_coex_entropy_vap(double temperature_in) {
+    double get_coex_entropy_vap(double temperature_in) const {
         return csp_coex_entropy_vap_.get_func(temperature_in);
     }
     /* specific entropy of H2O ice at coexisting phase
      * in J / kg / degK */
-    double get_coex_entropy_ice(double temperature_in) {
+    double get_coex_entropy_ice(double temperature_in) const {
         return csp_coex_entropy_ice_.get_func(temperature_in);
     }
     /* specific latent heat
      * between water vapor and ice
      * in J / kg */
-    double get_coex_heat_latent(double temperature_in) {
+    double get_coex_heat_latent(double temperature_in) const {
         double h_latent =
             temperature_in *
             (csp_coex_entropy_vap_.get_func(temperature_in) -
@@ -374,7 +374,7 @@ class Lib06 {
                          double pressure_in,
                          double &temperature_out,
                          double &mden_liq_out,
-                         double &mden_ice_out);
+                         double &mden_ice_out) const;
 
     /* populate table
      * for melting phases */
@@ -384,7 +384,7 @@ class Lib06 {
 
     /* print out the table
      * for melting phases */
-    void export_tab_melt(char *filename);
+    void export_tab_melt(char *filename) const;
 
     /* import table for melting phases
      * from an external data file */
@@ -397,43 +397,43 @@ class Lib06 {
 
     /* temperature at melting phase
      * in degK */
-    double get_melt_temperature(double pressure_in) {
+    double get_melt_temperature(double pressure_in) const {
         return csp_melt_temperature_.get_func(pressure_in);
     }
     /* mass density of water liquid at melting phase
      * in kg / m^3 */
-    double get_melt_mden_liq(double pressure_in) {
+    double get_melt_mden_liq(double pressure_in) const {
         return csp_melt_mden_liq_.get_func(pressure_in);
     }
     /* mass density of H2O ice at melting phase
      * in kg / m^3 */
-    double get_melt_mden_ice(double pressure_in) {
+    double get_melt_mden_ice(double pressure_in) const {
         return csp_melt_mden_ice_.get_func(pressure_in);
     }
     /* specific enthalpy of water liquid at melting phase
      * in J / kg */
-    double get_melt_enthalpy_liq(double pressure_in) {
+    double get_melt_enthalpy_liq(double pressure_in) const {
         return csp_melt_enthalpy_liq_.get_func(pressure_in);
     }
     /* specific enthalpy of H2O ice at melting phase
      * in J / kg */
-    double get_melt_enthalpy_ice(double pressure_in) {
+    double get_melt_enthalpy_ice(double pressure_in) const {
         return csp_melt_enthalpy_ice_.get_func(pressure_in);
     }
     /* specific entropy of water liquid at melting phase
      * in J / kg / degK */
-    double get_melt_entropy_liq(double pressure_in) {
+    double get_melt_entropy_liq(double pressure_in) const {
         return csp_melt_entropy_liq_.get_func(pressure_in);
     }
     /* specific entropy of H2O ice at melting phase
      * in J / kg / degK */
-    double get_melt_entropy_ice(double pressure_in) {
+    double get_melt_entropy_ice(double pressure_in) const {
         return csp_melt_entropy_ice_.get_func(pressure_in);
     }
     /* specific latent heat
      * between water liquid and ice
      * in J / kg */
-    double get_melt_heat_latent(double pressure_in) {
+    double get_melt_heat_latent(double pressure_in) const {
         double h_latent =
             get_melt_temperature(pressure_in) *
             (csp_melt_entropy_liq_.get_func(pressure_in) -
